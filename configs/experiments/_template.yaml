@@ -1,0 +1,43 @@
+# Reusable experiment template for Gate 2 / early Gate 3 planning.
+# Fill placeholders per experiment; do not treat placeholders as approved settings.
+
+experiment:
+  name: "TBD_experiment_name"
+  owner: "TBD_owner"
+  gate: "gate2"
+  description: "TBD_short_description"
+
+provenance:
+  seed: 0 # PROVISIONAL — NOT LOCKED
+  dgp_config: configs/dgp/week1_skeleton.yaml
+  git_commit: "REQUIRED_AT_RUN_TIME"
+  run_id_rule: "Identify runs by (experiment config path + seed + git commit)."
+
+ablation_cells:
+  - id: random_xfit__naive_var
+    cross_fitting: random
+    variance_estimation: naive
+  - id: random_xfit__robust_var
+    cross_fitting: random
+    variance_estimation: robust
+  - id: grouped_xfit__naive_var
+    cross_fitting: grouped
+    variance_estimation: naive
+  - id: grouped_xfit__robust_var
+    cross_fitting: grouped
+    variance_estimation: robust
+
+replications:
+  count: "TBD — decide at Gate 3"
+
+outcomes:
+  - coverage95
+  - size
+  - ci_width
+  - power
+  - bias
+  - rmse
+
+outputs:
+  raw_dir: results/raw
+  summary_dir: results/tables
