@@ -1,0 +1,69 @@
+# DGP skeleton for Gate 2 validation work.
+# All numerical placeholders in this file are PROVISIONAL — NOT LOCKED.
+# These values support early DGP construction checks only.
+
+meta:
+  name: week1_dgp_skeleton
+  gate: gate2
+  status: "PROVISIONAL — NOT LOCKED"
+  note: >-
+    Placeholder configuration for Gate 2 DGP construction/validation.
+    Do not treat listed values as approved experimental design choices.
+
+seed: 0 # PROVISIONAL — NOT LOCKED
+
+dimensions:
+  n_firms: 50 # PROVISIONAL — NOT LOCKED
+  n_periods: 500 # PROVISIONAL — NOT LOCKED
+
+factors:
+  n_factors: 1 # PROVISIONAL — NOT LOCKED
+  loading_scale: 1.0 # PROVISIONAL — NOT LOCKED
+
+volatility:
+  model: garch11
+  persistence: 0.90 # PROVISIONAL — NOT LOCKED
+  rng_stream: volatility
+
+regimes:
+  n_regimes: 5 # PROVISIONAL — NOT LOCKED
+  density: 0.30 # PROVISIONAL — NOT LOCKED
+  rng_stream: regimes
+
+treatment:
+  effect_true: 0.0 # PROVISIONAL — NOT LOCKED
+  assignment: independent_of_regimes
+  rng_stream: treatment
+
+outputs:
+  figures_dir: results/figures
+  tables_dir: results/tables
+  raw_dir: results/raw
+
+# Intended interface contract (documented target only; not an implementation claim):
+interfaces:
+  core:
+    module: src/dgp/core.py
+    consumes:
+      - seed
+      - dimensions
+      - factors
+      - volatility
+      - regimes
+      - treatment
+      - outputs
+    note: "Primary DGP orchestrator expected to load and route this config."
+  volatility:
+    module: src/dgp/volatility.py
+    consumes:
+      - volatility.model
+      - volatility.persistence
+      - volatility.rng_stream
+    note: "Volatility process component expected to use volatility subsection only."
+  regime_shocks:
+    module: src/dgp/regime_shocks.py
+    consumes:
+      - regimes.n_regimes
+      - regimes.density
+      - regimes.rng_stream
+    note: "Regime shock generator expected to use regimes subsection only."
