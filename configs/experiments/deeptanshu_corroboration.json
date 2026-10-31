@@ -1,0 +1,47 @@
+{
+  "label": "Fresh-seed corroboration of component diagnostics; NOT team gate approval",
+  "seed": 20261101,
+  "stability": {
+    "n_firms": 64,
+    "n_periods": 4096,
+    "burn_in": 1000,
+    "long_burn_in": 5000,
+    "replications": 32,
+    "persistence": [
+      0.0,
+      0.3,
+      0.6,
+      0.9,
+      0.97
+    ],
+    "arch_share": 0.1,
+    "unconditional_variance": 1.0,
+    "acf_lags": 20,
+    "extreme_threshold_sd": 12.0
+  },
+  "independence": {
+    "replications": 100,
+    "n_firms": 16,
+    "n_periods": 512,
+    "persistence": 0.9,
+    "burn_in": 1000,
+    "density": 0.5,
+    "n_regimes": 8,
+    "randomizations": 199,
+    "diagnostic_alpha": 0.05,
+    "positive_control_strength": 1.0,
+    "regime_ref": "17b42c0408b9b512da029f70da3a619706e6649b"
+  },
+  "runtime": {
+    "n_firms": [
+      16,
+      64,
+      128
+    ],
+    "n_periods": [
+      1024,
+      4096
+    ],
+    "repeats": 3
+  }
+}

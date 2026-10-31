@@ -1,0 +1,125 @@
+{
+  "status": "passed",
+  "source_commit": "2ecd9a2651fd5f970685722dbe67d8cec8380f25",
+  "implementation_sha256": "a80ae7d53a14c6fe6d0515d4092e2a23db85aa52522a3d0314813ae54abe15a9",
+  "source_file_sha256": "fc7df8ef179a40ba5eba14785a6c1af9f1b26db31d0faeb076ea1d0a6f05d59f",
+  "version_metadata_shim": true,
+  "reference_modified": false,
+  "note": "Actual official GARCH.simulate API; source-only import using Python fallback. No package installed.",
+  "numpy": "2.3.5",
+  "python": "3.13.13",
+  "cases": [
+    {
+      "persistence": 0.0,
+      "variance": 0.0004,
+      "burn_in": 0,
+      "max_abs_variance_difference": 0.0,
+      "max_abs_return_difference": 0.0
+    },
+    {
+      "persistence": 0.0,
+      "variance": 0.0004,
+      "burn_in": 500,
+      "max_abs_variance_difference": 0.0,
+      "max_abs_return_difference": 0.0
+    },
+    {
+      "persistence": 0.0,
+      "variance": 1.0,
+      "burn_in": 0,
+      "max_abs_variance_difference": 0.0,
+      "max_abs_return_difference": 0.0
+    },
+    {
+      "persistence": 0.0,
+      "variance": 1.0,
+      "burn_in": 500,
+      "max_abs_variance_difference": 0.0,
+      "max_abs_return_difference": 0.0
+    },
+    {
+      "persistence": 0.3,
+      "variance": 0.0004,
+      "burn_in": 0,
+      "max_abs_variance_difference": 1.0842021724855044e-19,
+      "max_abs_return_difference": 0.0
+    },
+    {
+      "persistence": 0.3,
+      "variance": 0.0004,
+      "burn_in": 500,
+      "max_abs_variance_difference": 1.0842021724855044e-19,
+      "max_abs_return_difference": 0.0
+    },
+    {
+      "persistence": 0.3,
+      "variance": 1.0,
+      "burn_in": 0,
+      "max_abs_variance_difference": 2.220446049250313e-16,
+      "max_abs_return_difference": 0.0
+    },
+    {
+      "persistence": 0.3,
+      "variance": 1.0,
+      "burn_in": 500,
+      "max_abs_variance_difference": 2.220446049250313e-16,
+      "max_abs_return_difference": 0.0
+    },
+    {
+      "persistence": 0.9,
+      "variance": 0.0004,
+      "burn_in": 0,
+      "max_abs_variance_difference": 2.168404344971009e-19,
+      "max_abs_return_difference": 0.0
+    },
+    {
+      "persistence": 0.9,
+      "variance": 0.0004,
+      "burn_in": 500,
+      "max_abs_variance_difference": 2.168404344971009e-19,
+      "max_abs_return_difference": 0.0
+    },
+    {
+      "persistence": 0.9,
+      "variance": 1.0,
+      "burn_in": 0,
+      "max_abs_variance_difference": 4.440892098500626e-16,
+      "max_abs_return_difference": 0.0
+    },
+    {
+      "persistence": 0.9,
+      "variance": 1.0,
+      "burn_in": 500,
+      "max_abs_variance_difference": 4.440892098500626e-16,
+      "max_abs_return_difference": 2.220446049250313e-16
+    },
+    {
+      "persistence": 0.97,
+      "variance": 0.0004,
+      "burn_in": 0,
+      "max_abs_variance_difference": 4.336808689942018e-19,
+      "max_abs_return_difference": 1.3877787807814457e-17
+    },
+    {
+      "persistence": 0.97,
+      "variance": 0.0004,
+      "burn_in": 500,
+      "max_abs_variance_difference": 4.336808689942018e-19,
+      "max_abs_return_difference": 0.0
+    },
+    {
+      "persistence": 0.97,
+      "variance": 1.0,
+      "burn_in": 0,
+      "max_abs_variance_difference": 8.881784197001252e-16,
+      "max_abs_return_difference": 0.0
+    },
+    {
+      "persistence": 0.97,
+      "variance": 1.0,
+      "burn_in": 500,
+      "max_abs_variance_difference": 8.881784197001252e-16,
+      "max_abs_return_difference": 0.0
+    }
+  ]
+}
