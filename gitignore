@@ -50,3 +50,8 @@ data/raw/
 # --- Large / generated artifacts ---
 *.pkl
 *.joblib
+# Python generated files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
