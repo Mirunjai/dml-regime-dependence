@@ -206,8 +206,10 @@ budget, practical thresholds and benchmark comparability. Confirm the official
 submission deadline. Mirun's fold implementation/runtime is still needed for
 STRETCH review and final budget feasibility. No final DML ablation, real-data
 pipeline, gate approval, or estimator coverage claim is delivered by this component
-package. Branch publication is now user-authorized; merging into main remains a
-separate review step.
+package. The branch is published in
+[draft PR #3](https://github.com/Mirunjai/dml-regime-dependence/pull/3); merging into
+main remains a separate review step. See the project state for temporary combined
+test results and the ignore-file resolution required by the older companion PR.
 
 ## References
 

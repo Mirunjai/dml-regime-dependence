@@ -27,6 +27,29 @@ teammates' source have been authorized or performed.
 Read [the deliverable report](../reports/deeptanshu_week1_week2.md) for results,
 commands, limitations and figures. The README documents the actual current APIs.
 
+## Publication and integration review
+
+Implementation commit `bad08cd8a1402cacc77ba6bea715fc4c74a85b05` was pushed and its
+remote SHA verified. [Draft PR #3](https://github.com/Mirunjai/dml-regime-dependence/pull/3)
+targets main; no main merge has been performed.
+
+Two temporary combinations were tested without committing either merge:
+
+- Preksha's Week 2 branch at `8144aba`: automatic merge without conflicts,
+  **119 tests passed** with warnings treated as errors, plus a direct-import toy
+  composition of GARCH returns, regime shocks and the classical prototype.
+- Her existing [draft PR #2](https://github.com/Mirunjai/dml-regime-dependence/pull/2)
+  is the older Week 1 branch at `17b42c0`. It has a `.gitignore` rename/add conflict.
+  Retaining our full ignore file preserves every pattern from her minimal file
+  and the raw-data/credential exclusions. With that temporary resolution,
+  **112 tests passed** with warnings treated as errors.
+
+Recommendation: combine reviewed component PRs into main, preserving the full
+ignore policy. Her additional Week 2 prototypes need their own reviewed change;
+they are not in PR #2. These checks establish code coexistence, not an approved
+integrated DGP, event-window mapping, or Gate 2/Gate 3 decision. Temporary review
+worktrees are cleaned after testing; teammate branches remain unchanged.
+
 ## Evidence and checks
 
 - **104 tests passed**, including subprocess CLI checks, with warnings treated as
@@ -61,7 +84,9 @@ commands, limitations and figures. The README documents the actual current APIs.
 The local `.venv` uses system-site scientific packages (Python 3.13.13, NumPy
 2.3.5, Matplotlib 3.11.1); pytest 9.2.0 and its small dependencies were installed
 locally from copied cache entries. No global packages were changed. DNS blocked
-package downloads and remote refresh; no clean online installation was verified.
+package downloads and remote checks during validation; branch publication was
+subsequently verified through normal Git push and the GitHub API. No clean online
+installation was verified.
 Exa failed during the audit; relevant original papers and official web references
 were read through web search. See the decision notes for those sources.
 
