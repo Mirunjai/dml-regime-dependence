@@ -24,7 +24,7 @@
     "randomizations": 199,
     "diagnostic_alpha": 0.05,
     "positive_control_strength": 1.0,
-    "regime_ref": "17b42c0408b9b512da029f70da3a619706e6649b"
+    "regime_ref": "HEAD"
   },
   "runtime": {
     "n_firms": [16, 64, 128],

@@ -16,9 +16,10 @@ Classical event studies and Synthetic Control are secondary contextual benchmark
 S&P 500 inclusions provide a qualitative real-data check, not coverage evidence.
 The project introduces no new estimator, variance formula, or theorem.
 
-## Implemented on this branch
+## Available components
 
-Deeptanshu's standalone Week 1/2 package:
+The shared baseline contains Preksha's Week 1 regime generator (`src/dgp/regime_shocks.py`),
+its demo/tests, and Deeptanshu's standalone Week 1/2 package:
 
 - Gaussian firm-level GARCH(1,1), fixed intended unconditional variance, explicit
   NumPy RNG, burn-in, standard-deviation/innovation outputs shaped `(firm, time)`.
@@ -82,11 +83,14 @@ The pipeline returns exit code 2 for numerical failures or blocked/incomplete
 independence checks. A missing teammate Git object does not prevent standalone
 GARCH or metric work: `--skip-independence` explicitly records that check as skipped.
 
-The independence diagnostic reads `src/dgp/regime_shocks.py` directly from commit
-`17b42c0408b9b512da029f70da3a619706e6649b` in the local Git object database and
-imports it temporarily. No merge or teammate-source edit occurs. That commit is
-unmerged and not confirmed team-frozen. The one-period/one-window diagnostic
-alignment does not resolve the integrated date/event-window mapping.
+The Week 1 regime generator was merged through PR #2. The diagnostic now reads
+its source from the current committed revision (`regime_ref: HEAD`), resolves that
+reference to a full commit SHA, and records the exact SHA, source hash and snapshot.
+This works in a fresh main-only clone without retaining an old feature-branch
+commit. Uncommitted regime edits are deliberately excluded. Historical validation
+reports retain their original pinned source at `17b42c0`. Neither merging the
+component nor the one-period/one-window diagnostic alignment establishes the
+team's integrated date/event-window mapping or Gate 2/3 approval.
 
 ## APIs and conventions
 

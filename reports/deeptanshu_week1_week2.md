@@ -3,8 +3,8 @@
 31 October 2026. Standalone firm-level volatility, validation, and Monte Carlo
 protocol. Implemented with user approval on `deeptanshu/garch-validation-audit`.
 This is component evidence for team review, not Gate 2/Gate 3 approval. The local
-code/draft deliverables are ready; verification against a confirmed frozen regime
-version and the integrated event-window mapping remains pending.
+code/draft deliverables are ready, and the Week 1 regime code is now merged via
+PR #2. Integrated DGP freeze and event-window validation remain pending.
 
 ## What is delivered
 
@@ -106,8 +106,10 @@ shim and Python fallback; no reference implementation was copied or edited.
 
 The diagnostic imports Preksha's actual generator at
 `17b42c0408b9b512da029f70da3a619706e6649b`, directly from Git into a temporary
-module. Its exact source/hash is retained in ignored raw output. It is unmerged
-and not confirmed team-frozen. This component test maps one period to one synthetic
+module. Its exact source/hash is retained in ignored raw output. It was unmerged
+at the original run; the same Week 1 implementation is now on main through PR #2.
+New runs resolve the current committed source SHA/hash instead of requiring the
+old branch object. This component test maps one period to one synthetic
 window; it does not claim the integrated date/window mapping is settled.
 
 For 100 independent panels per root seed: 16 firms, 512 periods, rho=.9,
@@ -187,8 +189,10 @@ A scope re-audit added high-precision moment/variance checks close to the unit
 boundary and corrected cancellation there, without changing the selected grid.
 Overwrite now removes obsolete optional evidence when the replacement check is
 skipped, blocked or numerically failed; unrelated user files are preserved.
-These cases have regression tests. They do not expand the task into teammates'
-scientific tracks.
+These cases have regression tests. The merge integration adds a source-selection
+regression for a clean repository without the old branch commit: **113 combined
+tests pass**. Historical validation outputs retain their original source snapshots.
+No Week 2 teammate prototypes or final experiments were added to this baseline.
 
 Tested: Python 3.13.13, NumPy 2.3.5, Matplotlib 3.11.1, pytest 9.2.0. The local venv
 inherits existing scientific packages; cached packages supplied pytest because DNS
@@ -200,7 +204,7 @@ these wall-clock timings depend on local load and do not estimate full DML cost.
 ## Remaining team decisions
 
 Supply the authoritative Gate 1 file and any actual Gate 2/3 memos. Confirm the
-regime freeze and time/window mapping; select the grouping unit, robust variance,
+integrated DGP freeze and time/window mapping; select the grouping unit, robust variance,
 final grid, matching density quantity, zero/nonzero-effect conditions, replication
 budget, practical thresholds and benchmark comparability. Confirm the official
 submission deadline. Mirun's fold implementation/runtime is still needed for

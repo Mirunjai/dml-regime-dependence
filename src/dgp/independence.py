@@ -43,7 +43,7 @@ def regime_reference(
         "commit": sha, "source_path": source_path,
         "source_sha256": hashlib.sha256(source).hexdigest(),
         "url": f"https://github.com/Mirunjai/dml-regime-dependence/blob/{sha}/{source_path}",
-        "team_frozen_status": "not established; pinned unmerged diagnostic reference",
+        "team_frozen_status": "not established by this diagnostic; exact commit and source hash recorded",
         "mapping": "one time index per synthetic event-window index; diagnostic only",
     }
     with tempfile.TemporaryDirectory(prefix="ada-regime-reference-") as temporary:

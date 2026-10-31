@@ -79,9 +79,12 @@ not required for the first simulation milestone.
 ## P2: Independence validation with a meaningful positive control
 
 Use separately spawned, recorded RNG streams for volatility and regime generation.
-Audit inputs and call structure in addition to examining diagnostics. Use the
-merged, team-frozen regime module once identified; currently only unmerged branches
-are available. Do not merge a teammate's branch just to make the check runnable.
+Audit inputs and call structure in addition to examining diagnostics. The user
+has authorized combining the Week 1 components; the regime module is now on main
+through PR #2. New diagnostics resolve HEAD to an exact committed source SHA and
+record its hash/snapshot, so a clean clone does not depend on an old feature-branch
+object. The original reports retain their historical source at `17b42c0`. Formal
+DGP freeze and event-window integration remain team decisions.
 
 After Mirun resolves the time/event mapping, examine associations of h and h's
 lagged values with exposure indicators and shock magnitude U^2, alongside signed U.
@@ -162,9 +165,11 @@ DML estimator, benchmark implementation, or final grid is part of this proposal.
 
 Local implementation approval resolved (1) a fresh P1 and (2) the coefficient
 mapping/initialization. P3 failure semantics are implemented as engineering
-behavior, with final reporting policy still a team decision. The unmerged regime
-source is pinned for a diagnostic-index test only. A team-frozen version and the
-integrated event-window/time mapping remain unresolved.
+behavior, with final reporting policy still a team decision. The Week 1 regime
+source is now merged; diagnostic-index checks pin the resolved committed revision
+at run time. The integrated DGP freeze and event-window/time mapping remain
+unresolved. No Preksha Week 2 prototypes or final experiments are included in this
+component merge.
 
 ## P5: Monte Carlo protocol draft for the team design lock
 

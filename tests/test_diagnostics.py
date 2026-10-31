@@ -15,7 +15,7 @@ from src.dgp.validate_volatility import component_rng, plot_results, run_indepen
 from src.dgp.volatility import simulate_volatility
 
 ROOT = Path(__file__).resolve().parents[1]
-REFERENCE = "17b42c0408b9b512da029f70da3a619706e6649b"
+REFERENCE = json.loads((ROOT / "configs/experiments/deeptanshu_validation.json").read_text())["independence"]["regime_ref"]
 
 
 def mock_regimes(n, density, n_regimes, rng):
@@ -94,16 +94,36 @@ def test_no_variation_is_not_reported_as_independence_pass():
 
 
 def test_actual_reference_provenance_and_shapes_without_merging():
-    available = subprocess.run(["git", "-C", str(ROOT), "cat-file", "-e", REFERENCE], capture_output=True).returncode == 0
+    available = subprocess.run(["git", "-C", str(ROOT), "cat-file", "-e", f"{REFERENCE}:src/dgp/regime_shocks.py"], capture_output=True).returncode == 0
     if not available:
         pytest.skip("Pinned teammate Git object unavailable in this clone")
     with regime_reference(ROOT, REFERENCE) as (simulate, metadata):
         ids, u = simulate(100, 0.5, 5, np.random.default_rng(1))
     assert ids.shape == u.shape == (100,)
     assert (ids >= 0).sum() == 50
-    assert metadata["commit"] == REFERENCE
+    expected = subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", f"{REFERENCE}^{{commit}}"], text=True).strip()
+    assert metadata["commit"] == expected
     assert len(metadata["source_sha256"]) == 64
     assert "not established" in metadata["team_frozen_status"]
+
+
+def test_default_reference_works_without_the_original_feature_branch_object(tmp_path):
+    source = subprocess.check_output(["git", "-C", str(ROOT), "show", f"{REFERENCE}:src/dgp/regime_shocks.py"])
+    repo = tmp_path / "standalone_main"
+    target = repo / "src/dgp/regime_shocks.py"
+    target.parent.mkdir(parents=True)
+    target.write_bytes(source)
+    subprocess.run(["git", "init", "--quiet", "--initial-branch=main", str(repo)], check=True)
+    subprocess.run(["git", "-C", str(repo), "add", "src/dgp/regime_shocks.py"], check=True)
+    subprocess.run(["git", "-C", str(repo), "-c", "user.name=Test Fixture", "-c", "user.email=fixture@example.invalid",
+                    "-c", "commit.gpgsign=false", "commit", "--quiet", "-m", "Fixture containing only the merged module"], check=True)
+    legacy = "17b42c0408b9b512da029f70da3a619706e6649b"
+    assert subprocess.run(["git", "-C", str(repo), "cat-file", "-e", legacy], capture_output=True).returncode != 0
+    with regime_reference(repo, REFERENCE) as (simulate, metadata):
+        ids, shocks = simulate(100, 0.5, 5, np.random.default_rng(1))
+    assert ids.shape == shocks.shape == (100,)
+    assert (ids >= 0).sum() == 50
+    assert metadata["commit"] != legacy
 
 
 def test_configuration_rejects_typos_and_impossible_regime_checks():

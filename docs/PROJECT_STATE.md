@@ -1,17 +1,19 @@
 # Project state
 
-Updated 31 October 2026. Branch: `deeptanshu/garch-validation-audit`.
+Updated 31 October 2026. Implementation branch: `deeptanshu/garch-validation-audit`.
 
 ## Current milestone
 
-The user approved the implementation proposal and requested Deeptanshu's Week 1
-and Week 2 package. The standalone code, diagnostic evidence and protocol draft
-are ready for review. Week 2 checking against a confirmed team-frozen module and
-the integrated event mapping is still pending; the pinned-source diagnostic does
-not close that dependency. Integrated scientific sign-off remains a team responsibility.
-The user has authorized committing and pushing this implementation branch. Validation
-snapshots predate the first implementation commit. No merge into main or edits to
-teammates' source have been authorized or performed.
+The user authorized merging the two foundational packages into main. Preksha's
+Week 1 generator is merged via PR #2 at `9e810790867dcfb2973bfa0662c2fc429562730b`.
+This revision combines that component with Deeptanshu's GARCH, diagnostics, metrics
+and protocol draft through PR #3. The full ignore policy is preserved. Preksha's
+additional Week 2 prototypes remain on their separate branch.
+
+New diagnostics resolve the current committed regime source and record its exact
+SHA/hash, avoiding dependence on a feature-branch object after squash merges.
+The integrated event mapping, DGP freeze and scientific gate decisions remain
+pending; merging components does not supply that sign-off.
 
 | Responsibility | Artifact | Verification |
 | --- | --- | --- |
@@ -31,7 +33,9 @@ commands, limitations and figures. The README documents the actual current APIs.
 
 Implementation commit `bad08cd8a1402cacc77ba6bea715fc4c74a85b05` was pushed and its
 remote SHA verified. [Draft PR #3](https://github.com/Mirunjai/dml-regime-dependence/pull/3)
-targets main; no main merge has been performed.
+carries the volatility/metrics package and the merge integration update. The user
+has now authorized the selected component merges; PR #2 is merged and PR #3 is
+being integrated against that new base.
 
 Two temporary combinations were tested without committing either merge:
 
@@ -45,15 +49,18 @@ Two temporary combinations were tested without committing either merge:
   **112 tests passed** with warnings treated as errors.
 
 Recommendation: combine reviewed component PRs into main, preserving the full
-ignore policy. Her additional Week 2 prototypes need their own reviewed change;
+ignore policy. The PR #2 ignore policy was restored before its merge, avoiding
+that conflict when the new main was merged into our branch. Her additional Week 2
+prototypes need their own reviewed change;
 they are not in PR #2. These checks establish code coexistence, not an approved
 integrated DGP, event-window mapping, or Gate 2/Gate 3 decision. Temporary review
 worktrees are cleaned after testing; teammate branches remain unchanged.
 
 ## Evidence and checks
 
-- **104 tests passed**, including subprocess CLI checks, with warnings treated as
-  errors: `.venv/bin/python -m pytest -q -W error`.
+- **113 combined tests passed**, including the eight regime tests and a new
+  regression for a repository without the original feature-branch commit. The
+  original standalone suite had 104 tests. Warnings are treated as errors: `.venv/bin/python -m pytest -q -W error`.
 - Compared the actual official `arch.univariate.GARCH.simulate` API across 16
   persistence/variance/burn-in combinations: matching returns, maximum absolute
   variance difference about 8.9e-16. Its source clone was not edited; the unbuilt
@@ -106,8 +113,9 @@ Fetched teammate refs:
 
 No prior GARCH source was found, so the authorized standalone implementation was
 written fresh. Preksha's source is imported temporarily from its exact Git object
-and snapshotted only in ignored raw outputs. It remains unmerged and not confirmed
-team-frozen. The diagnostic aligns one time index to one window index; it cannot
+and snapshotted in ignored raw outputs. Its Week 1 code is now merged via PR #2;
+the separate Week 2 branch remains unmerged. Formal DGP freeze is still pending.
+The diagnostic aligns one time index to one window index; it cannot
 resolve the integrated calendar/event-window mapping.
 
 The local brief, one-pager, detailed methodology, both weekly plans and Bollerslev
@@ -120,7 +128,7 @@ or third-party implementation has been ported into project source.
 - Supply the missing authoritative `docs/gate1_specification.md` and any actual
   Gate 2/3 decision memos. The supplied plans report Gate 1 as locked; a scheduled
   checkpoint does not establish later gate completion.
-- Identify/approve a frozen regime version, the date/window mapping and grouping
+- Approve the integrated DGP freeze, date/window mapping and grouping
   unit. Its exposure fraction and realized same-regime pair density differ;
   changing regime count at fixed exposure fraction changes pair density.
 - Approve or revise the final grid, robust variance, zero/nonzero-effect conditions,
