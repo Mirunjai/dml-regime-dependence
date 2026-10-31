@@ -32,18 +32,18 @@ commands, limitations and figures. The README documents the actual current APIs.
 ## Publication and integration review
 
 Implementation commit `bad08cd8a1402cacc77ba6bea715fc4c74a85b05` was pushed and its
-remote SHA verified. [Draft PR #3](https://github.com/Mirunjai/dml-regime-dependence/pull/3)
-carries the volatility/metrics package and the merge integration update. The user
-has now authorized the selected component merges; PR #2 is merged and PR #3 is
-being integrated against that new base.
+remote SHA verified. [PR #3](https://github.com/Mirunjai/dml-regime-dependence/pull/3)
+delivers the volatility/metrics package and the integration update against the
+regime component merged in PR #2. The user authorized these selected component
+merges; this revision contains the combined baseline.
 
 Two temporary combinations were tested without committing either merge:
 
 - Preksha's Week 2 branch at `8144aba`: automatic merge without conflicts,
   **119 tests passed** with warnings treated as errors, plus a direct-import toy
   composition of GARCH returns, regime shocks and the classical prototype.
-- Her existing [draft PR #2](https://github.com/Mirunjai/dml-regime-dependence/pull/2)
-  is the older Week 1 branch at `17b42c0`. It has a `.gitignore` rename/add conflict.
+- Her [PR #2](https://github.com/Mirunjai/dml-regime-dependence/pull/2)
+  originally used the Week 1 branch at `17b42c0`, with a `.gitignore` rename/add conflict.
   Retaining our full ignore file preserves every pattern from her minimal file
   and the raw-data/credential exclusions. With that temporary resolution,
   **112 tests passed** with warnings treated as errors.
@@ -51,10 +51,12 @@ Two temporary combinations were tested without committing either merge:
 Recommendation: combine reviewed component PRs into main, preserving the full
 ignore policy. The PR #2 ignore policy was restored before its merge, avoiding
 that conflict when the new main was merged into our branch. Her additional Week 2
-prototypes need their own reviewed change;
-they are not in PR #2. These checks establish code coexistence, not an approved
+prototypes need their own reviewed change; they are not in PR #2. These checks
+establish code coexistence, not an approved
 integrated DGP, event-window mapping, or Gate 2/Gate 3 decision. Temporary review
-worktrees are cleaned after testing; teammate branches remain unchanged.
+worktrees are cleaned after testing. The temporary trials did not alter teammate
+branches; the later user-authorized PR #2 update restored its full ignore policy
+without changing the regime implementation.
 
 ## Evidence and checks
 

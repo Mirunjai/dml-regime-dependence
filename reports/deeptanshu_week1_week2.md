@@ -20,7 +20,8 @@ PR #2. Integrated DGP freeze and event-window validation remain pending.
 | STRETCH | Runtime scaling | Local GARCH-only timing grid and returned-array memory requirements |
 
 Fold-split review remains unavailable because no DML/fold implementation was
-found. No other teammate's scientific track has been implemented or merged.
+found. The selected Week 1 regime component is now merged; Preksha's additional
+Week 2 prototypes and the other scientific tracks remain separate.
 
 ## Methods and interfaces
 
@@ -210,10 +211,11 @@ budget, practical thresholds and benchmark comparability. Confirm the official
 submission deadline. Mirun's fold implementation/runtime is still needed for
 STRETCH review and final budget feasibility. No final DML ablation, real-data
 pipeline, gate approval, or estimator coverage claim is delivered by this component
-package. The branch is published in
-[draft PR #3](https://github.com/Mirunjai/dml-regime-dependence/pull/3); merging into
-main remains a separate review step. See the project state for temporary combined
-test results and the ignore-file resolution required by the older companion PR.
+package. The combined component baseline is delivered through
+[PR #2](https://github.com/Mirunjai/dml-regime-dependence/pull/2) and
+[PR #3](https://github.com/Mirunjai/dml-regime-dependence/pull/3), with the full ignore
+policy retained. See the project state for the combined test results and the
+distinction between component integration and scientific gate decisions.
 
 ## References
 
