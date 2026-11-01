@@ -21,10 +21,13 @@ from src.evaluation.metrics import (
     paired_binary_difference,
     summarize_intervals,
 )
-from src.infra.experiment_runner import CELL_SPEC
+from src.infra.experiment_runner import (
+    CELL_SPEC, validate_config, validate_saved_result,
+)
 from src.infra.reproducibility import (
     config_hash,
     save_json_atomic,
+    validate_run_id,
 )
 from src.infra.reporting import (
     markdown_table,
@@ -67,7 +70,10 @@ def load_results(run_dir):
         manifest = json.load(file)
 
     config = manifest["config"]
-    run_id = manifest["run_id"]
+    run_id = validate_run_id(manifest["run_id"])
+    validate_config(config)
+    if manifest.get("source_changed_during_run"):
+        raise ValueError("Run was invalidated by a source change")
     expected_hash = manifest["config_hash"]
 
     if config_hash(config) != expected_hash:
@@ -79,7 +85,6 @@ def load_results(run_dir):
     truth = float(
         config["_resolved_dgp"]["treatment"]["effect_true"]
     )
-    seed = config["provenance"]["seed"]
 
     if not math.isfinite(truth):
         raise ValueError("Nonfinite known treatment effect")
@@ -100,74 +105,9 @@ def load_results(run_dir):
                 "Resume or diagnose the runner first."
             )
 
-        with path.open("r", encoding="utf-8") as file:
-            record = json.load(file)
+        record = validate_saved_result(path, replication_id, run_id, config)
 
-        expected_metadata = {
-            "run_id": run_id,
-            "replication_id": replication_id,
-            "root_seed": seed,
-            "config_hash": expected_hash,
-            "truth": truth,
-        }
-
-        for key, expected in expected_metadata.items():
-            if record.get(key) != expected:
-                raise ValueError(
-                    f"Replication {replication_id}: "
-                    f"metadata mismatch for {key}"
-                )
-
-        cells = record.get("cells")
-
-        if not isinstance(cells, list) or len(cells) != 4:
-            raise ValueError(
-                f"Replication {replication_id}: "
-                "expected exactly four cell records"
-            )
-
-        actual_ids = [item.get("cell") for item in cells]
-
-        if (
-            len(set(actual_ids)) != 4
-            or set(actual_ids) != set(CELL_SPEC)
-        ):
-            raise ValueError(
-                f"Replication {replication_id}: "
-                "missing or duplicate cells"
-            )
-
-        for item in cells:
-            status = item.get("status")
-
-            if status not in ("ok", "failed"):
-                raise ValueError(
-                    f"Invalid status in replication {replication_id}"
-                )
-
-            if status == "ok":
-                try:
-                    estimate = float(item["estimate"])
-                    lower = float(item["lower"])
-                    upper = float(item["upper"])
-                except (TypeError, ValueError, KeyError) as exc:
-                    raise ValueError(
-                        "Malformed successful result"
-                    ) from exc
-
-                if not all(map(
-                    math.isfinite,
-                    (estimate, lower, upper),
-                )):
-                    raise ValueError(
-                        "Successful results must be finite"
-                    )
-
-                if lower > upper:
-                    raise ValueError(
-                        "Confidence interval has reversed bounds"
-                    )
-
+        for item in record["cells"]:
             by_cell[item["cell"]].append({
                 **item,
                 "replication_id": replication_id,
@@ -364,11 +304,12 @@ def save_heatmap(rows, metric, title, output_path):
         for line in MATRIX
     ], dtype=float)
 
-    # No scientifically meaningful figure if every cell failed.
-    if np.isnan(values).all():
-        return None
-
     output_path = Path(output_path)
+
+    # Remove this run's stale plot if a later report has no usable estimates.
+    if np.isnan(values).all():
+        output_path.unlink(missing_ok=True)
+        return None
 
     output_path.parent.mkdir(
         parents=True,
@@ -524,7 +465,7 @@ def generate_report(
     )
 
     markdown_path.write_text(
-        "# Four-cell DML ablation summary\n\n"
+        "# Four-cell mock infrastructure summary\n\n"
         + "**Engine:** "
         + str(config.get("engine", "unspecified"))
         + "\n\n"
@@ -560,7 +501,7 @@ def generate_report(
         output = save_heatmap(
             rows,
             metric,
-            title,
+            f"MOCK infrastructure check — {title}",
             path,
         )
 
@@ -595,9 +536,8 @@ def generate_report(
         tables_dir / f"{run_id}_ablation.json"
     )
 
-    save_json_atomic(json_path, report)
-
     report["outputs"]["json"] = str(json_path)
+    save_json_atomic(json_path, report)
 
     return report
 

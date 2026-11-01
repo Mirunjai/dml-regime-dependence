@@ -4,9 +4,12 @@
 import hashlib
 import json
 import os
+import platform
 import re
 import subprocess
 import tempfile
+from contextlib import contextmanager
+from importlib.metadata import version
 from pathlib import Path
 
 import numpy as np
@@ -145,12 +148,68 @@ def make_rngs(root_seed, replication_id):
     return streams
 
 
+def validate_run_id(run_id):
+    """Require a single portable filename token, including for saved manifests."""
+    if (not isinstance(run_id, str)
+            or not re.fullmatch(r"[A-Za-z0-9_-]+", run_id)):
+        raise ValueError("Unsafe run ID")
+    return run_id
+
+
+def software_versions():
+    """Record the runtime needed to interpret and replay RNG draws."""
+    return {
+        "python": platform.python_version(),
+        "numpy": np.__version__,
+        "matplotlib": version("matplotlib"),
+        "pyyaml": yaml.__version__,
+        "rng_bit_generator": type(np.random.default_rng(0).bit_generator).__name__,
+    }
+
+
+@contextmanager
+def run_lock(run_dir):
+    """Reject a second controlling process; OS locks release on process exit.
+
+    Keep the lock file after release so all callers lock the same inode.
+    Local filesystems are supported; network filesystem locking is not verified.
+    """
+    with (Path(run_dir) / ".runner.lock").open("a+b") as handle:
+        if os.name == "nt":
+            import msvcrt
+            handle.seek(0)
+            try:
+                msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+            except OSError as exc:
+                raise RuntimeError(
+                    "Run is already locked or lock unavailable"
+                ) from exc
+            try:
+                yield
+            finally:
+                handle.seek(0)
+                msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+            try:
+                fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except OSError as exc:
+                raise RuntimeError(
+                    "Run is already locked or lock unavailable"
+                ) from exc
+            try:
+                yield
+            finally:
+                fcntl.flock(handle, fcntl.LOCK_UN)
+
+
 def result_paths(config, run_id, repo_root="."):
     """
     Reuse repository output paths instead of inventing
     a new results-directory structure.
     """
-    root = Path(repo_root)
+    validate_run_id(run_id)
+    root = Path(repo_root).resolve()
     outputs = config.get("outputs", {})
 
     relative_paths = {
@@ -170,9 +229,12 @@ def result_paths(config, run_id, repo_root="."):
             )
 
     paths = {
-        key: root / relative
+        key: (root / relative).resolve()
         for key, relative in relative_paths.items()
     }
+
+    if any(not path.is_relative_to(root) for path in paths.values()):
+        raise ValueError("Output paths must remain within the project")
 
     for directory in paths.values():
         directory.mkdir(parents=True, exist_ok=True)
@@ -233,6 +295,7 @@ def save_manifest(path, config_path, config, repo_root="."):
         "git": git_state(repo_root),
         "config": config,
         "rng_stream_ids": STREAM_IDS,
+        "software": software_versions(),
     }
 
     save_json_atomic(path, manifest)
