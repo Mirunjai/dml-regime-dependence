@@ -1,0 +1,42 @@
+
+# Sudarshan Week 2 infrastructure test.
+# NOT a scientific DML experiment.
+# No parameters here constitute Gate 3 approval.
+
+experiment:
+  name: sudarshan-week2-mock
+  owner: Sudarshan
+  gate: gate2
+  description: "Mock-only parallel runner validation"
+
+engine: mock
+
+provenance:
+  seed: 20261031
+  dgp_config: configs/dgp/week1_skeleton.yaml
+  git_commit: "REQUIRED_AT_RUN_TIME"
+
+replications:
+  count: 12
+
+ablation_cells:
+  - id: random_xfit__naive_var
+    cross_fitting: random
+    variance_estimation: naive
+
+  - id: random_xfit__robust_var
+    cross_fitting: random
+    variance_estimation: robust
+
+  - id: grouped_xfit__naive_var
+    cross_fitting: grouped
+    variance_estimation: naive
+
+  - id: grouped_xfit__robust_var
+    cross_fitting: grouped
+    variance_estimation: robust
+
+outputs:
+  raw_dir: results/raw
+  summary_dir: results/tables
+  figures_dir: results/figures

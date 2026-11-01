@@ -1,6 +1,29 @@
 # Project state
 
-Updated 31 October 2026. Implementation branch: `deeptanshu/garch-validation-audit`.
+Updated 1 November 2026. Shared baseline: reviewed component packages on main.
+
+
+## Sudarshan infrastructure integration
+
+Reviewed branch `Sudarshan`, initially at `c58284635b5b86fbf85a15a86df4bc88558f843d`,
+based directly on the shared main at `566ad07c`. It adds independent RNG/config
+utilities, atomic saved records, a parallel/resumable **mock-only** runner, generic
+report helpers and four-cell coverage/size/power/width reports. Existing
+statistical formulas are reused; GARCH and regime source are unchanged.
+
+The original 151 combined tests passed. Integration fixes and 13 regression cases
+bring the suite to **164 passing tests with warnings as errors** in a clean,
+requirements-only environment. The CLI serial/three-worker resume preserved all
+12 replication files byte for byte; raw summary statistics were independently
+recomputed. Explicit spawn, engine failure accounting, failure-preserving resume,
+provenance tampering, parent locking and all-failed stale-plot handling were tested.
+See [the infrastructure review](Sudarshan_INFRA.md#integration-review-1-november-2026)
+for fixes, exact software versions, commands and remaining platform limitations.
+
+This milestone supplies executable infrastructure, not an integrated DGP, DML
+estimator, actual-estimator benchmark, Gate 2/3 approval, or scientific four-cell
+results. Preksha's Week 2 branch remains separate. The scientific next steps and
+open team decisions below still apply.
 
 ## Current milestone
 
@@ -60,7 +83,7 @@ without changing the regime implementation.
 
 ## Evidence and checks
 
-- **113 combined tests passed**, including the eight regime tests and a new
+- **113 combined tests passed at the prior component milestone**, including the eight regime tests and a new
   regression for a repository without the original feature-branch commit. The
   original standalone suite had 104 tests. Warnings are treated as errors: `.venv/bin/python -m pytest -q -W error`.
 - Compared the actual official `arch.univariate.GARCH.simulate` API across 16
