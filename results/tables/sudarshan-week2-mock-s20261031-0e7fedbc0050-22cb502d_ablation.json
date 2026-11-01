@@ -82,12 +82,13 @@
   "failure_policy": "raise",
   "known_truth": 0.0,
   "outputs": {
-    "csv": "/Users/sudarshan/Documents/GitHub/dml-regime-dependence/results/tables/sudarshan-week2-mock-s20261031-0e7fedbc0050-566ad07c_ablation.csv",
-    "markdown": "/Users/sudarshan/Documents/GitHub/dml-regime-dependence/results/tables/sudarshan-week2-mock-s20261031-0e7fedbc0050-566ad07c_ablation.md",
+    "csv": "/tmp/ada-sudarshan-review-1793521612494/results/tables/sudarshan-week2-mock-s20261031-0e7fedbc0050-22cb502d_ablation.csv",
+    "json": "/tmp/ada-sudarshan-review-1793521612494/results/tables/sudarshan-week2-mock-s20261031-0e7fedbc0050-22cb502d_ablation.json",
+    "markdown": "/tmp/ada-sudarshan-review-1793521612494/results/tables/sudarshan-week2-mock-s20261031-0e7fedbc0050-22cb502d_ablation.md",
     "plots": {
-      "coverage95": "/Users/sudarshan/Documents/GitHub/dml-regime-dependence/results/figures/sudarshan-week2-mock-s20261031-0e7fedbc0050-566ad07c_coverage95.png",
-      "empirical_size": "/Users/sudarshan/Documents/GitHub/dml-regime-dependence/results/figures/sudarshan-week2-mock-s20261031-0e7fedbc0050-566ad07c_empirical_size.png",
-      "mean_ci_width": "/Users/sudarshan/Documents/GitHub/dml-regime-dependence/results/figures/sudarshan-week2-mock-s20261031-0e7fedbc0050-566ad07c_mean_ci_width.png"
+      "coverage95": "/tmp/ada-sudarshan-review-1793521612494/results/figures/sudarshan-week2-mock-s20261031-0e7fedbc0050-22cb502d_coverage95.png",
+      "empirical_size": "/tmp/ada-sudarshan-review-1793521612494/results/figures/sudarshan-week2-mock-s20261031-0e7fedbc0050-22cb502d_empirical_size.png",
+      "mean_ci_width": "/tmp/ada-sudarshan-review-1793521612494/results/figures/sudarshan-week2-mock-s20261031-0e7fedbc0050-22cb502d_mean_ci_width.png"
     }
   },
   "paired_robust_comparisons": {
@@ -121,6 +122,6 @@
     }
   },
   "planned_replications": 12,
-  "run_id": "sudarshan-week2-mock-s20261031-0e7fedbc0050-566ad07c",
+  "run_id": "sudarshan-week2-mock-s20261031-0e7fedbc0050-22cb502d",
   "statistical_interpretation": "Success-conditional when failures occur; mock engine results are infrastructure tests."
 }

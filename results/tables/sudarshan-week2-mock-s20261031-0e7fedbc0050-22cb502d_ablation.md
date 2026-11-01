@@ -1,4 +1,4 @@
-# Four-cell DML ablation summary
+# Four-cell mock infrastructure summary
 
 **Engine:** mock
 
