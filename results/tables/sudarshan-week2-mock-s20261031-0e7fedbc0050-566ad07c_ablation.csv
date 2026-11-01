@@ -1,0 +1,5 @@
+cell,cross_fitting,variance,attempted,valid,failed,coverage95,coverage_mcse,empirical_size,size_mcse,power,power_mcse,mean_ci_width,width_mcse,coverage_lower_all_attempted,coverage_upper_all_attempted,conditional_on_success
+random_xfit__naive_var,random,naive,12,12,0,0.9166666666666666,0.07978559231302819,0.08333333333333333,0.07978559231302818,,,0.19999999999999998,0.0,0.9166666666666666,0.9166666666666666,False
+random_xfit__robust_var,random,robust,12,12,0,1.0,0.0,0.0,0.0,,,0.3,5.797950651443768e-18,1.0,1.0,False
+grouped_xfit__naive_var,grouped,naive,12,12,0,1.0,0.0,0.0,0.0,,,0.22000000000000003,5.207407571620671e-18,1.0,1.0,False
+grouped_xfit__robust_var,grouped,robust,12,12,0,1.0,0.0,0.0,0.0,,,0.32,1.1976195368092885e-17,1.0,1.0,False
