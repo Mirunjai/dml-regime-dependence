@@ -12,3 +12,11 @@
 | Replication budget | Pilot first; choose using runtime and MCSE | PENDING | |
 | Size experiment | tau=0 | PENDING | |
 | Gate 2 thresholds | Set before full outcomes | PENDING | |
+
+Additional review decisions (still PENDING):
+
+| Decision | Alternatives / issue | Status |
+| --- | --- | --- |
+| Volatility family | Fixed alpha=.10/burn500 versus canonical arch-share/burn1000; paths differ | PENDING |
+| Calendar-factor inference scope | Regime-only folds/sandwich versus explicit conditioning or a revised dependence definition | PENDING |
+| Materiality rule | Completion-pack proposal versus DECISIONS P5; resolve before full results | PENDING |

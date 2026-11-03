@@ -1,2 +1,2 @@
--r requirements.txt
+-r requirements-week2.txt
 pytest>=8.4,<10

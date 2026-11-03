@@ -6,6 +6,8 @@ at coverage: pre-specify the comparison with the team.
 """
 from __future__ import annotations
 from dataclasses import dataclass
+from math import fsum
+from numbers import Real
 import numpy as np
 
 STREAMS = ("cov", "dates", "vol", "factor", "layout", "shock",
@@ -45,7 +47,7 @@ class Config:
             raise ValueError("Require n>=2, T>=2, 1<=H<=T, p>=4, n_regimes>=0")
         for key in ("persistence", "garch_alpha", "sigma2_bar", "density", "sd_shock", "sd_factor", "gamma", "tau"):
             val = getattr(self, key)
-            if not np.isfinite(val):
+            if isinstance(val, (bool, np.bool_)) or not isinstance(val, Real) or not np.isfinite(val):
                 raise ValueError(f"{key} must be finite")
         if not 0 < self.garch_alpha < self.persistence < 1:
             raise ValueError("Require 0 < garch_alpha < persistence < 1")
@@ -53,21 +55,40 @@ class Config:
             raise ValueError("Invalid variance, density, or shock scale")
         if self.gamma < 0:
             raise ValueError("gamma must be nonnegative")
+        for name in ("break_vol_independence", "break_treat_independence"):
+            if type(getattr(self, name)) is not bool:
+                raise TypeError(f"{name} must be an explicit boolean")
         if isinstance(self.seed, bool) or not isinstance(self.seed, (int, np.integer)) or self.seed < 0:
             raise ValueError("seed must be a nonnegative integer")
 
 def simulate_volatility(n_firms, n_periods, persistence, rng, alpha=.10, sigma2_bar=1., burn=500):
-    if not 0 < alpha < persistence < 1 or sigma2_bar <= 0 or burn < 0:
+    """Historical fixed-alpha GARCH family, not the canonical arch-share family.
+
+    Row-major innovations and explicit burn are retained for replay of Mirun's
+    saved pilot. The canonical src/dgp/volatility.py is unchanged and uses a
+    different default alpha mapping, burn-in and innovation draw order.
+    """
+    for name, value, minimum in (("n_firms", n_firms, 1), ("n_periods", n_periods, 1), ("burn", burn, 0)):
+        if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) or value < minimum:
+            raise ValueError(f"{name} must be an integer >= {minimum}")
+    if (any(isinstance(value, (bool, np.bool_)) or not isinstance(value, Real) or not np.isfinite(value)
+            for value in (persistence, alpha, sigma2_bar))
+            or not 0 < alpha < persistence < 1 or sigma2_bar <= 0):
         raise ValueError("Invalid GARCH parameters")
+    if not isinstance(rng, np.random.Generator):
+        raise TypeError("rng must be a numpy Generator")
     beta = persistence - alpha
-    omega = (1-persistence)*sigma2_bar
-    zall = rng.standard_normal((n_firms, n_periods+burn))
+    omega = fsum((1., -alpha, -beta)) * sigma2_bar
+    if omega <= 0:
+        raise ValueError("GARCH intercept underflowed or is nonpositive")
+    zall = rng.standard_normal((n_firms, n_periods + burn))
     h = np.full(n_firms, sigma2_bar)
     sig = np.empty_like(zall)
-    for t in range(n_periods+burn):
-        sig[:, t] = np.sqrt(h)
-        r = sig[:, t] * zall[:, t]
-        h = omega + alpha*r*r + beta*h
+    for t in range(n_periods + burn):
+        with np.errstate(over="raise", invalid="raise"):
+            sig[:, t] = np.sqrt(h)
+            r = sig[:, t] * zall[:, t]
+            h = omega + alpha * r * r + beta * h
         if not np.isfinite(h).all() or (h <= 0).any():
             raise FloatingPointError(f"GARCH failed at t={t}")
     return sig[:, burn:], zall[:, burn:]
