@@ -39,6 +39,23 @@ parallel/resumable mock runs, and four-cell reports using the existing metrics.
 See [the infrastructure guide](docs/Sudarshan_INFRA.md). The mock engine has no
 integrated DGP or DML estimator.
 
+## Week 3 verification package
+
+Deeptanshu's independent saved-results verifier, numerical monitoring snapshots,
+per-cell audit checks and qualitative calm/turbulent dependence diagnostics are
+available on the Week 3 implementation branch. Start with the
+[contract and commands](docs/week3_verification.md). Run the complete **mock**
+example with:
+
+```bash
+python examples/week3_mock_review.py --output results/raw/week3_software_example
+```
+
+The tools are tested independently of DML. Actual pilot verification, the agreed
+robustness runs and real-data conclusions require Mirun's saved results, the
+locked Gate 2/3 records and the labelled return/residual panel. No commits or
+pushes are implied by this local implementation milestone.
+
 ## Installation
 
 Use Python 3.11 or newer (tested locally with 3.13.13). No GPU is required.

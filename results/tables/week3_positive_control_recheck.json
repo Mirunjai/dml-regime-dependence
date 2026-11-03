@@ -1,0 +1,104 @@
+{
+  "baseline_commit": "6c5ff70fdec127b9e11494b931ed92deb27f74ae",
+  "component_parameters": {
+    "arch_share": 0.1,
+    "unconditional_variance": 1.0
+  },
+  "environment": {
+    "executable": "/home/deeptanshukumar/Downloads/ADA PROJECT/dml-regime-dependence/.venv/bin/python",
+    "note": "The existing project environment was used; no packages were changed in this environment during the run.",
+    "packages": {
+      "PyYAML": "6.0.3",
+      "matplotlib": "3.11.1",
+      "numpy": "2.3.5",
+      "pytest": "9.2.0"
+    },
+    "platform": "Linux-7.2.14-200.fc44.x86_64-x86_64-with-glibc2.43",
+    "python": "3.13.13 | packaged by Anaconda, Inc. | (main, Apr 14 2026, 06:19:41) [GCC 14.3.0]",
+    "recorded_utc_after_run": "2026-11-03T17:31:00.978730+00:00"
+  },
+  "evidence_kind": "actual_component_recheck",
+  "executed_scope": "Independence component recheck only; no full stability grid, DML or approved robustness subset",
+  "independence_config": {
+    "burn_in": 1000,
+    "density": 0.5,
+    "diagnostic_alpha": 0.05,
+    "n_firms": 16,
+    "n_periods": 512,
+    "n_regimes": 8,
+    "persistence": 0.9,
+    "positive_control_strength": 1.0,
+    "randomizations": 199,
+    "regime_ref": "HEAD",
+    "replications": 100
+  },
+  "independent_rate_recomputation": {
+    "independent": {
+      "mcse": 0.023748684174075833,
+      "rate": 0.06,
+      "wilson95": [
+        0.027786123963188185,
+        0.12476815445895917
+      ]
+    },
+    "positive_control": {
+      "mcse": 0.0,
+      "rate": 1.0,
+      "wilson95": [
+        0.9630065017930143,
+        1.0
+      ]
+    }
+  },
+  "raw_evidence": "results/raw/week3_positive_control_20261103/",
+  "recheck_script_sha256": "b4c19ff2a0f75f97db7b4fe25e947626f9cf9dd0ffe4eeb097390f5df307e1c4",
+  "reference": {
+    "commit": "6c5ff70fdec127b9e11494b931ed92deb27f74ae",
+    "mapping": "one time index per synthetic event-window index; diagnostic only",
+    "raw_snapshot": "reference/regime_shocks.py (ignored raw output)",
+    "source_path": "src/dgp/regime_shocks.py",
+    "source_sha256": "fdfc8ae046c010f08d979800d8b257cca0dae3a3bd743ef72d406446e11ca730",
+    "team_frozen_status": "not established by this diagnostic; exact commit and source hash recorded",
+    "url": "https://github.com/Mirunjai/dml-regime-dependence/blob/6c5ff70fdec127b9e11494b931ed92deb27f74ae/src/dgp/regime_shocks.py"
+  },
+  "seed": 20261103,
+  "selected_replay": {
+    "independent_and_positive_control_exact_match": true,
+    "replication_ids": [
+      0,
+      17,
+      99
+    ],
+    "source_commit": "6c5ff70fdec127b9e11494b931ed92deb27f74ae"
+  },
+  "summary": {
+    "attempted": 100,
+    "control_detection_rate": {
+      "mcse": 0.0,
+      "rate": 1.0,
+      "replications": 100,
+      "successes": 100,
+      "wilson95": [
+        0.9630065017930143,
+        1.0
+      ]
+    },
+    "diagnostic_alpha": 0.05,
+    "failed": 0,
+    "false_detection_rate": {
+      "mcse": 0.023748684174075833,
+      "rate": 0.06,
+      "replications": 100,
+      "successes": 6,
+      "wilson95": [
+        0.027786123963188185,
+        0.12476815445895917
+      ]
+    },
+    "independent_undefined": 0,
+    "interpretation": "Actual pinned GARCH/regime component recheck with a deliberately invalid dependence control; no integrated DGP, DML calibration or gate approval",
+    "positive_control_undefined": 0,
+    "status": "evaluated",
+    "stream_invariance_failures": 0
+  }
+}

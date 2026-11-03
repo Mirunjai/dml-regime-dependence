@@ -1,0 +1,73 @@
+{
+  "adversarial_validation": {
+    "child_peak_rss_kib_linux": 90240,
+    "driver_sha256": "52975c336ec32f9582175438345572e18c6885a51b083b3057a0cfbf984fa3b1",
+    "evidence_kind": "mock_crosscheck_and_input_size_stress",
+    "limitation": "This measures audit processing only, not DML runtime, a scientific grid or robustness results.",
+    "maximum_absolute_reference_difference": 4.440892098500626e-16,
+    "numeric_crosschecks": 6148,
+    "random_seed": 20261103,
+    "randomized_cases": 80,
+    "stress_cli_elapsed_seconds": 0.4774225809960626,
+    "stress_raw_rows": 40000
+  },
+  "calm_mean_correlation": 6.759543760146113e-17,
+  "central_paired_claims": "matched",
+  "claimed_summaries": "matched",
+  "evidence_kind": "mock_software_validation",
+  "fault_injection": {
+    "aggregate_log_preserved": true,
+    "allow_incomplete_did_not_mask_invalid_data": true,
+    "exit_code": 2,
+    "flagged_records": 2,
+    "nonfinite_bounds": 2,
+    "nonfinite_estimates": 1
+  },
+  "four_cell_summaries": 12,
+  "full_suite": {
+    "environment": {
+      "checked_utc": "2026-11-03T17:48:28.598911+00:00",
+      "executable": "/tmp/ada-week3-clean-env-1793726134443/bin/python",
+      "packages": {
+        "PyYAML": "6.0.3",
+        "coverage": "7.17.1",
+        "matplotlib": "3.11.2",
+        "numpy": "2.5.4",
+        "pytest": "9.2.0"
+      },
+      "platform": "Linux-7.2.14-200.fc44.x86_64-x86_64-with-glibc2.43",
+      "python": "3.13.13 | packaged by Anaconda, Inc. | (main, Apr 14 2026, 06:19:41) [GCC 14.3.0]",
+      "requirements_source": "Unchanged requirements-dev.txt; coverage added only as a temporary validation tool"
+    },
+    "new_tests": 81,
+    "passed": 245,
+    "warnings": "treated as errors"
+  },
+  "limitations": "Constructed intervals and synthetic panel; not Mirun pilot results, real-data evidence or actual robustness results.",
+  "new_modules_coverage": {
+    "covered_branches": 315,
+    "covered_lines": 766,
+    "note": "Coverage of the four new runtime modules; line and branch counts are separate.",
+    "num_branches": 386,
+    "num_statements": 855
+  },
+  "paired_comparisons": 36,
+  "python_without_site_packages_verified": true,
+  "raw_evidence": "results/raw/week3_software_validation_v3/",
+  "raw_interval_rows": 1200,
+  "scenarios": 3,
+  "source_sha256": {
+    "examples/week3_mock_review.py": "d934c815d27c35093d8ed05a30222c62a63d01c846b0fb67a06974cad8f9ae7a",
+    "src/evaluation/verification.py": "e40c98d92716edde0acb25933e2eaed2bb8a1fe16fcb7d143c304c194e7dd601",
+    "src/evaluation/week3_audit.py": "d72a95afe627740d4d42014d6b81daded3e6a7b5163ef541dc4fe15bc015a695",
+    "src/real_data/dependence.py": "ce3d1ea2deabd972a24a74710261242de1edfcbec02929d2f49cd041b25ede91"
+  },
+  "source_state": "Uncommitted implementation on deeptanshu/week3-verification-audit; baseline 6c5ff70",
+  "standalone_source_replay": {
+    "audit_numeric_payload_identical": true,
+    "dependence_numeric_payload_identical": true,
+    "git_repository_not_required": true,
+    "site_packages_disabled": true
+  },
+  "turbulent_mean_correlation": 0.99009900990099
+}

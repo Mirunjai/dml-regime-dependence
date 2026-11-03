@@ -1,7 +1,40 @@
 # Project state
 
-Updated 1 November 2026. Shared baseline: reviewed component packages on main.
+Updated 3 November 2026. Shared baseline: main at `6c5ff70`; Week 3 changes are local and uncommitted.
 
+
+## Week 3: independent verification and diagnostics (local implementation)
+
+The user supplied the Week 3 plan and authorized Deeptanshu's implementation,
+while explicitly reserving commits/pushes for a later instruction. Local branch:
+`deeptanshu/week3-verification-audit`. Main/remote publication is unchanged.
+
+The package adds independent standard-library interval recomputation and claimed
+summary/paired-comparison checks, planned/missing/failed attempt accounting,
+read-only numerical monitoring snapshots, a per-cell manipulation-check interface,
+and qualitative calm/turbulent labelled-panel diagnostics. Exact verifier source
+snapshots and input hashes make uncommitted evidence reviewable. No existing
+scientific or runner module is changed.
+
+Verification: **245 tests passed with warnings as errors** in a fresh environment,
+including 81 new cases; 1,200-row end-to-end mock exercise; 80 randomized cases
+with 6,148 reference comparisons; 40,000-row mock stress; and exact standalone
+source-ZIP numerical replay with site packages disabled. These are software checks.
+An actual-component fresh-seed recheck found zero numerical/invariance failures,
+6/100 independent false detections and 100/100 deliberately dependent-control
+detections, with Wilson intervals reported. It is not integrated-DGP evidence.
+
+Actual pilot/full-run verification, the approved robustness executions and the
+real-data conclusions remain pending. The Week 3 plan assumes approved Gate 2/3
+records, but those records, Mirun's DGP/DML/raw results and the labelled return
+panel were absent from the audited local/remote sources. The user will provide
+the missing inputs. No grid/threshold has been selected and no gate marked passed.
+
+See [the Week 3 deliverable report](../reports/deeptanshu_week3.md) for the explicit
+completed-versus-pending checklist and [the handoff contract](week3_verification.md)
+for exact commands. The Week 3 schedule targets a Sunday 8 November result freeze
+and submission-ready work on 13 November; official deadline confirmation and gate
+approvals are still not established by a scheduled date.
 
 ## Sudarshan infrastructure integration
 
