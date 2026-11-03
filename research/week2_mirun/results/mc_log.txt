@@ -1,0 +1,4 @@
+baseline_no_dependence done 120.33491465600002
+dependent_K4_overlap0.5 done 118.55635935800001
+dependent_K16_overlap0.5 done 123.77209091400005
+ALL DONE
