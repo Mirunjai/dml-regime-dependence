@@ -1,0 +1,4 @@
+# Experimental calendar-time DGP/DML layer. Scientific design remains provisional.
+-r requirements.txt
+scipy>=1.10,<2
+scikit-learn>=1.3,<2

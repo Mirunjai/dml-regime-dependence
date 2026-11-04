@@ -1,7 +1,24 @@
 # Project state
 
-Updated 3 November 2026. Shared baseline: main at `6c5ff70`; Week 3 changes are local and uncommitted.
+Updated 4 November 2026. Mirun PR #5 is merged; review fixes and Week 3 verification are being integrated. Scientific gates remain open.
 
+## Mirun integration review
+
+PR #5 merged the experimental calendar-time DGP/DML layer at `1b914cd`. It did
+not modify the existing GARCH, diagnostic, metric or runner implementations under
+`src/`. Its separate fixed-alpha GARCH and calendar-time regimes are different
+models; the [review memo](../reports/mirun_week2_review.md) documents that distinction.
+
+This follow-up corrects partial-cell failure handling, raw per-attempt persistence,
+per-cell denominators/uncertainty, invalid membership/control inputs, exponential
+overlap-sandwich evaluation, actual-config diagnostic routing and fresh-install
+dependencies. Potential regime and calendar-factor cross-fold links are explicit.
+
+The original 20-rep gamma/tau pilot was reconstructed into 320 raw cell rows; all
+16 reported coverage/bias/width summaries matched to floating-point precision.
+Larger legacy ablations and independent Week 3 verification follow separately.
+The completion pack is a draft proposal, not an approved Gate 2/3 memo; the agreed
+robustness subset and labelled daily-return dataset remain unavailable.
 
 ## Week 3: independent verification and diagnostics (local implementation)
 
