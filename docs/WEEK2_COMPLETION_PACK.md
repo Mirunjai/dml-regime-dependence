@@ -15,7 +15,7 @@ Mirun's implementation is committed and pushed on `mirun/week2-consolidated-comp
 | Density | K=4 overlap across configured density 0/.1/.25/.5/.75: 0/.1657/.3140/.5670/.8230 (100 seeds) | Monotone response; define independent manipulation check and threshold |
 | Regime count | At density .5, overlap changes .5221 (K=1) to .9053 (K=32) | Not matched density; cannot isolate independent information |
 | Matched density | Gamma ablation K4 configured density .428846; K16 .248075 | State exact matched quantity and report other realized quantity |
-| Volatility–shock independence | Final Deeptanshu report not supplied in reviewed evidence | OPEN: include positive control |
+| Volatility–shock independence | [Week 1/2 component report](../reports/deeptanshu_week1_week2.md) and [review](../reports/mirun_week2_review.md) are present | Component evidence available; calendar-model integration/decision still OPEN |
 | Treatment timing independence | Final Preksha report not supplied | OPEN |
 | Baseline known-truth sanity | Gamma=0 evidence exists; exact final baseline sanity package not established | OPEN: bias/RMSE, coverage and zero-effect size under locked DGP |
 | Membership | K4: 0 multi-regime events; K16: 12/80,000 (0.015%); calendar-window overlap pairs 3.489% | Near-single-membership limitation; team must decide whether this represents intended mechanism |
@@ -74,9 +74,9 @@ Record cluster definition, finite-sample correction, critical-value/df rule, cod
 | Owner | Required artifact | Current status from reviewed evidence | Close-out |
 |---|---|---|---|
 | Mirun | DGP v0, Gate 2 memo, DML toy run/runtime, Gate 3 draft | Code pushed; 171 tests pass; formal runtime note and gate memos need repository inclusion | Add memo, runtime evidence, version/tag and team decision |
-| Deeptanshu | Stability/independence report, positive control, coverage/size code, MC protocol | Not supplied in reviewed evidence | Attach artifacts and protocol |
+| Deeptanshu | Stability/independence report, positive control, coverage/size code, MC protocol | Available in [report](../reports/deeptanshu_week1_week2.md), `src/evaluation/metrics.py`, and DECISIONS P5 | Attach to review; apply separately to the calendar model |
 | Preksha | Density/regime validation, matching proposal, treatment independence, S&P source/schema, classical toy prototype | Not supplied in reviewed evidence | Attach outputs and schema |
-| Sudarshan | Runner, raw-results schema, 2×2 mock tables/plots | Mock runner/report previously merged; verify resumability, seed streams and required raw fields | Provide checklist confirmation/artifact |
+| Sudarshan | Runner, raw-results schema, 2×2 mock tables/plots | Reviewed and merged in PR #4; [evidence](Sudarshan_INFRA.md) records deterministic resume and streams | Integrate actual research records; mock results are not DML evidence |
 
 ## Decisions requiring team approval
 1. Deeptanshu's independence positive-control and stability results.
@@ -98,3 +98,18 @@ Week 2 integration is ready for close-out. My branch `mirun/week2-consolidated-c
 - Gate 3 grid, matching quantity, replication budget, thresholds, zero-effect condition and benchmark subset approved.
 - Team artifacts received or explicitly waived with reason and fallback.
 - Official deadline/format confirmed with staff.
+
+## Integration review clarification (4 November)
+
+The reviewed research-code fixes are described in
+[the review memo](../reports/mirun_week2_review.md). Existing Deeptanshu artifacts
+were already on main; absence from the original handoff is not absence from the
+repository. They establish component behavior, not approval of this different
+calendar-time model. The archived 'no dependence' run retains a calendar factor.
+The original one-way and full-membership variants remain separate.
+
+This proposal's 3pp rule and 500-rep precision suggestion differ from DECISIONS P5;
+the team must reconcile them before a final run. Regime-only versus calendar-factor
+conditioning/grouping, the fixed-alpha versus canonical GARCH family, primary
+variance, thresholds and the robustness subset remain decisions, not silent code
+changes. No approval is supplied by this clarification.
