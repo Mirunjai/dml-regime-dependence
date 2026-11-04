@@ -305,3 +305,25 @@ variance for this DGP; that remains Mirun's Gate 3 responsibility.
 addresses cross-fitting with correlated units under rate/dependence assumptions.
 It must not be treated as a blanket dense-regime coverage guarantee. Neither a
 new novelty claim nor a full audit of every roadmap reference was attempted here.
+
+## P6: Week 3 implementation boundary (3 November 2026)
+
+The user authorized completing Deeptanshu's Week 3 package while withholding
+commits/pushes until a later instruction. The new plan explicitly allows mock
+interval checks and partial-data diagnostic preparation before teammate inputs.
+The repository/remote audit still found no integrated DGP/DML, actual saved pilot,
+approved Gate 2/3 memos or frozen labelled return panel.
+
+Implement independent standard-library saved-result arithmetic, declared-attempt
+accounting, saved numerical screens, a read-only monitoring CLI, per-cell
+manipulation checks using supplied definitions, and qualitative labelled-panel
+correlations. Reuse production metrics only as a separate test oracle, never in
+the independent calculation path. Source snapshots make uncommitted validation
+reviewable. See `docs/week3_verification.md` for the proposed handoff contract.
+
+This is authorization for software preparation and the existing component
+positive-control recheck, not a new scientific design. Example intervals,
+replication counts, labels and probe thresholds are software fixtures. Actual
+robustness scenarios, real-data value/label definitions, DML runs and final
+materiality criteria require the locked team inputs. No final experiment is
+launched, no grid is selected, and no gate is marked complete by this package.

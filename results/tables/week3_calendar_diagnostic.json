@@ -1,0 +1,101 @@
+{
+  "config": {
+    "base_config": {
+      "H": 5,
+      "T": 260,
+      "break_treat_independence": false,
+      "break_vol_independence": false,
+      "density": 0.5,
+      "gamma": 0.0,
+      "garch_alpha": 0.1,
+      "n": 400,
+      "n_regimes": 4,
+      "p": 5,
+      "persistence": 0.9,
+      "sd_factor": 0.5,
+      "sd_shock": 0.4,
+      "seed": 0,
+      "sigma2_bar": 1.0,
+      "tau": 1.0
+    },
+    "control": "Actual build_world break_vol_independence=True path",
+    "diagnostic_alpha": 0.05,
+    "diagnostic_rng": "SeedSequence(seed, spawn_key=(90,)); reset for control pairing",
+    "null_rng": "Two independent uint64 seeds from diagnostic RNG per draw: layout, shock",
+    "randomizations": 199,
+    "scope": "Reviewer pilot diagnostic; no Gate 2/3 approval or final robustness subset",
+    "seeds": [
+      20000,
+      20001,
+      20002,
+      20003,
+      20004,
+      20005,
+      20006,
+      20007,
+      20008,
+      20009,
+      20010,
+      20011,
+      20012,
+      20013,
+      20014,
+      20015,
+      20016,
+      20017,
+      20018,
+      20019
+    ]
+  },
+  "interpretation": "Calendar DGP source recheck, not proof of independence, DML calibration, or Gate approval. Calendar-factor fold links are potential dependence sources, not measured effect sizes.",
+  "max_abs_idiosyncratic_return": 7.630161291899848,
+  "nonfinite_returns": 0,
+  "nonpositive_sigma": 0,
+  "rates": {
+    "independent": {
+      "detections": 0,
+      "evaluated": 20,
+      "mcse": 0.0,
+      "planned": 20,
+      "rate": 0.0,
+      "wilson95": [
+        1.3877787807814457e-17,
+        0.1611251580528193
+      ]
+    },
+    "positive_control": {
+      "detections": 20,
+      "evaluated": 20,
+      "mcse": 0.0,
+      "planned": 20,
+      "rate": 1.0,
+      "wilson95": [
+        0.8388748419471808,
+        1.0
+      ]
+    }
+  },
+  "stream_invariance_failures": 0,
+  "fold_source_audit": {
+    "random": {
+      "regime_cross_fold_pairs": {
+        "min": 4363,
+        "max": 6108
+      },
+      "calendar_factor_cross_fold_pairs": {
+        "min": 2162,
+        "max": 2280
+      }
+    },
+    "grouped": {
+      "regime_cross_fold_pairs": {
+        "min": 0,
+        "max": 0
+      },
+      "calendar_factor_cross_fold_pairs": {
+        "min": 711,
+        "max": 1097
+      }
+    }
+  }
+}

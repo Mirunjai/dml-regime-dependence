@@ -39,6 +39,25 @@ parallel/resumable mock runs, and four-cell reports using the existing metrics.
 See [the infrastructure guide](docs/Sudarshan_INFRA.md). The mock engine has no
 integrated DGP or DML estimator.
 
+## Week 3 verification package
+
+Deeptanshu's independent saved-results verifier, numerical monitoring snapshots,
+per-cell audit checks and qualitative calm/turbulent dependence diagnostics are
+included in the Week 3 delivery. Start with the
+[contract and commands](docs/week3_verification.md). Run the complete **mock**
+example with:
+
+```bash
+python examples/week3_mock_review.py --output results/raw/week3_software_example
+```
+
+The independent review reconstructed 5,360 interval rows from the existing pilot
+and ablation settings; all 76 reported coverage rates match. Small continuous
+legacy discrepancies remain flagged. The actual calendar runner now has a strict
+raw-file adapter and monitoring support. See the [Week 3 report](reports/deeptanshu_week3.md).
+Approved robustness runs, full-run verification and real-data conclusions still
+require the team design decisions and labelled return/residual panel.
+
 ## Installation
 
 Use Python 3.11 or newer (tested locally with 3.13.13). No GPU is required.
@@ -51,7 +70,8 @@ source .venv/bin/activate
 python -m pip install -r requirements-dev.txt
 ```
 
-Runtime dependencies are NumPy, Matplotlib and PyYAML; pytest is for development. The
+Standalone runtime dependencies are NumPy, Matplotlib and PyYAML. The development
+installation also includes SciPy/scikit-learn for Mirun's research layer and pytest. The
 simulation and metric APIs themselves import NumPy only. Dependency ranges are in
 `requirements.txt`; actual versions and source hashes are recorded with each run.
 The infrastructure integration passed 164 tests with warnings as errors in a
