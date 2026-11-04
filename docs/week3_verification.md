@@ -265,3 +265,61 @@ size is estimated. Results are qualitative.
 - The team's Week 3 plan and `docs/DECISIONS.md` govern ownership, failure reporting
   and unresolved design choices. The earlier P5 materiality proposal is not an
   approved protocol simply because implementation utilities now exist.
+# Actual calendar-runner and archived pilot review (4 November)
+
+The reviewed `research.week2_completion.run_week2` producer now saves atomic
+attempts. Its manifest is the plan; a missing scenario or replication remains
+missing even when an aggregate summary omits it. Run the independent adapter:
+
+```bash
+python -S -m src.evaluation.mirun_audit \
+  --run-dir results/raw/<producer-run> \
+  --output results/raw/<new-audit-directory>
+
+python -m src.evaluation.monitor --producer calendar --interval 60 \
+  --iterations 0 --output-root results/raw/<new-monitor-directory> -- \
+  --run-dir results/raw/<producer-run>
+```
+
+The adapter checks recorded configs, seed addresses, estimator settings, four-cell
+identity, fold assignments and producer source hashes. Atomic attempt files are
+authoritative; inline copies never replace missing files. It outputs canonical
+CSV, an explicit plan, independent summaries/paired MCSEs, stability screens,
+claim discrepancies and source/input hashes. Source checks establish content
+consistency, not authenticity. Producer numeric/fold screens remain labelled as
+producer claims until separately replayed. No diagnostic threshold is inferred.
+
+Exit 0 requires complete successful raw cells, matching required headline claims,
+consistent inline attempts and verifiable source bytes. Exit 2 preserves a report
+with failures, missing work, discrepancies or unavailable source. A producer's
+`source_changed.json` invalidates the run. Invalid inputs raise; monitoring saves
+them as input errors and can continue without modifying the producer.
+
+To reconstruct the already-published historical pilots from immutable Git source
+(requires the original `26e65f1` object and research dependencies):
+
+```bash
+python scripts/replay_mirun_pilots.py --output results/raw/<new-replay>
+python -S scripts/audit_mirun_replays.py \
+  --calendar-dir results/raw/<new-replay>/calendar \
+  --legacy-dir results/raw/<new-replay>/legacy \
+  --output results/raw/<new-historical-audit>
+
+python scripts/check_calendar_independence.py \
+  --output results/raw/<new-calendar-diagnostic>
+```
+
+Reconstruction preserves the two estimator variants and their existing grids and
+seed rules. It does not create an approved robustness campaign. The replay driver
+uses two processes with explicit single-threaded BLAS and one learner thread;
+runtime depends on the machine. Reused legacy worlds across tables do not count
+as additional independent panels. The original raw archive/environment was not
+provided, so small continuous differences remain unresolved and the historical
+audit returns 2. The separate single-toy timing example is excluded from MC counts.
+
+The delivered tables report 320 active-pilot and 5,040 legacy interval rows,
+76 matching coverage rates, and 120 differences among 520 checked fields
+(maximum absolute difference 6.2211e-6). Original missing power/width/paired MCSEs
+are not retroactively presented as verified claims. Supplementary MCSEs come from
+reviewer raw reconstructions. See the [Week 3 report](../reports/deeptanshu_week3.md)
+for exact environments, sensitivity/control findings and pending team inputs.

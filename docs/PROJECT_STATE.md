@@ -1,75 +1,57 @@
 # Project state
 
-Updated 4 November 2026. Mirun PR #5 and review fixes PR #6 are merged; Week 3 verification is being integrated. Scientific gates remain open.
+Updated 4 November 2026. Mirun's delivery (PR #5) and review fixes (PR #6) are on
+main. The Week 3 delivery branch incorporates both. Scientific gates remain open.
 
 ## Mirun integration review
 
-PR #5 merged the experimental calendar-time DGP/DML layer at `1b914cd`. It did
-not modify the existing GARCH, diagnostic, metric or runner implementations under
-`src/`. Its separate fixed-alpha GARCH and calendar-time regimes are different
-models; the [review memo](../reports/mirun_week2_review.md) documents that distinction.
+PR #5 merged the calendar-time DGP/DML layer at `1b914cd`; PR #6 hardened it at
+`0efe494`. Mirun changed none of the existing GARCH, diagnostic, metric or mock
+runner source under `src/`. His separate fixed-alpha GARCH and calendar regimes
+are different models from the canonical components; the
+[review memo](../reports/mirun_week2_review.md) documents the distinction.
 
-This follow-up corrects partial-cell failure handling, raw per-attempt persistence,
-per-cell denominators/uncertainty, invalid membership/control inputs, exponential
-overlap-sandwich evaluation, actual-config diagnostic routing and fresh-install
-dependencies. Potential regime and calendar-factor cross-fold links are explicit.
+The review fixes preserve valid cells after inference/split failures, save atomic
+raw attempts, expose denominators/uncertainty, reject invalid memberships/control
+switches, replace exponential overlap-sandwich evaluation with the same direct
+pair formula, route actual configs/seeds into diagnostics and fix fresh installs.
+These are implementation corrections, not approval of the proposed covariance.
 
-The original 20-rep gamma/tau pilot was reconstructed into 320 raw cell rows; all
-16 reported coverage/bias/width summaries matched to floating-point precision.
-Larger legacy ablations and independent Week 3 verification follow separately.
-The completion pack is a draft proposal, not an approved Gate 2/3 memo; the agreed
-robustness subset and labelled daily-return dataset remain unavailable.
+## Week 3 independent verification and diagnostics
 
-## Week 3: independent verification and diagnostics (local implementation)
+The user's latest instruction authorizes commits, pushes and merging the delivery
+branch `deeptanshu/week3-verification-audit`. The package provides independent
+standard-library arithmetic, strict canonical and actual-calendar adapters,
+planned/missing/failed accounting, paired MCSEs, read-only monitoring, optional
+manipulation checks and qualitative calm/turbulent panel diagnostics.
 
-The user supplied the Week 3 plan and authorized Deeptanshu's implementation,
-while explicitly reserving commits/pushes for a later instruction. Local branch:
-`deeptanshu/week3-verification-audit`. Main/remote publication is unchanged.
+Actual saved-pilot review reconstructed 320 active-pilot and 5,040 legacy-table
+cell records. All 76 reported coverage rates match. Across 520 checked fields,
+120 legacy continuous entries differ by at most 6.2211e-6; these remain flagged,
+not overwritten or attributed to an unproven cause. Distinct estimators are kept
+separate. The legacy tables reuse 1,020 unique worlds across 1,260 references.
+A reviewed-producer 32-cell smoke independently matches its headline metrics.
 
-The package adds independent standard-library interval recomputation and claimed
-summary/paired-comparison checks, planned/missing/failed attempt accounting,
-read-only numerical monitoring snapshots, a per-cell manipulation-check interface,
-and qualitative calm/turbulent labelled-panel diagnostics. Exact verifier source
-snapshots and input hashes make uncommitted evidence reviewable. No existing
-scientific or runner module is changed.
+Validation: **283 tests pass with warnings as errors** in a fresh development
+environment; the prior 1,200-row mock, 80-case/6,148-crosscheck randomized exercise,
+40,000-row input exercise and standalone source-ZIP replay remain documented.
+The original component recheck detected the invalid control in 100/100 panels;
+the actual calendar-DGP recheck detected its control in 20/20, with 0/20
+independent detections. Wilson intervals and boundary-MCSE caveats are reported.
+Regime-pure grouped folds still have potential calendar-factor links across folds.
 
-Verification: **245 tests passed with warnings as errors** in a fresh environment,
-including 81 new cases; 1,200-row end-to-end mock exercise; 80 randomized cases
-with 6,148 reference comparisons; 40,000-row mock stress; and exact standalone
-source-ZIP numerical replay with site packages disabled. These are software checks.
-An actual-component fresh-seed recheck found zero numerical/invariance failures,
-6/100 independent false detections and 100/100 deliberately dependent-control
-detections, with Wilson intervals reported. It is not integrated-DGP evidence.
+The available software and pilot verification are delivered. The team has not
+provided an approved Gate 2/3 memo, locked robustness subset, original full-run
+raw archive/environment, or frozen labelled daily-return panel. The friend's
+artifact inventory confirms these omissions; an event list/schema is not a
+return panel. Final robustness execution, production-run verification and actual
+real-data diagnostics remain pending. No gate is marked passed.
 
-Actual pilot/full-run verification, the approved robustness executions and the
-real-data conclusions remain pending. The Week 3 plan assumes approved Gate 2/3
-records, but those records, Mirun's DGP/DML/raw results and the labelled return
-panel were absent from the audited local/remote sources. The user will provide
-the missing inputs. No grid/threshold has been selected and no gate marked passed.
-
-See [the Week 3 deliverable report](../reports/deeptanshu_week3.md) for the explicit
-completed-versus-pending checklist and [the handoff contract](week3_verification.md)
-for exact commands. The Week 3 schedule targets a Sunday 8 November result freeze
-and submission-ready work on 13 November; official deadline confirmation and gate
-approvals are still not established by a scheduled date.
-
-## Mirun integration review
-
-PR #5 merged the experimental calendar-time DGP/DML layer at `1b914cd`. It did
-not modify the existing GARCH, diagnostic, metric or runner implementations under
-`src/`. Its separate fixed-alpha GARCH and calendar-time regimes are different
-models; the [review memo](../reports/mirun_week2_review.md) documents that distinction.
-
-This follow-up corrects partial-cell failure handling, raw per-attempt persistence,
-per-cell denominators/uncertainty, invalid membership/control inputs, exponential
-overlap-sandwich evaluation, actual-config diagnostic routing and fresh-install
-dependencies. Potential regime and calendar-factor cross-fold links are explicit.
-
-The original 20-rep gamma/tau pilot was reconstructed into 320 raw cell rows; all
-16 reported coverage/bias/width summaries matched to floating-point precision.
-Larger legacy ablations and independent Week 3 verification follow separately.
-The completion pack is a draft proposal, not an approved Gate 2/3 memo; the agreed
-robustness subset and labelled daily-return dataset remain unavailable.
+See [the Week 3 report](../reports/deeptanshu_week3.md),
+[commands and Methods](week3_verification.md), and the small reviewable tables
+`results/tables/week3_mirun_verification.json` and
+`results/tables/week3_calendar_diagnostic.json`. The schedule's 8 November freeze
+and 13 November submission-ready target do not establish an official deadline.
 
 ## Sudarshan infrastructure integration
 

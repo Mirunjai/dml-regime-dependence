@@ -24,6 +24,7 @@ def main(argv=None):
     parser.add_argument("--interval", type=float, required=True)
     parser.add_argument("--iterations", type=int, default=1, help="0 explicitly requests continuous monitoring")
     parser.add_argument("--output-root", type=Path, required=True, help="New monitoring session directory")
+    parser.add_argument("--producer", choices=("canonical", "calendar"), default="canonical")
     parser.add_argument("audit_args", nargs=argparse.REMAINDER, help="Arguments after -- are passed to week3_audit")
     args = parser.parse_args(argv)
     if not math.isfinite(args.interval) or args.interval <= 0 or args.iterations < 0:
@@ -38,15 +39,21 @@ def main(argv=None):
     except OSError as exc:
         parser.error(f"Cannot reserve a new monitoring directory: {exc}")
     snapshots = []
+    selected_audit = audit_main
+    if args.producer == "calendar":
+        from src.evaluation.mirun_audit import main as selected_audit
     index = 0
     try:
         while args.iterations == 0 or index < args.iterations:
             index += 1
             output = args.output_root / f"snapshot-{index:06d}"
             try:
-                code = audit_main([*audit_args, "--output", str(output)])
+                code = selected_audit([*audit_args, "--output", str(output)])
             except SystemExit as exc:
                 code = int(exc.code or 0)
+            except (ValueError, KeyError, TypeError, OSError) as exc:
+                code = 2
+                write_json(output / "input_error.json", {"status": "input_error", "error": str(exc)})
             snapshots.append({"index": index, "utc": datetime.now(timezone.utc).isoformat(),
                               "audit_exit_code": code, "directory": str(output)})
             write_json(args.output_root / "monitor.json", {
