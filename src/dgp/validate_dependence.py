@@ -4,11 +4,13 @@
 import numpy as np
 
 from src.dgp.regime_shocks import simulate_regimes
+from src.dgp.matched_density import pair_density
 
 
 def run_experiment(density, n_regimes, seed=42):
     """Generate toy returns and measure shared-shock dependence."""
-    rng = np.random.default_rng(seed)
+    regime_seed, noise_seed = np.random.SeedSequence(seed).spawn(2)
+    rng = np.random.default_rng(regime_seed)
 
     n_windows = 1000
     n_firms = 100
@@ -22,7 +24,7 @@ def run_experiment(density, n_regimes, seed=42):
 
     # Each firm's return includes independent noise and
     # an exposure to the common shock for that window.
-    firm_noise = rng.standard_normal((n_firms, n_windows))
+    firm_noise = np.random.default_rng(noise_seed).standard_normal((n_firms, n_windows))
     loadings = np.ones((n_firms, 1))
     returns = firm_noise + loadings * shocks
 
@@ -32,15 +34,9 @@ def run_experiment(density, n_regimes, seed=42):
     avg_corr = float(np.mean(upper))
 
     # Fraction of window pairs assigned the same active regime.
-    counts = np.bincount(
-        regime_id[regime_id >= 0],
-        minlength=n_regimes,
-    )
-    shared_pairs = np.sum(counts * (counts - 1) / 2)
-    total_pairs = n_windows * (n_windows - 1) / 2
-    pair_density = float(shared_pairs / total_pairs)
+    realized_density = pair_density(regime_id)
 
-    return avg_corr, pair_density
+    return avg_corr, realized_density
 
 
 def main():

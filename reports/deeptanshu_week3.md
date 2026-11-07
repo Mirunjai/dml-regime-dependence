@@ -4,6 +4,21 @@
 with main `0efe494` (Mirun's PR #5 and follow-up review fixes PR #6). The user's
 latest instruction authorizes commits, pushes and the Week 3 PR merge.
 
+## 8 November follow-up
+
+The latest remote inventory contains no new team design memo, production archive
+or labelled daily-return panel. A duplicate Sudarshan PR was closed; Preksha's
+older Week 2 event-list/schema, toy dependence diagnostics and market-model
+prototype are integrated with reviewed fixes. Their presence does not supply the
+missing daily return values or label definitions. The expanded combined suite
+passes 317 tests with warnings as errors; earlier counts below describe the
+4 November delivery. See `reports/preksha_week2_review.md` for the current review.
+
+The deliverable accounting below remains accurate: available software/pilot
+verification is delivered; final agreed robustness execution and actual-data
+diagnostics still require the missing scientific inputs. No final design or
+label convention was invented to fill them.
+
 ## Assignment and source audit
 
 Source: `Project_A_Week_3_Team_Work_Plan.docx`, supplied from Downloads, issued

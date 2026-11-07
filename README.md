@@ -39,6 +39,15 @@ parallel/resumable mock runs, and four-cell reports using the existing metrics.
 See [the infrastructure guide](docs/Sudarshan_INFRA.md). The mock engine has no
 integrated DGP or DML estimator.
 
+## Preksha's Week 2 prototypes
+
+The reviewed delivery adds single-membership pair-density and treatment/exposure
+diagnostics, a descriptive market-model event-study prototype and a source-checked
+seven-event inclusion sample. Run `python -m src.benchmarks.event_study` for the
+toy example. The [integration review](reports/preksha_week2_review.md) records
+corrections, assumptions and commands. The sample is not a labelled return panel;
+these prototypes do not establish final benchmark or Gate 2/3 results.
+
 ## Week 3 verification package
 
 Deeptanshu's independent saved-results verifier, numerical monitoring snapshots,

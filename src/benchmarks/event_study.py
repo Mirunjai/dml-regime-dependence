@@ -1,5 +1,10 @@
 
-"""Classical market-model event study on toy financial returns."""
+"""Descriptive market-model OLS abnormal returns, without inferential intervals.
+
+Returns must be aligned, in the same units and use the same return convention.
+CAR is the arithmetic sum of abnormal returns, not a compounded buy/hold return.
+See MacKinlay (1997), Event Studies in Economics and Finance, Sections 3-4.
+"""
 
 import numpy as np
 
@@ -29,6 +34,10 @@ def market_model_event_study(
     if not np.all(np.isfinite(stock)) or not np.all(np.isfinite(market)):
         raise ValueError("Returns must contain only finite values")
 
+    for value in (estimation_end, event_start, event_end):
+        if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)):
+            raise ValueError("Window indices must be integers")
+
     if not (2 <= estimation_end <= event_start <= event_end < len(stock)):
         raise ValueError("Invalid estimation or event window")
 
@@ -36,24 +45,21 @@ def market_model_event_study(
     x = market[:estimation_end]
     y = stock[:estimation_end]
 
-    market_variance = np.var(x)
-
-    if market_variance == 0:
-        raise ValueError("Market returns have zero estimation variance")
-
-    beta = np.cov(x, y, ddof=0)[0, 1] / market_variance
-    alpha = y.mean() - beta * x.mean()
-
-    # Calculate expected returns during the event window.
-    event_slice = slice(event_start, event_end + 1)
-    expected_returns = alpha + beta * market[event_slice]
-    actual_returns = stock[event_slice]
-
-    # Abnormal returns: actual minus expected.
-    abnormal_returns = actual_returns - expected_returns
-
-    # Cumulative abnormal returns.
-    cumulative_abnormal_returns = np.cumsum(abnormal_returns)
+    try:
+        with np.errstate(over='raise', invalid='raise', divide='raise'):
+            market_variance = np.var(x)
+            if market_variance == 0:
+                raise ValueError("Market returns have zero estimation variance")
+            beta = np.cov(x, y, ddof=0)[0, 1] / market_variance
+            alpha = y.mean() - beta * x.mean()
+            event_slice = slice(event_start, event_end + 1)
+            abnormal_returns = stock[event_slice] - (alpha + beta * market[event_slice])
+            cumulative_abnormal_returns = np.cumsum(abnormal_returns)
+    except FloatingPointError as exc:
+        raise ValueError("Market-model calculation is not representable in float64") from exc
+    if (not np.isfinite([alpha, beta]).all() or not np.isfinite(abnormal_returns).all()
+            or not np.isfinite(cumulative_abnormal_returns).all()):
+        raise ValueError("Nonfinite market-model output")
 
     return {
         "alpha": float(alpha),
