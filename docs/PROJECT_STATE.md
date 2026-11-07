@@ -1,7 +1,38 @@
 # Project state
 
-Updated 4 November 2026. Mirun's delivery (PR #5) and review fixes (PR #6) are on
-main. The Week 3 delivery branch incorporates both. Scientific gates remain open.
+Updated 8 November 2026. Main before this review: `48a28e7` (PR #7).
+Earlier dated sections below describe historical milestones; the snapshot here
+supersedes their statements about branch availability and current test counts.
+
+## 8 November branch review and Week 3 close-out
+
+Remote inventory found no new code beyond the previously audited branch tips.
+Sudarshan PR #8 repeats the exact tree already merged by PR #4 and was closed as
+a duplicate. His branch is retained. Mirun's `a84b548` delivery is already merged.
+
+Preksha's previously unmerged Week 2 branch at `8144aba` is integrated in the
+review branch with corrections for generator CSV data loss, atomic validated
+writes, malformed pair-density inputs, undefined constant-exposure associations,
+regime/noise RNG separation and event-study boundary/overflow handling. The
+existing generator now rejects boolean settings without changing valid-input
+simulation paths. The event-index prototypes remain separate from Mirun's
+calendar model. See [the review report](../reports/preksha_week2_review.md).
+
+The seven inclusion events match S&P's two published announcements. They form a
+small event sample, not daily returns or dataset v1. The code has no inferred
+calm/turbulent labels. All four prototype CLIs ran; the combined suite passes
+**317 tests with warnings as errors** in the existing local environment.
+
+Three merged user branches were deleted locally/remotely after complete bundle
+backup and exact tree checks against PR #3/#6/#7 squash commits. No teammate
+branch was deleted. The review branch is also eligible for cleanup after merge.
+
+Your available Week 3 software, historical pilot audit, component/calendar
+controls and Methods are delivered. Remaining scientific work still needs the
+team's dated Gate 2/3 design/robustness decisions and Preksha's labelled daily
+return/residual panel. Neither was found in the current remote inventory.
+Final robustness execution, production-run verification and actual real-data
+comparisons cannot be recorded as completed from prototypes or an event list.
 
 ## Mirun integration review
 

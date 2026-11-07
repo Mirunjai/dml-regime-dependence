@@ -25,13 +25,14 @@ def simulate_regimes(n_periods, density, n_regimes, rng):
     Windows assigned the same regime share exactly the same
     underlying shock realization.
     """
-    if not isinstance(n_periods, (int, np.integer)) or n_periods <= 0:
+    if isinstance(n_periods, (bool, np.bool_)) or not isinstance(n_periods, (int, np.integer)) or n_periods <= 0:
         raise ValueError("n_periods must be a positive integer")
 
-    if not isinstance(n_regimes, (int, np.integer)) or n_regimes <= 0:
+    if isinstance(n_regimes, (bool, np.bool_)) or not isinstance(n_regimes, (int, np.integer)) or n_regimes <= 0:
         raise ValueError("n_regimes must be a positive integer")
 
-    if not np.isfinite(density) or not 0 <= density <= 1:
+    if (isinstance(density, (bool, np.bool_)) or not isinstance(density, (int, float, np.integer, np.floating))
+            or not np.isfinite(density) or not 0 <= density <= 1):
         raise ValueError("density must be between 0 and 1")
 
     if not isinstance(rng, np.random.Generator):
