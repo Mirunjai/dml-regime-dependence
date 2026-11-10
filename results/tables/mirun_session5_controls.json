@@ -1,0 +1,198 @@
+{
+  "purpose": "Exploratory control conditions; tau=1; seeds 70000+rep; K=4; density=.5; n=400.",
+  "provenance": "Reconstructed from the Session 5 transcript's printed summary table. Original results/tables JSON and per-replication raw files were not present in the recovered Session 4 raw archive. Values shown here are exactly the rounded values printed by Claude; do not treat this file as a byte-for-byte original output.",
+  "replications_per_condition": 200,
+  "parameter_calibration": {
+    "noise_var_default": 8.209,
+    "noise_var_factor_off": 6.766,
+    "slope_per_sigma2_bar": 4.976,
+    "matched_sigma2_bar": 1.29
+  },
+  "conditions": {
+    "C0_default_benchmark": {
+      "reps": 200,
+      "cells": {
+        "random/naive": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.74,
+          "mcse": 0.031,
+          "se_over_sd": 0.54,
+          "sd_tau": 0.551
+        },
+        "random/multiway": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.815,
+          "mcse": 0.027,
+          "se_over_sd": 0.67,
+          "sd_tau": 0.551
+        },
+        "grouped/naive": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.65,
+          "mcse": 0.034,
+          "se_over_sd": 0.45,
+          "sd_tau": 0.674
+        },
+        "grouped/multiway": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.795,
+          "mcse": 0.029,
+          "se_over_sd": 0.64,
+          "sd_tau": 0.674
+        }
+      }
+    },
+    "C1_independent_control": {
+      "reps": 200,
+      "cells": {
+        "random/naive": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.93,
+          "mcse": 0.018,
+          "se_over_sd": 0.92,
+          "sd_tau": 0.26
+        },
+        "random/multiway": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.87,
+          "mcse": 0.024,
+          "se_over_sd": 0.87,
+          "sd_tau": 0.26
+        },
+        "grouped/naive": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.9,
+          "mcse": 0.021,
+          "se_over_sd": 0.9,
+          "sd_tau": 0.264
+        },
+        "grouped/multiway": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.875,
+          "mcse": 0.023,
+          "se_over_sd": 0.86,
+          "sd_tau": 0.264
+        }
+      }
+    },
+    "C2_factor_only": {
+      "reps": 200,
+      "cells": {
+        "random/naive": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.945,
+          "mcse": 0.016,
+          "se_over_sd": 0.95,
+          "sd_tau": 0.282
+        },
+        "random/multiway": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.89,
+          "mcse": 0.022,
+          "se_over_sd": 0.9,
+          "sd_tau": 0.282
+        },
+        "grouped/naive": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.94,
+          "mcse": 0.017,
+          "se_over_sd": 0.93,
+          "sd_tau": 0.288
+        },
+        "grouped/multiway": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.88,
+          "mcse": 0.023,
+          "se_over_sd": 0.89,
+          "sd_tau": 0.288
+        }
+      }
+    },
+    "C3_factor_off_unmatched": {
+      "reps": 200,
+      "cells": {
+        "random/naive": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.75,
+          "mcse": 0.031,
+          "se_over_sd": 0.51,
+          "sd_tau": 0.534
+        },
+        "random/multiway": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.79,
+          "mcse": 0.029,
+          "se_over_sd": 0.66,
+          "sd_tau": 0.534
+        },
+        "grouped/naive": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.65,
+          "mcse": 0.034,
+          "se_over_sd": 0.43,
+          "sd_tau": 0.655
+        },
+        "grouped/multiway": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.78,
+          "mcse": 0.029,
+          "se_over_sd": 0.63,
+          "sd_tau": 0.655
+        }
+      }
+    },
+    "C4_factor_off_variance_matched": {
+      "reps": 200,
+      "cells": {
+        "random/naive": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.765,
+          "mcse": 0.03,
+          "se_over_sd": 0.54,
+          "sd_tau": 0.556
+        },
+        "random/multiway": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.805,
+          "mcse": 0.028,
+          "se_over_sd": 0.67,
+          "sd_tau": 0.556
+        },
+        "grouped/naive": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.67,
+          "mcse": 0.033,
+          "se_over_sd": 0.46,
+          "sd_tau": 0.674
+        },
+        "grouped/multiway": {
+          "valid": 200,
+          "failed": 0,
+          "coverage": 0.785,
+          "mcse": 0.029,
+          "se_over_sd": 0.64,
+          "sd_tau": 0.674
+        }
+      }
+    }
+  }
+}

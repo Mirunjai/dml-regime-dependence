@@ -1,0 +1,15 @@
+{
+  "purpose": "Reproduction of Session-1 overlap observations; seeds 20000-20199; default Config; density .5.",
+  "K4": {
+    "worlds": 200,
+    "events": 80000,
+    "multi_regime_events": 0,
+    "calendar_overlap_pair_share": 0.03481484962406015
+  },
+  "K16": {
+    "worlds": 200,
+    "events": 80000,
+    "multi_regime_events": 280,
+    "calendar_overlap_pair_share": 0.03481484962406015
+  }
+}

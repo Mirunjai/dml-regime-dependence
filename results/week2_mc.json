@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "note": "Pilot unless reps and design are team-approved; grouped-fold failures are retained.",
+  "runs": [
+    {
+      "reps_requested": 20,
+      "reps_failed": 0,
+      "failure_rate": 0.0,
+      "gamma": 0.0,
+      "tau": 1.0,
+      "density_setting": 0.5,
+      "K": 4,
+      "seconds": 52.08868890000031,
+      "results": {
+        "random/naive": {
+          "successful_reps": 20,
+          "coverage": 0.85,
+          "mc_se_coverage": 0.07984359711335656,
+          "bias": 0.008981397593416984,
+          "rmse": 0.3612873832411286,
+          "mean_interval_width": 1.163983761109131,
+          "empirical_size": null,
+          "mc_se_size": null
+        },
+        "random/multiway": {
+          "successful_reps": 20,
+          "coverage": 0.9,
+          "mc_se_coverage": 0.06708203932499368,
+          "bias": 0.008981397593416984,
+          "rmse": 0.3612873832411286,
+          "mean_interval_width": 1.0475048283913762,
+          "empirical_size": null,
+          "mc_se_size": null
+        },
+        "grouped/naive": {
+          "successful_reps": 20,
+          "coverage": 0.85,
+          "mc_se_coverage": 0.07984359711335656,
+          "bias": -0.0047925901612083655,
+          "rmse": 0.39738630356110677,
+          "mean_interval_width": 1.200459846950602,
+          "empirical_size": null,
+          "mc_se_size": null
+        },
+        "grouped/multiway": {
+          "successful_reps": 20,
+          "coverage": 0.85,
+          "mc_se_coverage": 0.07984359711335656,
+          "bias": -0.0047925901612083655,
+          "rmse": 0.39738630356110677,
+          "mean_interval_width": 1.0707862899295302,
+          "empirical_size": null,
+          "mc_se_size": null
+        }
+      },
+      "failures": []
+    },
+    {
+      "reps_requested": 20,
+      "reps_failed": 0,
+      "failure_rate": 0.0,
+      "gamma": 0.0,
+      "tau": 0.0,
+      "density_setting": 0.5,
+      "K": 4,
+      "seconds": 39.20895410000003,
+      "results": {
+        "random/naive": {
+          "successful_reps": 20,
+          "coverage": 0.85,
+          "mc_se_coverage": 0.07984359711335656,
+          "bias": 0.029400680988732174,
+          "rmse": 0.3597370675502463,
+          "mean_interval_width": 1.1626019183893554,
+          "empirical_size": 0.15,
+          "mc_se_size": 0.07984359711335656
+        },
+        "random/multiway": {
+          "successful_reps": 20,
+          "coverage": 0.85,
+          "mc_se_coverage": 0.07984359711335656,
+          "bias": 0.029400680988732174,
+          "rmse": 0.3597370675502463,
+          "mean_interval_width": 1.0449522387457537,
+          "empirical_size": 0.15,
+          "mc_se_size": 0.07984359711335656
+        },
+        "grouped/naive": {
+          "successful_reps": 20,
+          "coverage": 0.85,
+          "mc_se_coverage": 0.07984359711335656,
+          "bias": 0.004970072756798144,
+          "rmse": 0.38735303151687744,
+          "mean_interval_width": 1.2018928366071449,
+          "empirical_size": 0.15,
+          "mc_se_size": 0.07984359711335656
+        },
+        "grouped/multiway": {
+          "successful_reps": 20,
+          "coverage": 0.85,
+          "mc_se_coverage": 0.07984359711335656,
+          "bias": 0.004970072756798144,
+          "rmse": 0.38735303151687744,
+          "mean_interval_width": 1.0687829177112298,
+          "empirical_size": 0.15,
+          "mc_se_size": 0.07984359711335656
+        }
+      },
+      "failures": []
+    },
+    {
+      "reps_requested": 20,
+      "reps_failed": 0,
+      "failure_rate": 0.0,
+      "gamma": 1.0,
+      "tau": 1.0,
+      "density_setting": 0.5,
+      "K": 4,
+      "seconds": 40.369428699999844,
+      "results": {
+        "random/naive": {
+          "successful_reps": 20,
+          "coverage": 0.9,
+          "mc_se_coverage": 0.06708203932499368,
+          "bias": 0.14718461375579395,
+          "rmse": 0.3941839066928161,
+          "mean_interval_width": 1.1476533524264254,
+          "empirical_size": null,
+          "mc_se_size": null
+        },
+        "random/multiway": {
+          "successful_reps": 20,
+          "coverage": 0.9,
+          "mc_se_coverage": 0.06708203932499368,
+          "bias": 0.14718461375579395,
+          "rmse": 0.3941839066928161,
+          "mean_interval_width": 1.4494569805732493,
+          "empirical_size": null,
+          "mc_se_size": null
+        },
+        "grouped/naive": {
+          "successful_reps": 20,
+          "coverage": 0.9,
+          "mc_se_coverage": 0.06708203932499368,
+          "bias": 0.14447953520983114,
+          "rmse": 0.44970346253925897,
+          "mean_interval_width": 1.1712869133539237,
+          "empirical_size": null,
+          "mc_se_size": null
+        },
+        "grouped/multiway": {
+          "successful_reps": 20,
+          "coverage": 0.9,
+          "mc_se_coverage": 0.06708203932499368,
+          "bias": 0.14447953520983114,
+          "rmse": 0.44970346253925897,
+          "mean_interval_width": 1.6465057248997623,
+          "empirical_size": null,
+          "mc_se_size": null
+        }
+      },
+      "failures": []
+    },
+    {
+      "reps_requested": 20,
+      "reps_failed": 0,
+      "failure_rate": 0.0,
+      "gamma": 1.0,
+      "tau": 0.0,
+      "density_setting": 0.5,
+      "K": 4,
+      "seconds": 42.81557150000026,
+      "results": {
+        "random/naive": {
+          "successful_reps": 20,
+          "coverage": 0.9,
+          "mc_se_coverage": 0.06708203932499368,
+          "bias": 0.15655316037537054,
+          "rmse": 0.40684702231310454,
+          "mean_interval_width": 1.1471404237230662,
+          "empirical_size": 0.1,
+          "mc_se_size": 0.0670820393249937
+        },
+        "random/multiway": {
+          "successful_reps": 20,
+          "coverage": 0.9,
+          "mc_se_coverage": 0.06708203932499368,
+          "bias": 0.15655316037537054,
+          "rmse": 0.40684702231310454,
+          "mean_interval_width": 1.440072071705961,
+          "empirical_size": 0.1,
+          "mc_se_size": 0.0670820393249937
+        },
+        "grouped/naive": {
+          "successful_reps": 20,
+          "coverage": 0.9,
+          "mc_se_coverage": 0.06708203932499368,
+          "bias": 0.15922357128006892,
+          "rmse": 0.46284979000639215,
+          "mean_interval_width": 1.173248106063167,
+          "empirical_size": 0.1,
+          "mc_se_size": 0.0670820393249937
+        },
+        "grouped/multiway": {
+          "successful_reps": 20,
+          "coverage": 0.9,
+          "mc_se_coverage": 0.06708203932499368,
+          "bias": 0.15922357128006892,
+          "rmse": 0.46284979000639215,
+          "mean_interval_width": 1.6407142308193918,
+          "empirical_size": 0.1,
+          "mc_se_size": 0.0670820393249937
+        }
+      },
+      "failures": []
+    }
+  ]
+}
