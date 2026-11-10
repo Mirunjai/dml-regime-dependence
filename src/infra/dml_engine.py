@@ -13,6 +13,7 @@ No production campaign is started by importing or testing this module.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import itertools
 import json
 import time
@@ -75,7 +76,7 @@ def resolve_parameters(cfg, *, smoke=False):
     """Return {dotted_name: value}. Production requires approvals; smoke uses proposed values."""
     if not smoke:
         missing = [k for k in ("gate2", "gate3", "approved_by", "approval_date")
-                   if cfg.get("approval", {}).get(k, AWAITING) == AWAITING]
+                   if not cfg.get("approval", {}).get(k) or cfg.get("approval", {}).get(k) == AWAITING]
         if missing:
             raise ApprovalError(f"Production run refused; approval fields not recorded: {missing}")
         pending = awaiting_paths(cfg)
@@ -150,22 +151,34 @@ def _jsonable(x):
 def run_condition(cfg, condition, out_dir, reps, root_seed, *, smoke=False, budget_seconds=None,
                   overrides=None):
     """Run (or resume) one condition. Returns number of new replications saved."""
+    if type(reps) is not int or reps < 1 or type(root_seed) is not int or root_seed < 0:
+        raise ValueError("Require positive integer reps and nonnegative integer root_seed")
     if smoke and reps > SMOKE_MAX_REPS:
         raise ApprovalError(f"Smoke runs are limited to {SMOKE_MAX_REPS} replications")
     values = resolve_parameters(cfg, smoke=smoke)
     if not smoke and not isinstance(values.get("provenance.root_seed"), int):
         raise ApprovalError("Production run needs an approved integer provenance.root_seed")
+    if not smoke:
+        if root_seed != values["provenance.root_seed"] or reps != values["replications.count"] or overrides:
+            raise ApprovalError("Production arguments must match approved root seed/count; overrides are smoke-only")
+        if values["estimator.robust_variance"] != "overlap_sandwich_full_membership_CR0_normal" or values["estimator.learner"] != "RandomForestRegressor(n_estimators=40,min_samples_leaf=8,max_features=.5)":
+            raise ApprovalError("Approved estimator choice is not implemented by this engine")
+        if condition not in make_conditions(cfg, values):
+            raise ApprovalError("Condition is outside the approved grid")
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     label = "smoke_exploratory" if smoke else "production_approved"
     chash = config_hash({"cfg": _jsonable(cfg), "values": _jsonable(values)})
+    source_root = Path(__file__).resolve().parents[2]
+    sources = ["src/infra/dml_engine.py", "research/week2_completion/dgp.py", "research/week2_completion/dml.py"]
+    hashes = {name: hashlib.sha256((source_root / name).read_bytes()).hexdigest() for name in sources}
     manifest_path = out_dir / "manifest.json"
     manifest = {"schema": "calendar_dml_v1", "label": label, "condition": condition, "reps_planned": reps,
                 "root_seed": int(root_seed), "config_hash": chash, "values": _jsonable(values),
-                "overrides": overrides or {}, "git": git_state(), "software": software_versions()}
+                "overrides": overrides or {}, "world_config": asdict(world_config(cfg, values, condition, root_seed, overrides)), "source_sha256": hashes, "git": git_state(), "software": software_versions()}
     if manifest_path.exists():
         old = json.loads(manifest_path.read_text())
-        for key in ("config_hash", "root_seed", "condition", "label", "reps_planned", "overrides"):
+        for key in ("config_hash", "root_seed", "condition", "label", "reps_planned", "overrides", "source_sha256", "software", "world_config"):
             if old[key] != manifest[key]:
                 raise ValueError(f"Existing run directory has a different {key}; refusing to mix runs")
     else:
@@ -174,6 +187,8 @@ def run_condition(cfg, condition, out_dir, reps, root_seed, *, smoke=False, budg
     for rep in range(reps):
         path = out_dir / f"rep_{rep:06d}.json"
         if path.exists():
+            existing = json.loads(path.read_text())
+            _validate_record(existing, manifest, rep)
             continue
         if budget_seconds is not None and time.perf_counter() - started > budget_seconds:
             break
@@ -181,6 +196,30 @@ def run_condition(cfg, condition, out_dir, reps, root_seed, *, smoke=False, budg
         save_json_atomic(path, record)
         done += 1
     return done
+
+
+def _validate_record(record, manifest, rep):
+    expected = {"replication_id": rep, "seed": manifest["root_seed"] + rep,
+                "root_seed": manifest["root_seed"], "truth": manifest["condition"]["tau"],
+                "condition": manifest["condition"]["name"], "label": manifest["label"],
+                "config_hash": manifest["config_hash"]}
+    if any(type(record.get(k)) is not type(v) or record.get(k) != v for k, v in expected.items()):
+        raise ValueError("Replication identity/seed/truth mismatch")
+    expected_world = {**manifest["world_config"], "seed": manifest["root_seed"] + rep}
+    if record.get("world_config") != expected_world:
+        raise ValueError("Replication world configuration mismatch")
+    cells = record.get("cells", [])
+    if len(cells) != 4 or sorted(c.get("cell", "") for c in cells) != sorted(CELL_MAP):
+        raise ValueError("Replication must contain four unique cells")
+    for cell in cells:
+        if cell.get("status") not in ("ok", "failed"):
+            raise ValueError("Invalid cell status")
+        if cell["status"] == "failed" and not cell.get("error"):
+            raise ValueError("Failed cells require an error")
+        if cell["status"] == "ok":
+            vals = [cell.get(k) for k in ("estimate", "lower", "upper")]
+            if any(isinstance(v, bool) or not isinstance(v, (int, float)) or not np.isfinite(v) for v in vals) or vals[1] > vals[2]:
+                raise ValueError("Invalid successful interval")
 
 
 def aggregate(out_dir):
@@ -194,8 +233,7 @@ def aggregate(out_dir):
         if not path.is_file():
             raise FileNotFoundError(f"Missing planned replication {rep}")
         rec = json.loads(path.read_text())
-        if rec["replication_id"] != rep or rec["config_hash"] != manifest["config_hash"]:
-            raise ValueError(f"Replication record mismatch: {path}")
+        _validate_record(rec, manifest, rep)
         records.append(rec)
     cells, hits = {}, {}
     for cell in CELL_MAP:

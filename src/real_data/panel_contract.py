@@ -31,9 +31,9 @@ def validate_panel_contract(panel, events, *, value_kind, label_source, window_d
         raise ValueError("evidence_kind must be 'real' or 'synthetic_fixture'")
     if value_kind not in VALUE_KINDS:
         raise ValueError(f"value_kind must be one of {VALUE_KINDS}")
-    if not isinstance(window_days, int) or window_days < 1:
+    if type(window_days) is not int or window_days < 1:
         raise ValueError("window_days must be an explicit positive int")
-    if not (0 < min_nonmissing_share <= 1):
+    if isinstance(min_nonmissing_share, bool) or not isinstance(min_nonmissing_share, (int, float)) or not (0 < min_nonmissing_share <= 1):
         raise ValueError("min_nonmissing_share must be in (0, 1]")
     if not isinstance(label_source, str) or not label_source.strip():
         raise ValueError("label_source (provenance of external regime labels) is required")
@@ -66,9 +66,12 @@ def validate_panel_contract(panel, events, *, value_kind, label_source, window_d
         if v in (None, ""):
             values[firm][day] = None
         else:
+            if isinstance(v, bool):
+                errors.append(f"row {i}: boolean value is not a return")
+                continue
             try:
                 x = float(v)
-            except (TypeError, ValueError):
+            except (TypeError, ValueError, OverflowError):
                 errors.append(f"row {i}: non-numeric value")
                 continue
             if not math.isfinite(x):

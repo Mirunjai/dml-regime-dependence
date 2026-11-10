@@ -1,5 +1,20 @@
 # Project state
 
+## 10 November Session 5 review
+
+Mirun's reconstructed branch at `ceb150e` adds a guarded engine, exploratory
+studies, a panel contract and proposed design. Independent review passes 363
+tests, reproduces K=16's 280/80,000 multi-membership count, regenerates the GARCH
+comparison and independently audits 400 fresh control cell rows. Engine approval,
+resume and record checks were hardened. See
+[the independent review](../reports/deeptanshu_session5_review.md).
+
+These control rows are a bounded reviewer reconstruction, not the missing original
+200-replication control archive. Gate 2/3 remain unapproved; historical full raw
+archives and the labelled daily-return panel remain absent. Scientific robustness
+and real-data completion remain pending. Earlier dated snapshots are historical.
+
+
 Updated 8 November 2026. Main before this review: `48a28e7` (PR #7).
 Earlier dated sections below describe historical milestones; the snapshot here
 supersedes their statements about branch availability and current test counts.

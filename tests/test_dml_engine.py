@@ -135,3 +135,29 @@ def test_guard_scans_entire_config_for_unapproved_fields(cfg):
     with pytest.raises(E.ApprovalError, match="still AWAITING_TEAM_APPROVAL"):
         E.resolve_parameters(c, smoke=False)
     assert len(E.awaiting_paths(cfg)) > 20                                      # the real proposal is fully unapproved
+
+@pytest.mark.parametrize('field', ['gate2','gate3','approved_by','approval_date'])
+def test_empty_approval_cannot_enable_production(cfg, field):
+    c = synthetic_approved(cfg)
+    c['approval'][field] = None
+    with pytest.raises(E.ApprovalError):
+        E.resolve_parameters(c)
+
+
+def test_production_arguments_cannot_override_approved_seed_or_count(cfg, tmp_path):
+    c = synthetic_approved(cfg)
+    condition = E.make_conditions(c, E.resolve_parameters(c))[0]
+    with pytest.raises(E.ApprovalError, match='match approved'):
+        E.run_condition(c, condition, tmp_path/'bad', 1, 999)
+    assert not (tmp_path/'bad').exists()
+
+
+def test_resume_and_aggregate_reject_tampered_seed(cfg, tmp_path):
+    d, condition, _ = run_small(cfg, tmp_path, reps=1)
+    path = d/'rep_000000.json'
+    record = json.loads(path.read_text()); record['seed'] += 1
+    path.write_text(json.dumps(record))
+    with pytest.raises(ValueError, match='seed'):
+        E.run_condition(cfg, condition, d, 1, 777, smoke=True, overrides=SMALL)
+    with pytest.raises(ValueError, match='seed'):
+        E.aggregate(d)
