@@ -1,0 +1,77 @@
+{
+ "results/raw/mirun_session2/audit": {
+  "files": 6,
+  "bytes": 1580106,
+  "sha256": "91e9cbc2cab4c86d8ffc095a751f05f5038c71f5272a7e925b5379154dfe393f"
+ },
+ "results/raw/mirun_session2/replay": {
+  "files": 1054,
+  "bytes": 2921585,
+  "sha256": "756f06c7ffd30b43e67f770280f0bf409a147b45f8ae7c9b3ea4a5035518f78e"
+ },
+ "results/raw/mirun_session2/replay_aborted_partial": {
+  "files": 30,
+  "bytes": 614302,
+  "sha256": "8a42770cd4c6597767bd7ff5bb3a92165b00a12a3db6abc3a10631948ae346c3"
+ },
+ "results/raw/mirun_session3/failure_scan": {
+  "files": 1000,
+  "bytes": 1067476,
+  "sha256": "762a67442931320b048357ab84d71b0aa671815e5fa2b1580d53650c33abc27b"
+ },
+ "results/raw/mirun_session3/mech_K4_g0": {
+  "files": 100,
+  "bytes": 95795,
+  "sha256": "8ea79b9919a377c4b2e67d1c3678486e5c9d0b69e942737cdc85eaf07ad91912"
+ },
+ "results/raw/mirun_session3/mech_K4_g1": {
+  "files": 200,
+  "bytes": 191475,
+  "sha256": "b1fb008b24b3dab1c10e2f571fac94c85be5c1a0cdaf79a7d8b42f4998bd8d03"
+ },
+ "results/raw/mirun_session4/size_K16_g1": {
+  "files": 1000,
+  "bytes": 1046503,
+  "sha256": "4e1014762d888a28e966493ee03fc6b74a1ed9ce687770ac06f85dacc21e966e"
+ },
+ "results/raw/mirun_session4/size_K4_g0": {
+  "files": 500,
+  "bytes": 525024,
+  "sha256": "013c4e92cca6ce0a7a7cd3d2a1f11736680b73e738bfedf89b07ee518b98f61c"
+ },
+ "results/raw/mirun_session4/size_K4_g1": {
+  "files": 1000,
+  "bytes": 1047503,
+  "sha256": "348bfd1dcc28b5198b4485175e2770c69bc8dbd1470b9103184136c3e4615726"
+ },
+ "results/raw/mirun_session4/uc_K16_n1000": {
+  "files": 200,
+  "bytes": 106709,
+  "sha256": "c58318b39d03943bc279441d26ea0d8fd5435eb9b6fed8a9deb44480a9b397a0"
+ },
+ "results/raw/mirun_session4/uc_K16_n2500": {
+  "files": 200,
+  "bytes": 106755,
+  "sha256": "51110f902e54932b2354dcdb525d3126d6c870359aedc2ab418cf22dc2a49e8c"
+ },
+ "results/raw/mirun_session4/uc_K16_n400": {
+  "files": 200,
+  "bytes": 311362,
+  "sha256": "886c3404386f2c52e835fb2d9e071232bb9d6f7e939681f4cc7ccc9dd6e55ec3"
+ },
+ "results/raw/mirun_session4/uc_K4_n1000": {
+  "files": 200,
+  "bytes": 106775,
+  "sha256": "ccdae92d524c92f20619d01e57cf1637e20a434a344ae22394b52225cbcb0859"
+ },
+ "results/raw/mirun_session4/uc_K4_n2500": {
+  "files": 200,
+  "bytes": 107055,
+  "sha256": "c61a8d6d33a92a69972eb26a83dbd20b63e8b93ea46c975e2314a12e5e8b5f2b"
+ },
+ "results/raw/mirun_session4/uc_K4_n400": {
+  "files": 200,
+  "bytes": 413440,
+  "sha256": "0a7456e4eae75f17816977f8d39e08ea97d1887a3c4a06480d7cf24137150e5b"
+ }
+}

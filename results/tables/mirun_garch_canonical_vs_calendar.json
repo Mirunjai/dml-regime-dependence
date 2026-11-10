@@ -1,0 +1,77 @@
+{
+  "purpose": "Canonical vs calendar GARCH exploratory comparison.",
+  "provenance": "Summary reconstructed from printed Session 5 console output. The original complete JSON (including all five ACF lags) was not present in the recovered raw archive. Run scripts/mirun_session5_checks.py garch to regenerate the full file.",
+  "rho_grid": {
+    "0.5": {
+      "theory_calendar": {
+        "alpha": 0.1,
+        "beta": 0.4,
+        "omega": 0.5,
+        "fourth_moment_factor": 0.27,
+        "kurtosis": 3.082
+      },
+      "theory_canonical": {
+        "alpha": 0.05,
+        "beta": 0.45,
+        "omega": 0.5,
+        "fourth_moment_factor": 0.255,
+        "kurtosis": 3.02
+      },
+      "sim_calendar": {
+        "variance": 0.999,
+        "kurtosis": 3.09,
+        "acf_r2_lag1": 0.103
+      },
+      "sim_canonical": {
+        "variance": 1.001,
+        "kurtosis": 3.02,
+        "acf_r2_lag1": 0.051
+      },
+      "same_seed_same_path": false
+    },
+    "0.9": {
+      "theory_calendar": {
+        "alpha": 0.1,
+        "beta": 0.8,
+        "omega": 0.1,
+        "fourth_moment_factor": 0.83,
+        "kurtosis": 3.353
+      },
+      "theory_canonical": {
+        "alpha": 0.09,
+        "beta": 0.81,
+        "omega": 0.1,
+        "fourth_moment_factor": 0.8262,
+        "kurtosis": 3.28
+      },
+      "sim_calendar": {
+        "variance": 0.998,
+        "kurtosis": 3.35,
+        "acf_r2_lag1": 0.133
+      },
+      "sim_canonical": {
+        "variance": 1.002,
+        "kurtosis": 3.28,
+        "acf_r2_lag1": 0.118
+      },
+      "same_seed_same_path": false
+    },
+    "0.95": {
+      "theory_calendar": {
+        "alpha": 0.1,
+        "beta": 0.85,
+        "omega": 0.05,
+        "fourth_moment_factor": 0.9225,
+        "kurtosis": 3.774
+      },
+      "theory_canonical": {
+        "alpha": 0.095,
+        "beta": 0.855,
+        "omega": 0.05,
+        "fourth_moment_factor": 0.9205,
+        "kurtosis": 3.682
+      },
+      "simulation_not_run": true
+    }
+  }
+}

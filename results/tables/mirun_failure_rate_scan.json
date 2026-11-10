@@ -1,0 +1,165 @@
+{
+ "purpose": "exploratory failure-rate scan; calendar DGP; seeds 30000+rep; gamma=1,tau=1; not approved",
+ "table": {
+  "K16_d0.5": {
+   "reps": 200,
+   "K": 16,
+   "density": 0.5,
+   "share_reps_with_multi_regime": 0.485,
+   "cells": {
+    "random": {
+     "n": 200,
+     "failed": 0,
+     "failed_nonpositive_meat": 0,
+     "failure_rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.018845326668962936
+     ],
+     "other_error_types": [],
+     "median_se_ratio_multiway_over_naive": 1.1553334661701324
+    },
+    "grouped": {
+     "n": 200,
+     "failed": 0,
+     "failed_nonpositive_meat": 0,
+     "failure_rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.018845326668962936
+     ],
+     "other_error_types": [],
+     "median_se_ratio_multiway_over_naive": 1.2022189796196447
+    }
+   }
+  },
+  "K16_d0.75": {
+   "reps": 200,
+   "K": 16,
+   "density": 0.75,
+   "share_reps_with_multi_regime": 1.0,
+   "cells": {
+    "random": {
+     "n": 200,
+     "failed": 0,
+     "failed_nonpositive_meat": 0,
+     "failure_rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.018845326668962936
+     ],
+     "other_error_types": [],
+     "median_se_ratio_multiway_over_naive": 1.2966283991906693
+    },
+    "grouped": {
+     "n": 200,
+     "failed": 0,
+     "failed_nonpositive_meat": 0,
+     "failure_rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.018845326668962936
+     ],
+     "other_error_types": [],
+     "median_se_ratio_multiway_over_naive": 1.352975038434702
+    }
+   }
+  },
+  "K4_d0.5": {
+   "reps": 200,
+   "K": 4,
+   "density": 0.5,
+   "share_reps_with_multi_regime": 0.0,
+   "cells": {
+    "random": {
+     "n": 200,
+     "failed": 0,
+     "failed_nonpositive_meat": 0,
+     "failure_rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.018845326668962936
+     ],
+     "other_error_types": [],
+     "median_se_ratio_multiway_over_naive": 1.150509706803034
+    },
+    "grouped": {
+     "n": 200,
+     "failed": 0,
+     "failed_nonpositive_meat": 0,
+     "failure_rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.018845326668962936
+     ],
+     "other_error_types": [],
+     "median_se_ratio_multiway_over_naive": 1.3159680782117291
+    }
+   }
+  },
+  "K8_d0.5": {
+   "reps": 200,
+   "K": 8,
+   "density": 0.5,
+   "share_reps_with_multi_regime": 0.0,
+   "cells": {
+    "random": {
+     "n": 200,
+     "failed": 0,
+     "failed_nonpositive_meat": 0,
+     "failure_rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.018845326668962936
+     ],
+     "other_error_types": [],
+     "median_se_ratio_multiway_over_naive": 1.1939476377000204
+    },
+    "grouped": {
+     "n": 200,
+     "failed": 0,
+     "failed_nonpositive_meat": 0,
+     "failure_rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.018845326668962936
+     ],
+     "other_error_types": [],
+     "median_se_ratio_multiway_over_naive": 1.2844657995975108
+    }
+   }
+  },
+  "K8_d0.75": {
+   "reps": 200,
+   "K": 8,
+   "density": 0.75,
+   "share_reps_with_multi_regime": 0.28,
+   "cells": {
+    "random": {
+     "n": 200,
+     "failed": 0,
+     "failed_nonpositive_meat": 0,
+     "failure_rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.018845326668962936
+     ],
+     "other_error_types": [],
+     "median_se_ratio_multiway_over_naive": 1.3702409760630605
+    },
+    "grouped": {
+     "n": 200,
+     "failed": 0,
+     "failed_nonpositive_meat": 0,
+     "failure_rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.018845326668962936
+     ],
+     "other_error_types": [],
+     "median_se_ratio_multiway_over_naive": 1.5292310664907953
+    }
+   }
+  }
+ }
+}

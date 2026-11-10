@@ -1,0 +1,178 @@
+{
+ "purpose": "exploratory undercoverage diagnosis; alternatives are proposals; oracle uses truth",
+ "args": {
+  "K": 16,
+  "n": 400,
+  "density": 0.5
+ },
+ "table": {
+  "rf_random": {
+   "reps": 200,
+   "sd_tau": 0.4105663128520505,
+   "bias_over_sd": -0.019123797085622448,
+   "mean_G_reg": 16.0,
+   "variants": {
+    "existing_cr0_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.895,
+     "mcse": 0.021676600286945368,
+     "mean_se_over_sd": 0.8399145570972282,
+     "mean_halfwidth_over_sd": 1.6462022820014783
+    },
+    "cr1_all_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.895,
+     "mcse": 0.021676600286945368,
+     "mean_se_over_sd": 0.8436357694050504,
+     "mean_halfwidth_over_sd": 1.6534957241036368
+    },
+    "cr0_t": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.925,
+     "mcse": 0.01862458053218917,
+     "mean_se_over_sd": 0.8399145570972282,
+     "mean_halfwidth_over_sd": 1.7902355010339275
+    },
+    "cr1reg_t": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.93,
+     "mcse": 0.01804161855266871,
+     "mean_se_over_sd": 0.8632922024708654,
+     "mean_halfwidth_over_sd": 1.8400637726418243
+    },
+    "hc3_cr0_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.895,
+     "mcse": 0.021676600286945368,
+     "mean_se_over_sd": 0.8430141508447186,
+     "mean_halfwidth_over_sd": 1.6522773741132653
+    },
+    "naive_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.85,
+     "mcse": 0.025248762345905194,
+     "mean_se_over_sd": 0.7187938250020506,
+     "mean_halfwidth_over_sd": 1.4088100093138056
+    }
+   }
+  },
+  "rf_grouped": {
+   "reps": 200,
+   "sd_tau": 0.4410963523690258,
+   "bias_over_sd": -0.010868983238193899,
+   "mean_G_reg": 16.0,
+   "variants": {
+    "existing_cr0_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.905,
+     "mcse": 0.02073342711661533,
+     "mean_se_over_sd": 0.8152027842383965,
+     "mean_halfwidth_over_sd": 1.597768097204034
+    },
+    "cr1_all_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.91,
+     "mcse": 0.02023610634484806,
+     "mean_se_over_sd": 0.818815947174479,
+     "mean_halfwidth_over_sd": 1.6048497664290302
+    },
+    "cr0_t": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.915,
+     "mcse": 0.019719913792915014,
+     "mean_se_over_sd": 0.8152027842383965,
+     "mean_halfwidth_over_sd": 1.7375636040039943
+    },
+    "cr1reg_t": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.94,
+     "mcse": 0.01679285562374667,
+     "mean_se_over_sd": 0.8382774366951931,
+     "mean_halfwidth_over_sd": 1.7867460614969832
+    },
+    "hc3_cr0_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.91,
+     "mcse": 0.02023610634484806,
+     "mean_se_over_sd": 0.8182963127619336,
+     "mean_halfwidth_over_sd": 1.6038313016953134
+    },
+    "naive_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.82,
+     "mcse": 0.027166155414412252,
+     "mean_se_over_sd": 0.672403569159031,
+     "mean_halfwidth_over_sd": 1.3178867786278883
+    }
+   }
+  },
+  "gbr_random": {
+   "reps": 200,
+   "sd_tau": 0.41511671036287323,
+   "bias_over_sd": -0.0274589409912471,
+   "mean_G_reg": 16.0,
+   "variants": {
+    "existing_cr0_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.88,
+     "mcse": 0.022978250586152115,
+     "mean_se_over_sd": 0.8136195110056549,
+     "mean_halfwidth_over_sd": 1.5946649386901741
+    },
+    "cr1_all_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.88,
+     "mcse": 0.022978250586152115,
+     "mean_se_over_sd": 0.8172255611957767,
+     "mean_halfwidth_over_sd": 1.6017326671892569
+    },
+    "cr0_t": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.9,
+     "mcse": 0.021213203435596423,
+     "mean_se_over_sd": 0.8136195110056549,
+     "mean_halfwidth_over_sd": 1.7341889369915702
+    },
+    "cr1reg_t": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.91,
+     "mcse": 0.02023610634484806,
+     "mean_se_over_sd": 0.8359794708034817,
+     "mean_halfwidth_over_sd": 1.7818480631413833
+    },
+    "hc3_cr0_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.88,
+     "mcse": 0.022978250586152115,
+     "mean_se_over_sd": 0.8170666457275595,
+     "mean_halfwidth_over_sd": 1.6014211985949647
+    },
+    "naive_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.86,
+     "mcse": 0.024535688292770596,
+     "mean_se_over_sd": 0.7134695876305981,
+     "mean_halfwidth_over_sd": 1.3983746958206162
+    }
+   }
+  }
+ }
+}
