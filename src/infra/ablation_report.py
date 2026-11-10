@@ -283,7 +283,7 @@ def paired_comparison(by_cell, truth, failure_policy):
 # 4. 2x2 plots
 # ---------------------------------------------------------
 
-def save_heatmap(rows, metric, title, output_path):
+def save_heatmap(rows, metric, title, output_path, *, limits=(None, None)):
     """
     Generate the 2x2 fold-versus-variance comparison.
 
@@ -322,6 +322,8 @@ def save_heatmap(rows, metric, title, output_path):
         image = ax.imshow(
             np.ma.masked_invalid(values),
             aspect="auto",
+            vmin=limits[0],
+            vmax=limits[1],
         )
 
         ax.set_xticks([0, 1])

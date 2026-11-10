@@ -1,5 +1,17 @@
 # Project state
 
+## Sudarshan local Week 3 check on 11 November 2026
+
+Compared Mirun's saved calendar-pilot table against the pinned-source replay
+summary. All 128 field checks matched. Generated four 2×2 tables, 12 pilot
+heatmaps, one figure for the verified S&P 500 inclusion events, and a
+reproducibility log with hashes and source. See
+[the Week 3 report](../reports/sudarshan_week3.md) for commands and evidence.
+
+The original raw pilot archive, team-selected full-run subset and its records,
+and labelled daily-return panel remain open. The local work regenerates
+reports from saved evidence. Gate 2 and Gate 3 approvals remain with the team.
+
 ## Sudarshan local Week 2 check on 11 November 2026
 
 The local `Sudarshan` checkout at `c582846` already contained the original
