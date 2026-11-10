@@ -1,0 +1,124 @@
+{
+ "purpose": "exploratory mechanism diagnostic; ORACLE variants use truth; not an estimator",
+ "setting": {
+  "K": 4,
+  "density": 0.5,
+  "gamma": 0.0,
+  "seeds": "30000+rep",
+  "reps": 100
+ },
+ "variants": {
+  "random": {
+   "sd_tau": 0.30775966396237103,
+   "bias": -0.015922794255981466,
+   "rmse": 0.30663069975383667,
+   "mean_se_naive": 0.30366259547504515,
+   "coverage_naive": 0.92,
+   "coverage_multiway": 0.92,
+   "n": 100,
+   "sd_ratio_vs_random": 1.0,
+   "sd_ratio_vs_random_boot95": [
+    1.0,
+    1.0
+   ]
+  },
+  "grouped": {
+   "sd_tau": 0.3391173377930618,
+   "bias": 0.012075873741878646,
+   "rmse": 0.3376335140808223,
+   "mean_se_naive": 0.31378031322055544,
+   "coverage_naive": 0.94,
+   "coverage_multiway": 0.91,
+   "n": 100,
+   "sd_ratio_vs_random": 1.101890135396446,
+   "sd_ratio_vs_random_boot95": [
+    1.0218248063856794,
+    1.200520521596928
+   ]
+  },
+  "size_matched_random": {
+   "sd_tau": 0.32710968899706694,
+   "bias": -0.00987521615663798,
+   "rmse": 0.3256198105821275,
+   "mean_se_naive": 0.30399571627869837,
+   "coverage_naive": 0.92,
+   "coverage_multiway": 0.89,
+   "n": 100,
+   "sd_ratio_vs_random": 1.0628738177887462,
+   "sd_ratio_vs_random_boot95": [
+    1.0054067012155647,
+    1.1288346593043004
+   ]
+  },
+  "grouped_permuted": {
+   "sd_tau": 0.3061140225623723,
+   "bias": -0.017459565334441696,
+   "rmse": 0.305079617940778,
+   "mean_se_naive": 0.3032917906718208,
+   "coverage_naive": 0.95,
+   "coverage_multiway": 0.89,
+   "n": 100,
+   "sd_ratio_vs_random": 0.9946528359863301,
+   "sd_ratio_vs_random_boot95": [
+    0.947151412603844,
+    1.0492077971718636
+   ]
+  },
+  "random_oracleD": {
+   "sd_tau": 0.26955275346814356,
+   "bias": -0.021765882974931827,
+   "rmse": 0.26908335826452295,
+   "mean_se_naive": 0.2784302926739008,
+   "coverage_naive": 0.95,
+   "coverage_multiway": 0.93,
+   "n": 100,
+   "sd_ratio_vs_random": 0.8758547172741294,
+   "sd_ratio_vs_random_boot95": [
+    0.8179638609630977,
+    0.9470890799429206
+   ]
+  },
+  "grouped_oracleD": {
+   "sd_tau": 0.40798452990294215,
+   "bias": 0.03461660173408623,
+   "rmse": 0.4074127783824899,
+   "mean_se_naive": 0.3235901788501688,
+   "coverage_naive": 0.89,
+   "coverage_multiway": 0.85,
+   "n": 100,
+   "sd_ratio_vs_random": 1.3256595248714118,
+   "sd_ratio_vs_random_boot95": [
+    1.1722396521414291,
+    1.5197565861120303
+   ]
+  },
+  "random_oracleDY": {
+   "sd_tau": 0.2613055414711474,
+   "bias": -0.026723238156692884,
+   "rmse": 0.26136547515131675,
+   "mean_se_naive": 0.2710451747105823,
+   "coverage_naive": 0.95,
+   "coverage_multiway": 0.91,
+   "n": 100,
+   "sd_ratio_vs_random": 0.8490571444836791,
+   "sd_ratio_vs_random_boot95": [
+    0.7725380732624788,
+    0.9460672648603357
+   ]
+  },
+  "grouped_oracleDY": {
+   "sd_tau": 0.31803201547888194,
+   "bias": 0.011754680839258212,
+   "rmse": 0.31665610962445845,
+   "mean_se_naive": 0.2960248063540203,
+   "coverage_naive": 0.92,
+   "coverage_multiway": 0.9,
+   "n": 100,
+   "sd_ratio_vs_random": 1.0333778357574723,
+   "sd_ratio_vs_random_boot95": [
+    0.9406208974842852,
+    1.1435368111906685
+   ]
+  }
+ }
+}
