@@ -39,6 +39,42 @@ parallel/resumable mock runs, and four-cell reports using the existing metrics.
 See [the infrastructure guide](docs/Sudarshan_INFRA.md). The mock engine has no
 integrated DGP or DML estimator.
 
+## Preksha's Week 2 prototypes
+
+The reviewed delivery adds single-membership pair-density and treatment/exposure
+diagnostics, a descriptive market-model event-study prototype and a source-checked
+seven-event inclusion sample. Run `python -m src.benchmarks.event_study` for the
+toy example. The [integration review](reports/preksha_week2_review.md) records
+corrections, assumptions and commands. The sample is not a labelled return panel;
+these prototypes do not establish final benchmark or Gate 2/3 results.
+
+## Week 3 verification package
+
+Deeptanshu's independent saved-results verifier, numerical monitoring snapshots,
+per-cell audit checks and qualitative calm/turbulent dependence diagnostics are
+included in the Week 3 delivery. Start with the
+[contract and commands](docs/week3_verification.md). Run the complete **mock**
+example with:
+
+```bash
+python examples/week3_mock_review.py --output results/raw/week3_software_example
+```
+
+The independent review reconstructed 5,360 interval rows from the existing pilot
+and ablation settings; all 76 reported coverage rates match. Small continuous
+legacy discrepancies remain flagged. The actual calendar runner now has a strict
+raw-file adapter and monitoring support. See the [Week 3 report](reports/deeptanshu_week3.md).
+Approved robustness runs, full-run verification and real-data conclusions still
+require the team design decisions and labelled return/residual panel.
+
+## Sudarshan’s Week 3 reporting
+
+The saved calendar-pilot comparison, four-cell tables/heatmaps, event-timing
+figure and reproducibility log can be regenerated with
+`python -m scripts.sudarshan_week3_report --help`. See
+[his reporting handoff](reports/sudarshan_week3.md). This compares saved summaries;
+it does not replace an independent raw-result replication or real-data analysis.
+
 ## Installation
 
 Use Python 3.11 or newer (tested locally with 3.13.13). No GPU is required.
@@ -51,14 +87,14 @@ source .venv/bin/activate
 python -m pip install -r requirements-dev.txt
 ```
 
-Runtime dependencies are NumPy, Matplotlib and PyYAML; pytest is for development. The
+Standalone runtime dependencies are NumPy, Matplotlib and PyYAML. The development
+installation also includes SciPy/scikit-learn for Mirun's research layer and pytest. The
 simulation and metric APIs themselves import NumPy only. Dependency ranges are in
 `requirements.txt`; actual versions and source hashes are recorded with each run.
 The infrastructure integration passed 164 tests with warnings as errors in a
 fresh environment installed from these requirements (Python 3.13.13, NumPy 2.5.4,
 Matplotlib 3.11.2, PyYAML 6.0.3, pytest 9.2.0). Earlier component evidence retains
-its original software versions. The [local Week 2 check](docs/PROJECT_STATE.md)
-also verified the suite and mock resume on macOS.
+its original software versions. Native Windows/macOS execution is unverified.
 
 ## Quickstart
 

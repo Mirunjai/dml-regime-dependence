@@ -56,3 +56,22 @@ separately. The reporting command performs no DML estimation.
 All 365 local tests passed with warnings treated as errors. Two report runs
 produced byte-identical CSV, Markdown and PNG files. The input and archived
 source hashes also matched the reproducibility log.
+
+## Integration review — Deeptanshu, 11 November
+
+Reviewed source branch `40d7165` against main `7d9e834`. The merge had reverted
+recent README and project-state sections; the integration restores those sections
+and the current dependency documentation while retaining Sudarshan's reporting
+additions. No DGP, DML or statistical metric formula is changed.
+
+Independent Linux validation: 365 tests pass with warnings as errors. Two fresh
+report invocations compare all 128 fields with zero discrepancies and generate
+17 byte-identical CSV/Markdown/PNG artifacts (13 figures, three CSVs, one Markdown
+report). Input hashes and the archived source ZIP hashes match the log. A generated
+coverage heatmap was visually inspected. Raw evidence is retained in the primary
+checkout under `results/raw/sudarshan_review_20261111/`.
+
+This verifies reporting against saved evidence. It does not claim a new DML pilot
+execution, selected full-run replication, or calm/turbulent return analysis. The
+inclusion-event figure describes metadata only. Those outstanding scientific
+inputs remain recorded in the current project state.

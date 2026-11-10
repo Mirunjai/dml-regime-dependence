@@ -27,10 +27,106 @@ The Week 2 infrastructure core is complete. The optional saved-diagnostic
 pass/fail helper and S&P data-pull helper remain open. The mock results test
 reproducibility and reporting. The team still owns Gate 2 and Gate 3 approval.
 
-## Historical snapshots
 
-Updated 1 November 2026. Shared baseline: reviewed component packages on main.
 
+## 10 November Session 5 review
+
+Mirun's reconstructed branch at `ceb150e` adds a guarded engine, exploratory
+studies, a panel contract and proposed design. Independent review passes 363
+tests, reproduces K=16's 280/80,000 multi-membership count, regenerates the GARCH
+comparison and independently audits 400 fresh control cell rows. Engine approval,
+resume and record checks were hardened. See
+[the independent review](../reports/deeptanshu_session5_review.md).
+
+These control rows are a bounded reviewer reconstruction, not the missing original
+200-replication control archive. Gate 2/3 remain unapproved; historical full raw
+archives and the labelled daily-return panel remain absent. Scientific robustness
+and real-data completion remain pending. Earlier dated snapshots are historical.
+
+
+Updated 8 November 2026. Main before this review: `48a28e7` (PR #7).
+Earlier dated sections below describe historical milestones; the snapshot here
+supersedes their statements about branch availability and current test counts.
+
+## 8 November branch review and Week 3 close-out
+
+Remote inventory found no new code beyond the previously audited branch tips.
+Sudarshan PR #8 repeats the exact tree already merged by PR #4 and was closed as
+a duplicate. His branch is retained. Mirun's `a84b548` delivery is already merged.
+
+Preksha's previously unmerged Week 2 branch at `8144aba` is integrated in the
+review branch with corrections for generator CSV data loss, atomic validated
+writes, malformed pair-density inputs, undefined constant-exposure associations,
+regime/noise RNG separation and event-study boundary/overflow handling. The
+existing generator now rejects boolean settings without changing valid-input
+simulation paths. The event-index prototypes remain separate from Mirun's
+calendar model. See [the review report](../reports/preksha_week2_review.md).
+
+The seven inclusion events match S&P's two published announcements. They form a
+small event sample, not daily returns or dataset v1. The code has no inferred
+calm/turbulent labels. All four prototype CLIs ran; the combined suite passes
+**317 tests with warnings as errors** in the existing local environment.
+
+Three merged user branches were deleted locally/remotely after complete bundle
+backup and exact tree checks against PR #3/#6/#7 squash commits. No teammate
+branch was deleted. The review branch is also eligible for cleanup after merge.
+
+Your available Week 3 software, historical pilot audit, component/calendar
+controls and Methods are delivered. Remaining scientific work still needs the
+team's dated Gate 2/3 design/robustness decisions and Preksha's labelled daily
+return/residual panel. Neither was found in the current remote inventory.
+Final robustness execution, production-run verification and actual real-data
+comparisons cannot be recorded as completed from prototypes or an event list.
+
+## Mirun integration review
+
+PR #5 merged the calendar-time DGP/DML layer at `1b914cd`; PR #6 hardened it at
+`0efe494`. Mirun changed none of the existing GARCH, diagnostic, metric or mock
+runner source under `src/`. His separate fixed-alpha GARCH and calendar regimes
+are different models from the canonical components; the
+[review memo](../reports/mirun_week2_review.md) documents the distinction.
+
+The review fixes preserve valid cells after inference/split failures, save atomic
+raw attempts, expose denominators/uncertainty, reject invalid memberships/control
+switches, replace exponential overlap-sandwich evaluation with the same direct
+pair formula, route actual configs/seeds into diagnostics and fix fresh installs.
+These are implementation corrections, not approval of the proposed covariance.
+
+## Week 3 independent verification and diagnostics
+
+The user's latest instruction authorizes commits, pushes and merging the delivery
+branch `deeptanshu/week3-verification-audit`. The package provides independent
+standard-library arithmetic, strict canonical and actual-calendar adapters,
+planned/missing/failed accounting, paired MCSEs, read-only monitoring, optional
+manipulation checks and qualitative calm/turbulent panel diagnostics.
+
+Actual saved-pilot review reconstructed 320 active-pilot and 5,040 legacy-table
+cell records. All 76 reported coverage rates match. Across 520 checked fields,
+120 legacy continuous entries differ by at most 6.2211e-6; these remain flagged,
+not overwritten or attributed to an unproven cause. Distinct estimators are kept
+separate. The legacy tables reuse 1,020 unique worlds across 1,260 references.
+A reviewed-producer 32-cell smoke independently matches its headline metrics.
+
+Validation: **283 tests pass with warnings as errors** in a fresh development
+environment; the prior 1,200-row mock, 80-case/6,148-crosscheck randomized exercise,
+40,000-row input exercise and standalone source-ZIP replay remain documented.
+The original component recheck detected the invalid control in 100/100 panels;
+the actual calendar-DGP recheck detected its control in 20/20, with 0/20
+independent detections. Wilson intervals and boundary-MCSE caveats are reported.
+Regime-pure grouped folds still have potential calendar-factor links across folds.
+
+The available software and pilot verification are delivered. The team has not
+provided an approved Gate 2/3 memo, locked robustness subset, original full-run
+raw archive/environment, or frozen labelled daily-return panel. The friend's
+artifact inventory confirms these omissions; an event list/schema is not a
+return panel. Final robustness execution, production-run verification and actual
+real-data diagnostics remain pending. No gate is marked passed.
+
+See [the Week 3 report](../reports/deeptanshu_week3.md),
+[commands and Methods](week3_verification.md), and the small reviewable tables
+`results/tables/week3_mirun_verification.json` and
+`results/tables/week3_calendar_diagnostic.json`. The schedule's 8 November freeze
+and 13 November submission-ready target do not establish an official deadline.
 
 ## Sudarshan infrastructure integration
 
