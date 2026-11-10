@@ -24,6 +24,9 @@ from src.infra.reproducibility import (
     result_paths,
     save_json_atomic,
     save_manifest,
+    software_versions,
+    run_lock,
+    validate_run_id,
 )
 
 
@@ -333,23 +336,38 @@ def validate_saved_result(
             f"Unreadable saved replication: {path}"
         ) from exc
 
+    validate_run_id(run_id)
+    if not isinstance(result, dict):
+        raise ValueError("Saved replication must be a mapping")
+
     expected = {
         "run_id": run_id,
         "replication_id": replication_id,
         "root_seed": config["provenance"]["seed"],
         "config_hash": config_hash(config),
+        "truth": float(config["_resolved_dgp"]["treatment"]["effect_true"]),
+        "seed_addresses": {
+            name: [config["provenance"]["seed"], replication_id, stream_id]
+            for name, stream_id in STREAM_IDS.items()
+        },
     }
 
     for key, value in expected.items():
         if result.get(key) != value:
             raise ValueError(
-                f"Saved replication metadata mismatch: {path}"
+                f"Saved replication metadata mismatch for {key}: {path}"
             )
 
     cells = result.get("cells")
 
     if not isinstance(cells, list) or len(cells) != 4:
         raise ValueError("Incomplete saved cell list")
+
+    if not all(
+        isinstance(cell, dict) and isinstance(cell.get("cell"), str)
+        for cell in cells
+    ):
+        raise ValueError("Malformed saved cell identities")
 
     ids = [cell.get("cell") for cell in cells]
 
@@ -422,146 +440,168 @@ def run_experiment(
     )
 
     run_dir = paths["raw"]
-    manifest_path = run_dir / "manifest.json"
+    with run_lock(run_dir):
+        manifest_path = run_dir / "manifest.json"
 
-    current_fingerprint = source_fingerprint(root)
+        current_fingerprint = source_fingerprint(root)
 
-    if manifest_path.exists():
-        manifest = json.loads(
-            manifest_path.read_text(encoding="utf-8")
-        )
-
-        if manifest.get("run_id") != run_id:
-            raise ValueError("Manifest run ID mismatch")
-
-        if manifest.get("config_hash") != config_hash(config):
-            raise ValueError("Manifest configuration mismatch")
-
-        if manifest.get("source_fingerprint") != current_fingerprint:
-            raise ValueError(
-                "Source changed since this run started. "
-                "Use a new experiment identity; do not mix versions."
+        if manifest_path.exists():
+            manifest = json.loads(
+                manifest_path.read_text(encoding="utf-8")
             )
 
-    else:
-        manifest = save_manifest(
-            manifest_path,
-            relative_config,
-            config,
-            root,
-        )
+            if manifest.get("source_changed_during_run"):
+                raise ValueError("Run was invalidated by a source change")
 
-        manifest["source_fingerprint"] = current_fingerprint
+            if manifest.get("run_id") != run_id:
+                raise ValueError("Manifest run ID mismatch")
 
-        save_json_atomic(manifest_path, manifest)
+            if (manifest.get("config_hash") != config_hash(config)
+                    or config_hash(manifest.get("config")) != config_hash(config)):
+                raise ValueError("Manifest configuration mismatch")
 
-    if manifest["git"]["dirty"]:
-        print(
-            "WARNING: Uncommitted code detected. "
-            "These are development results, not a frozen "
-            "scientific experiment."
-        )
+            if manifest.get("source_fingerprint") != current_fingerprint:
+                raise ValueError(
+                    "Source changed since this run started. "
+                    "Use a new experiment identity; do not mix versions."
+                )
 
-    count = config["replications"]["count"]
+            if manifest.get("software") != software_versions():
+                raise ValueError(
+                    "Software environment changed since this run started"
+                )
 
-    pending = []
+            if (manifest.get("root_seed") != config["provenance"]["seed"]
+                    or manifest.get("rng_stream_ids") != STREAM_IDS):
+                raise ValueError("Manifest RNG provenance mismatch")
 
-    for replication_id in range(count):
-        path = (
-            run_dir / f"rep_{replication_id:06d}.json"
-        )
-
-        if path.exists():
-            validate_saved_result(
-                path,
-                replication_id,
-                run_id,
-                config,
-            )
         else:
-            pending.append(replication_id)
-
-    print(f"Run ID: {run_id}")
-    print(f"Total replications: {count}")
-    print(f"Already completed: {count - len(pending)}")
-    print(f"Remaining: {len(pending)}")
-    print(f"Workers: {workers}")
-
-    def save_result(result):
-        replication_id = result["replication_id"]
-
-        path = (
-            run_dir / f"rep_{replication_id:06d}.json"
-        )
-
-        save_json_atomic(path, result)
-
-    if workers == 1:
-        for replication_id in pending:
-            result = _worker(
-                replication_id,
+            manifest = save_manifest(
+                manifest_path,
+                relative_config,
                 config,
-                run_id,
+                root,
             )
 
-            save_result(result)
+            manifest["source_fingerprint"] = current_fingerprint
 
-    else:
-        # Keep only a bounded number of futures in memory.
-        iterator = iter(pending)
+            save_json_atomic(manifest_path, manifest)
 
-        with ProcessPoolExecutor(
-            max_workers=workers
-        ) as executor:
+        if manifest["git"]["dirty"]:
+            print(
+                "WARNING: Uncommitted code detected. "
+                "These are development results, not a frozen "
+                "scientific experiment."
+            )
 
-            futures = {}
+        count = config["replications"]["count"]
 
-            def submit_next():
-                try:
-                    replication_id = next(iterator)
-                except StopIteration:
-                    return
+        pending = []
 
-                future = executor.submit(
-                    _worker,
+        for replication_id in range(count):
+            path = (
+                run_dir / f"rep_{replication_id:06d}.json"
+            )
+
+            if path.exists():
+                validate_saved_result(
+                    path,
+                    replication_id,
+                    run_id,
+                    config,
+                )
+            else:
+                pending.append(replication_id)
+
+        print(f"Run ID: {run_id}")
+        print(f"Total replications: {count}")
+        print(f"Already completed: {count - len(pending)}")
+        print(f"Remaining: {len(pending)}")
+        print(f"Workers: {workers}")
+
+        def save_result(result):
+            replication_id = result["replication_id"]
+
+            path = (
+                run_dir / f"rep_{replication_id:06d}.json"
+            )
+
+            save_json_atomic(path, result)
+
+        if workers == 1:
+            for replication_id in pending:
+                result = _worker(
                     replication_id,
                     config,
                     run_id,
                 )
 
-                futures[future] = replication_id
+                save_result(result)
 
-            for _ in range(min(workers * 2, len(pending))):
-                submit_next()
+        else:
+            # Keep only a bounded number of futures in memory.
+            iterator = iter(pending)
 
-            while futures:
-                completed, _ = wait(
-                    tuple(futures),
-                    return_when=FIRST_COMPLETED,
-                )
+            with ProcessPoolExecutor(
+                max_workers=workers
+            ) as executor:
 
-                for future in completed:
-                    replication_id = futures.pop(future)
+                futures = {}
 
+                def submit_next():
                     try:
-                        result = future.result()
+                        replication_id = next(iterator)
+                    except StopIteration:
+                        return
 
-                    except Exception as exc:
-                        # Worker-level failure remains visible
-                        # as four failed cell records.
-                        result = run_replication_failure(
-                            replication_id,
-                            config,
-                            run_id,
-                            f"{type(exc).__name__}: {exc}",
-                        )
+                    future = executor.submit(
+                        _worker,
+                        replication_id,
+                        config,
+                        run_id,
+                    )
 
-                    save_result(result)
+                    futures[future] = replication_id
+
+                for _ in range(min(workers * 2, len(pending))):
                     submit_next()
 
-    print(f"Raw results saved in: {run_dir}")
+                while futures:
+                    completed, _ = wait(
+                        tuple(futures),
+                        return_when=FIRST_COMPLETED,
+                    )
 
-    return run_dir
+                    for future in completed:
+                        replication_id = futures.pop(future)
+
+                        try:
+                            result = future.result()
+
+                        except Exception as exc:
+                            # Worker-level failure remains visible
+                            # as four failed cell records.
+                            result = run_replication_failure(
+                                replication_id,
+                                config,
+                                run_id,
+                                f"{type(exc).__name__}: {exc}",
+                            )
+
+                        save_result(result)
+                        submit_next()
+
+        if source_fingerprint(root) != current_fingerprint:
+            manifest["source_changed_during_run"] = True
+            save_json_atomic(manifest_path, manifest)
+            raise ValueError("Source changed during run; results cannot be mixed")
+
+        if manifest.get("source_changed_during_run"):
+            raise ValueError("Run was invalidated by a source change")
+
+        print(f"Raw results saved in: {run_dir}")
+
+        return run_dir
 
 
 def run_replication_failure(

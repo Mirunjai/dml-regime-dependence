@@ -139,3 +139,14 @@ def test_manifest_contains_provenance(tmp_path):
     assert manifest["config_hash"] == config_hash(config)
     assert "git" in manifest
     assert path.exists()
+
+
+def test_result_paths_reject_external_symlink(tmp_path):
+    root = tmp_path / "project"
+    root.mkdir()
+    external = tmp_path / "external"
+    external.mkdir()
+    (root / "results").symlink_to(external, target_is_directory=True)
+    with pytest.raises(ValueError, match="within the project"):
+        result_paths({}, "test-run", root)
+    assert list(external.iterdir()) == []

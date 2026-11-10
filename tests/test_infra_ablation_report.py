@@ -401,3 +401,43 @@ def test_tampered_truth_is_rejected(completed_run):
             run_dir,
             repo_root=root,
         )
+
+
+def test_report_rejects_tampered_seed_addresses(completed_run):
+    root, run_dir = completed_run
+    update_replication(
+        run_dir, 0,
+        lambda record: record["seed_addresses"].update(factors=[42, 99, 0]),
+    )
+    with pytest.raises(ValueError, match="seed_addresses"):
+        generate_report(run_dir, repo_root=root)
+
+
+def test_report_rejects_run_id_path_traversal(completed_run):
+    root, run_dir = completed_run
+    manifest_path = run_dir / "manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    manifest["run_id"] = "../../escaped"
+    save_json_atomic(manifest_path, manifest)
+    with pytest.raises(ValueError, match="Unsafe run ID"):
+        generate_report(run_dir, repo_root=root)
+    assert not (root / "escaped_ablation.csv").exists()
+
+
+def test_all_failed_report_removes_previous_heatmaps(completed_run):
+    root, run_dir = completed_run
+    before = generate_report(run_dir, repo_root=root)
+    old_plots = [Path(path) for path in before["outputs"]["plots"].values()]
+    assert all(path.exists() for path in old_plots)
+
+    def fail_all(record):
+        for cell in record["cells"]:
+            cell.update(status="failed", estimate=None, lower=None, upper=None,
+                        error="test failure")
+
+    for replication_id in range(8):
+        update_replication(run_dir, replication_id, fail_all)
+    after = generate_report(run_dir, repo_root=root, failure_policy="report")
+    assert all(path is None for path in after["outputs"]["plots"].values())
+    assert not any(path.exists() for path in old_plots)
+    assert all(row["failed"] == 8 and row["valid"] == 0 for row in after["cells"])

@@ -33,7 +33,11 @@ its demo/tests, and Deeptanshu's standalone Week 1/2 package:
 Read the [validation report](reports/deeptanshu_week1_week2.md),
 [project state](docs/PROJECT_STATE.md), and
 [decisions and protocol draft](docs/DECISIONS.md). The report distinguishes tested
-component behavior from team gate approval. No integrated DGP/DML/runner is added.
+component behavior from team gate approval. Sudarshan's Week 1/2 infrastructure
+adds YAML configuration, independent RNG streams, atomic replication files,
+parallel/resumable mock runs, and four-cell reports using the existing metrics.
+See [the infrastructure guide](docs/Sudarshan_INFRA.md). The mock engine has no
+integrated DGP or DML estimator.
 
 ## Installation
 
@@ -47,12 +51,14 @@ source .venv/bin/activate
 python -m pip install -r requirements-dev.txt
 ```
 
-Runtime dependencies are NumPy and Matplotlib; pytest is for development. The
+Runtime dependencies are NumPy, Matplotlib and PyYAML; pytest is for development. The
 simulation and metric APIs themselves import NumPy only. Dependency ranges are in
 `requirements.txt`; actual versions and source hashes are recorded with each run.
-The local validation environment inherited existing scientific packages and added
-pytest from the local cache because package-download DNS was unavailable. A fresh
-network installation and cross-platform execution have not been verified here.
+The infrastructure integration passed 164 tests with warnings as errors in a
+fresh environment installed from these requirements (Python 3.13.13, NumPy 2.5.4,
+Matplotlib 3.11.2, PyYAML 6.0.3, pytest 9.2.0). Earlier component evidence retains
+its original software versions. The [local Week 2 check](docs/PROJECT_STATE.md)
+also verified the suite and mock resume on macOS.
 
 ## Quickstart
 
@@ -74,6 +80,19 @@ python -m src.dgp.validate_volatility \
   --config configs/experiments/deeptanshu_corroboration.json \
   --run-name week1_week2_corroboration
 ```
+
+For a software-only four-cell check:
+
+```bash
+python -m src.infra.experiment_runner \
+  --config configs/experiments/sudarshan_mock.yaml --workers 2
+# Copy the run ID printed above:
+python -m src.infra.ablation_report --run-dir results/raw/<run_id>
+```
+
+The mock runner resumes missing replications without retrying saved failures.
+Reporting raises on failed cells unless `--failure-policy report` is explicitly
+selected. These outputs test infrastructure; they do not measure DML performance.
 
 Run names protect existing results; choose another name or explicitly use
 `--overwrite` for generated files. `--output-root` changes the output location.
