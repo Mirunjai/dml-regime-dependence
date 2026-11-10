@@ -67,6 +67,14 @@ raw-file adapter and monitoring support. See the [Week 3 report](reports/deeptan
 Approved robustness runs, full-run verification and real-data conclusions still
 require the team design decisions and labelled return/residual panel.
 
+## Sudarshan’s Week 3 reporting
+
+The saved calendar-pilot comparison, four-cell tables/heatmaps, event-timing
+figure and reproducibility log can be regenerated with
+`python -m scripts.sudarshan_week3_report --help`. See
+[his reporting handoff](reports/sudarshan_week3.md). This compares saved summaries;
+it does not replace an independent raw-result replication or real-data analysis.
+
 ## Installation
 
 Use Python 3.11 or newer (tested locally with 3.13.13). No GPU is required.

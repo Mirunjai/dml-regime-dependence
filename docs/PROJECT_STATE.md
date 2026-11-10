@@ -1,5 +1,34 @@
 # Project state
 
+## Sudarshan local Week 3 check on 11 November 2026
+
+Compared Mirun's saved calendar-pilot table against the pinned-source replay
+summary. All 128 field checks matched. Generated four 2×2 tables, 12 pilot
+heatmaps, one figure for the verified S&P 500 inclusion events, and a
+reproducibility log with hashes and source. See
+[the Week 3 report](../reports/sudarshan_week3.md) for commands and evidence.
+
+The original raw pilot archive, team-selected full-run subset and its records,
+and labelled daily-return panel remain open. The local work regenerates
+reports from saved evidence. Gate 2 and Gate 3 approvals remain with the team.
+
+## Sudarshan local Week 2 check on 11 November 2026
+
+The local `Sudarshan` checkout at `c582846` already contained the original
+runner and templates. The reviewed implementation and tests from PR #4
+(`6c5ff70`) are now applied as working-tree edits. Heatmap labels have a light
+background for legibility across cell colors. On macOS, all 164 tests
+passed with warnings treated as errors. A 12-replication serial mock run
+resumed with three workers after two records were set aside. All 12 JSON files
+matched byte for byte. Independent recomputation matched the four coverage,
+empirical-size and mean-width rows, and the reporter rendered three heatmaps.
+
+The Week 2 infrastructure core is complete. The optional saved-diagnostic
+pass/fail helper and S&P data-pull helper remain open. The mock results test
+reproducibility and reporting. The team still owns Gate 2 and Gate 3 approval.
+
+
+
 ## 10 November Session 5 review
 
 Mirun's reconstructed branch at `ceb150e` adds a guarded engine, exploratory
