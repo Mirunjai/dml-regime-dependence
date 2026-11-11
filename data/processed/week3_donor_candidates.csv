@@ -1,8 +1,1 @@
 treated_ticker,event_date,donor_ticker,company_name,security_type,us_domicile,sp500_member_on_event,sp500_membership_source,sector,industry,sector_industry_source,market_cap_usd,market_cap_date,beta,beta_window,beta_source,median_dollar_volume_usd,liquidity_window,liquidity_source,pre_event_return_correlation,return_source,price_history_start,price_history_end,price_source,adjustment_method,contamination_flag,contamination_type,contamination_source,eligibility,exclusion_reason,reviewer,review_date
-CRM,2008-09-12,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-FAST,2008-09-12,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-ADS,2013-12-20,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-MHK,2013-12-20,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-SWKS,2015-03-11,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-ETSY,2020-09-21,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-TER,2020-09-21,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
