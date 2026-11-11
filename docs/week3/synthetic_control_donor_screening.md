@@ -2,6 +2,8 @@
 
 ## Decision as of 2026-11-11
 
+The team lead has approved the remaining post-November 8 SCM work conditionally: screening and validated data must precede execution; no scope expansion is authorized. This is permission to proceed once gates pass, not permission to bypass them.
+
 No donor is certified eligible and no empirical donor pool is frozen. The tracked `week3_donor_candidates.csv` is a schema template with seven treated-firm rows and no donor evidence. The validator requires security type, US domicile, point-in-time S&P 500 status and source, industry, date-specific market capitalization, beta and estimation window, liquidity, pre-event return correlation, price coverage, adjustment method, and contamination evidence. Those fields are not available from the checked-in files.
 
 The branch does not contain `data/raw/week3_adjusted_prices.csv` or any donor-price panel. The terminal transcript reports that the user's working copy had the treated/index price file but no donor-price file, and the download-input CSV was empty. Consequently, we cannot compute pre-event return correlation, beta, dollar volume, or pre-event RMSPE here. A missing observation in the community membership history is not proof of nonmembership or tradability. Do not mark any proposed name eligible from that source alone.
@@ -39,7 +41,7 @@ Exclude other treated firms and firms exposed to the same announcement or a mate
 
 ## Catalent (CTLT)
 
-CTLT is excluded from the existing classical event-study output because its historical adjusted-price series is unavailable in the working data, as explicitly reported by `run_week3_classical.py`. Do not treat it as a zero, impute it, or infer an effect. A separate vendor/archive price source and adjustment documentation would be required before either classical or Synthetic Control analysis.
+CTLT is excluded from the existing classical event-study output because its historical adjusted-price series is unavailable in the working data, as explicitly reported by `run_week3_classical.py`. One alternative-source attempt was made on 2026-11-11: Quiver's public CTLT historical page states that adjusted close includes splits and dividends, and advertises daily history back to 2014, which covers this event. However, the page exposes only a short current-date slice here; its API requires a key, and no downloadable event-window panel or source approval for project use is available in this workspace. Thus no price file was obtained or validated. Treat CTLT as missing and exclude it from the complete-case SCM unless the approved source provides a complete, documented series consistent with the other panel prices. Do not treat it as zero, impute it, or infer an effect. Source: https://www.quiverquant.com/stock/CTLT/historical-prices/ .
 
 ## SCM methods and limits
 
