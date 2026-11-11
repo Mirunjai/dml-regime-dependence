@@ -60,6 +60,24 @@ Price-based matching statistics were calculated descriptively from adjusted-clos
 
 Statistics are rounded; inputs and calculations are in the linked CSVs. Pair-specific pre-event correlation, SIC, market cap and contamination are not reported as verified.
 
+
+
+### Treated-relative fit comparisons
+
+For price-complete treated/donor pairs, daily adjusted-close return correlations were calculated over the same fit dates. These metrics are descriptive and do not replace eligibility validation.
+
+| Pair | Donor vs treated fit return correlation | Treated cumulative fit return |
+|---|---:|---:|
+| FAST / GWW | 0.703 | 19.5% |
+| FAST / MSM | 0.580 | 19.5% |
+| ADS / COF | unavailable | unavailable (ADS prices missing) |
+| MHK / TILE | 0.596 | 65.8% |
+| SWKS / CRUS | 0.314 | 124.0% |
+| ETSY / EBAY | 0.486 | 167.4% |
+| ETSY / SHOP | 0.559 | 167.4% |
+| TER / COHU | 0.753 | 53.2% |
+| TER / FORM | 0.810 | 53.2% |
+
 ## Event decisions and next gate
 
 | Event cluster | Decision | Main blockers |
