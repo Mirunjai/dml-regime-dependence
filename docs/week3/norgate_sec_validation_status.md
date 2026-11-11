@@ -6,7 +6,7 @@
 
 ## Norgate cost and access findings
 
-The Norgate US Stocks **Platinum** plan is the minimum plan that includes delisted securities and historical index constituents. The current published price is **USD $346.50 for six months** or **USD $630 for twelve months**. Norgate offers fixed six- or twelve-month subscription terms (not monthly access); twelve months is listed as 10% below two six-month terms. The free trial lasts three weeks but is limited to the last two years of history, so it cannot validate any project's event period. No subscription has been purchased. Confirm price and terms again before any later purchase decision.
+The Norgate US Stocks **Platinum** plan is the minimum plan that includes delisted securities and historical index constituents. The current published price is **USD $346.50 for six months** or **USD $630 for twelve months**. Norgate offers fixed six- or twelve-month subscription terms (not monthly access). The listed twelve-month price is USD $630 versus USD $693 for two six-month terms (about 9.1% lower by arithmetic). The free trial lasts three weeks but is limited to the last two years of history, so it cannot validate any project's event period. No subscription has been purchased. Confirm price and terms again before any later purchase decision.
 
 Published coverage for Platinum includes daily price history and delisted securities back to 1990, enough in calendar coverage for the 2008 event's pre-event fit window. Historical S&P 500 membership is available from March 1957. Norgate says membership is daily and effective-date aligned. It also states pre-March-2000 S&P constituent change history is synthesized as monthly rebalances; project event dates are later than this caveat.
 
