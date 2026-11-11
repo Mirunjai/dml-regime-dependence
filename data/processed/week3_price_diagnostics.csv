@@ -1,0 +1,9 @@
+ticker,company_name,cluster_id,effective_date,window_start,window_end_exclusive,observations,first_price_date,last_price_date,event_date_in_window,event_date_has_price,status
+CRM,Salesforce,2008-09,2008-09-12,2007-01-01,2021-01-01,3525,2007-01-03,2020-12-31,True,True,usable
+FAST,Fastenal,2008-09,2008-09-12,2007-01-01,2021-01-01,3525,2007-01-03,2020-12-31,True,True,usable
+ADS,Alliance Data Systems,2013-12,2013-12-20,2007-01-01,2021-01-01,3525,2007-01-03,2020-12-31,True,True,usable
+MHK,Mohawk Industries,2013-12,2013-12-20,2007-01-01,2021-01-01,3525,2007-01-03,2020-12-31,True,True,usable
+SWKS,Skyworks Solutions,2015-03,2015-03-11,2007-01-01,2021-01-01,3525,2007-01-03,2020-12-31,True,True,usable
+ETSY,Etsy,2020-09,2020-09-21,2007-01-01,2021-01-01,1440,2015-04-16,2020-12-31,True,True,usable
+TER,Teradyne,2020-09,2020-09-21,2007-01-01,2021-01-01,3525,2007-01-03,2020-12-31,True,True,usable
+CTLT,Catalent,2020-09,2020-09-21,2007-01-01,2021-01-01,0,,,True,False,insufficient_or_unavailable
