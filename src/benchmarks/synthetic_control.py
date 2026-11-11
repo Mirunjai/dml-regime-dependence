@@ -75,6 +75,15 @@ def fit_synthetic_control(
     synthetic_post = y0_post @ weights
     pre_gap = y_pre - synthetic_pre
     post_gap = y_post - synthetic_post
+
+    # Donor-pool concentration diagnostics
+    largest_donor_weight = float(np.max(weights))
+    active_donor_count = int(np.sum(weights > 1e-6))
+    effective_donor_count = float(
+        1.0 / np.sum(weights**2)
+    )
+    donor_concentration = float(np.sum(weights**2))
+
     return {
         "weights": pd.Series(weights, index=ids, name="weight"),
         "synthetic_pre": synthetic_pre,
@@ -83,5 +92,9 @@ def fit_synthetic_control(
         "synthetic_post": synthetic_post,
         "post_gap": post_gap,
         "mean_post_gap": float(np.mean(post_gap)),
+        "largest_donor_weight": largest_donor_weight,
+        "active_donor_count": active_donor_count,
+        "effective_donor_count": effective_donor_count,
+        "donor_concentration": donor_concentration,
         "optimizer_message": str(result.message),
     }

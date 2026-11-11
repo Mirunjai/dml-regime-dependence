@@ -98,3 +98,20 @@ def test_duplicate_donor_ids_rejected():
             *sample_data(),
             donor_ids=["A", "A"],
         )
+
+def test_donor_concentration_diagnostics():
+    result = fit_sample()
+
+    # Known donor weights are 0.7 and 0.3.
+    assert np.isclose(result["largest_donor_weight"], 0.7, atol=1e-4)
+    assert result["active_donor_count"] == 2
+
+    # Concentration = 0.7² + 0.3² = 0.58
+    assert np.isclose(
+        result["donor_concentration"], 0.58, atol=1e-4
+    )
+
+    # Effective donor count = 1 / 0.58
+    assert np.isclose(
+        result["effective_donor_count"], 1 / 0.58, atol=1e-4
+    )
