@@ -42,7 +42,7 @@ For candidate series with prices, the saved screening metrics report beta versus
 
 ## Donor and benchmark decision
 
-The candidate dataset now contains the previously researched 14 ticker/event leads and explicit price, membership-snapshot, price-metric, missing-field and exclusion/open-reason columns. Every row is **NOT ELIGIBLE**. Several prices exist; none clears all required evidence gates. No donor was added to the benchmark input, the original eight treated firms were not changed, and no SCM helper was run.
+The donor CSV remains the existing blank template because none of the exploratory names cleared evidence gates. Price-only lead coverage and metrics are summarized in the donor eligibility report and separate price files. No donor was added to the benchmark input, the original eight treated firms were not changed, and no SCM helper was run.
 
 **Event decision:** all four event clusters remain blocked for SCM. This is due to missing or unverified donor membership, SEC matching fields and contamination review; the ADS and CTLT treated-price gaps add separate event-specific blockers. The SCM approval remains conditional on successful validation.
 
@@ -54,7 +54,7 @@ The candidate dataset now contains the previously researched 14 ticker/event lea
 - Membership status evidence: `data/processed/week3_membership_evidence.csv`
 - Dated 2020 community change log excerpt: `data/processed/week3_2020_membership_change_log.csv`
 - SEC filing attempt trace: `data/processed/week3_sec_filing_access_attempts.csv`
-- Donor screening: `data/processed/week3_donor_candidates.csv`
+- Donor screening decision and lead-by-lead evidence: `docs/week3/donor_eligibility_report.md`; the existing `data/processed/week3_donor_candidates.csv` remains unpopulated because no lead is verified eligible.
 - Price metric calculation: `scripts/build_week3_screening_metrics.py`, output `data/processed/week3_price_screening_metrics.csv`
 - Final limitations and decision log: `docs/week3/donor_eligibility_report.md`
 
