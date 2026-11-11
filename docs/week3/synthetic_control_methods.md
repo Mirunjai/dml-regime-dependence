@@ -28,7 +28,7 @@ The current helper contains no placebo inference; do not imply otherwise. Keep S
 
 The branch has no donor-price panel. The terminal record states the local donor input file was empty, and CTLT historical adjusted prices were unavailable. No donor should be called eligible and no SCM result should be reported until data, evidence, and approval gates are satisfied.
 
-The team lead requires explicit approval before the post-November 8 benchmark. Do not execute it until that approval is recorded.
+The explicit approval is now recorded in the audit, subject to the data and screening gates above. Do not execute until those conditions are satisfied.
 
 ## References
 
