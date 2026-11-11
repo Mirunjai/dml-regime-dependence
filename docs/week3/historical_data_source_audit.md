@@ -1,44 +1,40 @@
 # Week 3 Historical Data Source Audit
 
-Status: source identified; access not confirmed. No data was downloaded and no donor eligibility has been certified.
+**Status updated 2026-11-11:** Institutional CRSP/WRDS access has been confirmed unavailable by the team. The prior CRSP/WRDS recommendation below is therefore not actionable for this project. No purchase has been made and no historical donor eligibility is certified.
 
-## Recommended source: CRSP U.S. Stock Database via WRDS
+## Current source review
 
-The best fit for the frozen 2008, 2013, 2015, and 2020 event windows is the CRSP daily U.S. Stock Database, accessed through the team's institutional WRDS subscription. CRSP describes daily market data and corporate actions for active and inactive U.S. securities, with survivor-bias-free history, permanent security identifiers (PERMNO/PERMCO), and coverage from 1926. WRDS states its interactive historical S&P 500 constituent query covers any day from 1958 to the latest data update and requires a CRSP subscription.
+See [Alternative Historical Data Sources Review](alternative_data_sources_review.md) and [Norgate Access and SEC Point-in-Time Validation Status](norgate_sec_validation_status.md) for the current evaluation.
 
-This is a source recommendation based on published coverage, not evidence that the team has access. It should be confirmed with the team lead / institutional librarian before acquisition. Sources:
+Norgate Platinum is the leading conditional candidate for historical daily prices and point-in-time S&P 500 membership. Its published price coverage begins in 1990 and its S&P 500 constituent history begins in 1957; the plan costs USD $346.50 for six months and USD $630 for twelve months. Historical membership requires a supported integration (Python on Windows is listed); simple CSV export includes price/volume/turnover, but not membership. The trial history is limited to two years, so an event-period sample for 2008 requires a separate purchase decision. The lead has expressly said not to purchase yet.
 
-- CRSP U.S. Stock Database, coverage and permanent identifiers: https://www.crsp.org/research/crsp-us-stock-databases-2025-layout/
-- WRDS S&P 500 constituent query, 1958 to latest and CRSP subscription requirement: https://wrds-www.wharton.upenn.edu/pages/classroom/the-sp-500/
-- WRDS historical constituent download, subscription requirement: https://wrds-www.wharton.upenn.edu/pages/grid-items/downloading-the-sp-500-constituents/
-- CRSP/Compustat historical identifier linkage: https://wrds-www.wharton.upenn.edu/pages/wrds-research/database-linking-matrix/using-compustat-historical-identifier-notebook/
+Norgate does not supply historical industry classification or historical fundamentals/market capitalization. The team has proposed contemporaneous SEC filing SIC as the industry proxy, and point-in-time market cap using the latest pre-cutoff filing's shares outstanding multiplied by the approved provider's cutoff-date close, adjusted for intervening splits. That method still requires source validation. Current/future fundamentals must not be used retrospectively.
 
-## Mapping to frozen donor evidence fields
+## Former CRSP/WRDS path (unavailable)
 
-| Required field | Proposed CRSP/WRDS construction | Point-in-time guard |
+The earlier plan proposed CRSP U.S. Stock Database through WRDS because its documented active/delisted security history, permanent identifiers and historical index membership appeared to fit the event dates. Institutional access is unavailable, so this is recorded only as a screened-out route, not the current recommendation. Reconsider it only if the team later obtains legitimate institutional access.
+
+## Required evidence and current status
+
+| Required field | Proposed evidence/construction | Status |
 |---|---|---|
-| Security identity / common stock | Historical name/security and share/exchange codes; retain permanent PERMNO and historical ticker/CUSIP | Use security identity effective during the window; do not join by current ticker alone |
-| S&P 500 membership | CRSP historical S&P 500 constituent list / index membership | Query membership on announcement cutoff; use historical announcements for discrepancy checks |
-| Industry | Historical SIC in CRSP or effective-dated Compustat classification linked through a valid date-specific CCM link | Do not use current industry for past events |
-| Market capitalization | Absolute close × shares outstanding using data as of the last session strictly before announcement; document units and adjustment | No post-announcement shares or price |
-| Beta | OLS on the frozen pre-event daily return window against the frozen market return series | Estimate using pre-announcement observations only; report observation count |
-| Liquidity | Median daily dollar volume over the frozen pre-event window (volume × absolute unadjusted price, subject to corporate-action units) | Do not include event or post-event sessions |
-| Pre-event return correlation | Correlation of treated and candidate donor returns over the frozen pre-event window | Common dates only; report n and no imputation |
-| Historical adjusted prices / returns | Use one CRSP return convention consistently for treated and donors; document total-return versus price-return definition and corporate-action handling | Full aligned data across fit, validation, primary, and extended windows; no silent backfill |
-| Contamination | Dated S&P addition/deletion announcements, issuer filings/news, and treated-event calendar review | Search only for material exposures in the frozen period; record evidence and decision |
+| Security identity and point-in-time S&P membership | Norgate security history and supported membership query, after access; preserve stable identity and daily event-date membership | Not acquired or validated |
+| Adjusted daily prices | One consistently configured provider across treated firms and donors, including delisted securities and all frozen windows | Not acquired from Norgate; tracked branch lacks raw adjusted prices |
+| Industry | SEC SIC in latest EDGAR submission header publicly filed by the offset -21 pre-event cutoff | Method agreed in principle; sample not complete |
+| Market capitalization | Latest available filing shares, split-aligned through cutoff, × approved provider close at cutoff | No cutoff-date approved prices; no cap value calculated |
+| Beta, liquidity, pre-event returns | Calculate from price/market data only using the frozen pre-event period and definitions | Not calculated for donors |
+| Contamination | Dated announcement, membership and issuer-event evidence for each candidate | No donor decisions complete |
 
-CRSP daily total returns may be preferable to reconstructing adjusted prices, but the benchmark's locked outcome definition must be checked before use. Do not mix CRSP total returns with Yahoo adjusted closes or another vendor's price series. If the locked outcome specifically requires adjusted close levels, obtain a consistent panel of adjusted close levels for every treated and donor unit from one source.
+## CTLT
 
-## Current blocker and next action
+One alternative-source check was recorded in `synthetic_control_donor_screening.md`: Quiver's public page describes adjusted close including splits and dividends and advertises price history back to 2014, but no usable complete event panel was obtained in the workspace. CTLT remains a documented missing-data case unless an approved source yields a complete, comparable series.
 
-No WRDS/CRSP credentials or local checkout are available in this task workspace, and the repository does not contain the price panel. The donor screening table remains empty. Ask the team lead/institutional librarian to confirm CRSP access for CRSP Stock daily data and S&P 500 constituent history, plus the effective-dated Compustat/CCM fields needed for industry if not present in CRSP. After access is available, extract the full point-in-time U.S. common-stock universe, apply the frozen event-specific matching criteria, and populate evidence for every included and excluded lead before fitting any weights.
+## Scope and execution gate
 
-If CRSP access is unavailable, do not substitute the current-constituent universe or the community membership snapshots as proof. Obtain team approval for another licensed source that can document delisted securities, total-return adjustments, historical membership, and dated fundamentals.
+Frozen windows remain fit [-252, -21], validation [-20, -1], primary post [0, +20], and extended post [0, +60]. No donor pool has been frozen. The SCM helper has no placebo inference; the team lead requires screening and data validation before execution. Keep the benchmark formally blocked until the sample, donor evidence, and source decision are accepted.
 
-## CTLT source check
+## Prior CRSP/WRDS source references
 
-A one-time alternative-source check found Quiver's public historical page states its adjusted close accounts for splits and dividends and advertises daily prices back to 2014. The page/API did not provide a complete event panel to this workspace; the API requires an access key. No price file was retrieved, provider approval/licensing for this project is unconfirmed, and no consistency check against the project's price panel is possible. This attempt therefore did not satisfy the CTLT data requirement. Keep CTLT excluded from complete-case SCM unless a complete, approved, consistently defined adjusted-price/return series is obtained. Source: https://www.quiverquant.com/stock/CTLT/historical-prices/.
-
-## Execution gate
-
-The team lead's conditional approval is recorded in the audit. Benchmark execution remains blocked until the donor universe and complete adjusted-price/return panel pass the evidence and coverage checks. Preserve the locked fit [-252, -21], validation [-20, -1], primary post [0, +20], and extended post [0, +60] windows; do not alter matching criteria or add firms.
+- CRSP database layout: https://www.crsp.org/research/crsp-us-stock-databases-2025-layout/
+- WRDS S&P 500 query: https://wrds-www.wharton.upenn.edu/pages/classroom/the-sp-500/
+- WRDS historical constituent download: https://wrds-www.wharton.upenn.edu/pages/grid-items/downloading-the-sp-500-constituents/
