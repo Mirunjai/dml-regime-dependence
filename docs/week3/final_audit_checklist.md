@@ -19,9 +19,9 @@ Status date: 2026-11-11. Branch: `preksha/week3-benchmarks`.
 - [x] Donor screening schema and validator exist; validator is documentation completeness, not eligibility proof.
 - [ ] Obtain historical donor universe, adjusted donor prices and point-in-time fundamentals / security attributes.
 - [ ] Complete evidence-backed screening for index membership, industry, size, beta, liquidity, pre-event fit, coverage, and contamination; have a second reviewer sign.
-- [ ] Address CTLT data gap or preserve its exclusion.
+- [x] One alternative-source attempt documented for CTLT (Quiver public historical page / API); no complete panel was obtained or validated, so exclude CTLT from primary complete-case SCM unless a usable approved series is acquired.
 - [ ] Freeze donor pool, windows, exclusions, and input hashes.
-- [ ] Obtain and record explicit team-lead approval before the post-November 8 SCM benchmark. No SCM benchmark has been run under this work package.
+- [x] Team-lead approval received for remaining post-November 8 SCM work, conditional on all donor and price gates below; it does not authorize execution before those gates pass.
 - [ ] If approved and data-complete: run the pre-specified benchmark, save weights/gaps/RMSPE and pre-specified placebo diagnostics, then independently audit outputs.
 
 ## Literature and claims
