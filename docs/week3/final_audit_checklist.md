@@ -41,4 +41,4 @@ Status date: 2026-11-11. Branch: `preksha/week3-benchmarks`.
 
 ## Handoff
 
-The H4 proposal rename is already committed. Additional documentation commits on this branch add the donor-screening status, SCM method limits, literature attribution update, audit checklist, and classical/VIX results note. Do not characterize the work package as fully complete: the donor pool, CTLT price series, explicit SCM approval, and SCM inference remain blockers.
+The H4 proposal rename is already committed. Additional documentation commits on this branch add the donor-screening status, SCM method limits, literature attribution update, audit checklist, and classical/VIX results note. Do not characterize the work package as fully complete: the eligible donor pool and validated donor price panel remain blockers; CTLT stays excluded from complete-case SCM unless a full approved adjusted-price series is obtained; benchmark execution and placebo inference remain pending the prerequisites.
