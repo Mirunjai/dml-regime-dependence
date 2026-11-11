@@ -35,6 +35,9 @@ for _, c in coverage.iterrows():
     market["date"] = pd.to_datetime(market.date)
     full_ret = pd.to_numeric(sub.adj_close,errors="coerce").pct_change()
     fit["ret"] = full_ret.loc[fit.index]
+    # The first locked-window price has no prior price inside that window.
+    if len(fit):
+        fit.loc[fit.date.eq(fit.date.min()), "ret"] = float("nan")
     fit["dollar_volume"] = pd.to_numeric(fit.close_raw,errors="coerce") * pd.to_numeric(fit.volume_raw,errors="coerce")
     market["mret"] = pd.to_numeric(market.adj_close,errors="coerce").pct_change()
     joined = fit.merge(market[["date","mret"]],on="date",how="inner").dropna(subset=["ret","mret"])
@@ -43,6 +46,8 @@ for _, c in coverage.iterrows():
     tsub = treated[(treated.ticker == c.treated_ticker) & (treated.window_start == c.window_start)].sort_values("date").copy()
     tsub["ret"] = pd.to_numeric(tsub.adj_close,errors="coerce").pct_change()
     tfit = tsub[tsub.date.isin(fit_dates)]
+    if len(tfit):
+        tfit.loc[tfit.date.eq(tfit.date.min()), "ret"] = float("nan")
     paired = fit[["date","ret"]].merge(tfit[["date","ret"]],on="date",how="inner",suffixes=("_donor","_treated")).dropna()
     corr = paired.ret_donor.corr(paired.ret_treated) if len(paired)>1 else None
     tcum = (1+tfit.ret.dropna()).prod()-1 if tfit.ret.notna().any() else None
