@@ -7,10 +7,10 @@ Status date: 2026-11-11. Branch: `preksha/week3-benchmarks`.
 - [ ] Confirm frozen Gate 1 specification and event sample; this branch is secondary-benchmark work, not a scope change.
 - [x] Verified event announcements/effective dates are recorded for the eight candidate additions.
 - [x] Classical event-study output covers seven firms; CTLT is explicitly excluded for unavailable historical adjusted prices.
-- [x] VIX regime method is documented as pre-announcement, trailing 20 sessions, with event-specific historical thresholds; inspect the generated labels against the documented configuration before citing categories.
-- [ ] Reconcile the exact VIX reference configuration used by the generator, output, and method document (the method document currently says trailing five years; ensure code and result match).
-- [ ] Check all classical event-study rows against event-day-zero file and verify estimation/event windows, market proxy, missingness, and adjusted-return definitions.
-- [ ] Report clustered announcements as shared shocks; do not treat firms in the same cluster as independent replications.
+- [x] VIX generator uses trailing 20-session averages and trailing five-year event-specific references; saved cluster labels and values match the documented configuration on inspection.
+- [x] Compared saved classical CAR rows with event-day-zero and window output: seven rows, 220 estimation observations each, market-model windows are recorded.
+- [x] Results note reports CARs and VIX labels descriptively and flags shared announcement shocks.
+- [ ] Confirm source price adjustment details, full estimator options, and data provenance from a clean execution in the actual checkout.
 
 ## Synthetic Control
 
@@ -28,17 +28,17 @@ Status date: 2026-11-11. Branch: `preksha/week3-benchmarks`.
 
 - [x] Novelty phrasing is limited to a proposed finite-sample combination; no “first” claim.
 - [x] Adjacent dependent-data DML and 2026 papers are disclosed in the literature review.
-- [ ] Recheck all bibliographic metadata and working-paper versions before final external circulation.
+- [ ] Recheck bibliographic metadata and working-paper versions before final external circulation.
 - [ ] Clearly separate Monte Carlo coverage evidence (primary) from classical and SCM contextual benchmarks (secondary).
 
 ## Reproducibility and repository
 
 - [x] Week 2 reports and output are archived in `docs/week2/`.
-- [x] Week 3 methods, literature, and benchmark outputs are archived in `docs/week3/` and `results/benchmarks/`.
+- [x] Week 3 methods, literature, results interpretation, and benchmark outputs are archived.
 - [ ] Run the documented unit tests and donor evidence validator in the actual checkout; this environment had no local clone, so no execution is claimed here.
-- [ ] Confirm raw price files are available from the authorized source and document retrieval date, version, adjustment, and any licensing/redistribution limits.
-- [ ] Confirm branch head and clean working tree after the final commit.
+- [ ] The branch does not track `data/raw/week3_adjusted_prices.csv`; preserve or reacquire the authorized input and document retrieval date, version, adjustment, and redistribution limits. VIX source snapshot/retrieval metadata also needs recording.
+- [ ] Confirm branch head and clean working tree in the actual checkout.
 
 ## Handoff
 
-Current checked-in branch head at audit: `499138b63199a5522d6c8c94fb4c3a02d542275c`. The H4 proposal rename is already committed there. Do not characterize the branch as fully complete: the donor pool, CTLT price series, explicit SCM approval, and SCM inference remain blockers.
+The H4 proposal rename is already committed. Additional documentation commits on this branch add the donor-screening status, SCM method limits, literature attribution update, audit checklist, and classical/VIX results note. Do not characterize the work package as fully complete: the donor pool, CTLT price series, explicit SCM approval, and SCM inference remain blockers.
