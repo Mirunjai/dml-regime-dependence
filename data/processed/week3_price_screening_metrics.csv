@@ -1,16 +1,16 @@
-treated_ticker,ticker,fit_sessions,beta_vs_SPY,pre_event_fit_adj_return,median_fit_dollar_volume,status
-CRM,NOW,0,,,,not calculable: no candidate price rows
-CRM,WDAY,0,,,,not calculable: no candidate price rows
-FAST,GWW,232,0.954029060614563,0.06685944270732658,67212137.28027344,price-based descriptive only; donor eligibility not established
-FAST,MSM,232,0.957229775251324,-0.03979790742096445,22814683.9471817,price-based descriptive only; donor eligibility not established
-ADS,SYF,0,,,,not calculable: no candidate price rows
-ADS,COF,232,1.182969101358864,0.21354696502343606,217663317.9950714,price-based descriptive only; donor eligibility not established
-MHK,TILE,232,1.622487826160026,0.40451953481039427,4965706.841659546,price-based descriptive only; donor eligibility not established
-MHK,LEG,0,,,,not calculable: no candidate price rows
-SWKS,QRVO,0,,,,not calculable: no candidate price rows
-SWKS,CRUS,232,0.6731395753532214,0.44628094613947145,25686678.36742401,price-based descriptive only; donor eligibility not established
-ETSY,EBAY,232,0.6238860650966648,0.34982722929187604,418142128.50322723,price-based descriptive only; donor eligibility not established
-ETSY,SHOP,232,1.1266425566441776,1.9361807443461556,1237794239.4065857,price-based descriptive only; donor eligibility not established
-TER,COHU,232,1.5365408577752673,0.30152384356844486,4551844.155788422,price-based descriptive only; donor eligibility not established
-TER,FORM,232,1.3305100491614938,0.5537280980377186,12075657.036590576,price-based descriptive only; donor eligibility not established
+treated_ticker,ticker,fit_sessions,beta_vs_SPY,pre_event_fit_adj_return,median_fit_dollar_volume,treated_pair_fit_return_correlation,treated_pre_event_fit_adj_return,status
+CRM,NOW,0,,,,,,not calculable: no candidate price rows
+CRM,WDAY,0,,,,,,not calculable: no candidate price rows
+FAST,GWW,232,0.954029060614563,0.06685944270732658,67212137.28027344,0.7033776079588717,0.19485914062890553,price-based descriptive only; donor eligibility not established
+FAST,MSM,232,0.957229775251324,-0.03979790742096445,22814683.9471817,0.5797416636172601,0.19485914062890553,price-based descriptive only; donor eligibility not established
+ADS,SYF,0,,,,,,not calculable: no candidate price rows
+ADS,COF,232,1.182969101358864,0.21354696502343606,217663317.9950714,,,price-based descriptive only; donor eligibility not established
+MHK,TILE,232,1.622487826160026,0.40451953481039427,4965706.841659546,0.5960252224413755,0.6580012465242053,price-based descriptive only; donor eligibility not established
+MHK,LEG,0,,,,,,not calculable: no candidate price rows
+SWKS,QRVO,0,,,,,,not calculable: no candidate price rows
+SWKS,CRUS,232,0.6731395753532214,0.44628094613947145,25686678.36742401,0.3140944979716747,1.2399693993396803,price-based descriptive only; donor eligibility not established
+ETSY,EBAY,232,0.6238860650966648,0.34982722929187604,418142128.50322723,0.4864387299652606,1.6744553971998783,price-based descriptive only; donor eligibility not established
+ETSY,SHOP,232,1.1266425566441776,1.9361807443461556,1237794239.4065857,0.5590852209709632,1.6744553971998783,price-based descriptive only; donor eligibility not established
+TER,COHU,232,1.5365408577752673,0.30152384356844486,4551844.155788422,0.7529283340190277,0.532464852011997,price-based descriptive only; donor eligibility not established
+TER,FORM,232,1.3305100491614938,0.5537280980377186,12075657.036590576,0.8103378375025605,0.532464852011997,price-based descriptive only; donor eligibility not established
 
