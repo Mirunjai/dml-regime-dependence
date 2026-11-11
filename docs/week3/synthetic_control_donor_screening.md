@@ -14,11 +14,11 @@ These names are leads from the existing research notes only. They are not screen
 
 | Treated firm | Date | Research lead(s) from notes | Why investigated | Status |
 |---|---|---|---|---|
-| CRM | 2008-09-09 announcement | NOW, WDAY | Enterprise software comparison | Pending; notes already flag they were not public in 2008, so exclude for this event unless primary listing evidence disproves that chronology |
+| CRM | 2008-09-09 announcement | NOW, WDAY | Enterprise software comparison | Exclude both for this event: ServiceNow began NYSE trading June 29, 2012 and Workday IPO/trading began October 2012, after the 2008 event. Sources: [ServiceNow IR](https://www.servicenow.com/company/media/press-room/servicenow-announces-the-closing-of-its-initial-public-offering-.html), [Workday IR](https://investor.workday.com/resource/faqs/default.aspx) |
 | FAST | 2008-09-09 | GWW, MSM | Industrial distribution | Pending; verify common-stock identity, membership, industry and all dated metrics |
-| ADS | 2013-12-11 | SYF, COF | Consumer finance / payments | Pending; verify security/listing history, index status and comparability |
+| ADS | 2013-12-11 | SYF, COF | Consumer finance / payments | Exclude SYF for this event: Synchrony became public July 31, 2014. COF remains pending point-in-time S&P membership, dated metrics, and price fit; no eligibility finding. Source: [Synchrony IR FAQ](https://investors.synchrony.com/company-information/faq) |
 | MHK | 2013-12-11 | TILE, LEG | Flooring / furnishings | Pending; verify security/listing history, index status and comparability |
-| SWKS | 2015-03-09 | QRVO, CRUS | Semiconductor components | Pending; notes flag QRVO ticker did not exist under that identity in March 2015; verify and exclude if confirmed |
+| SWKS | 2015-03-09 | QRVO, CRUS | Semiconductor components | Corrected chronology: Nasdaq confirms QRVO began trading Jan 2, 2015, so it existed at announcement. Still exclude for insufficient pre-event history: Jan 2 to Mar 9 cannot supply the locked [-252,-21] fitting window. CRUS remains pending all other screening. Source: [Nasdaq listing notice](https://www.nasdaqtrader.com/TraderNews.aspx?id=ETA2014-135) |
 | ETSY | 2020-09-04 | EBAY, SHOP | E-commerce | Pending; verify point-in-time membership and contamination; SHOP must be checked against its IPO date |
 | TER | 2020-09-04 | COHU, FORM | Semiconductor test equipment | Pending; verify point-in-time membership and contamination |
 
