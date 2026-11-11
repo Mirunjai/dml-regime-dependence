@@ -1,71 +1,69 @@
-# Free Historical Data Source Coverage Matrix
+# Free Data Acquisition Coverage Matrix
 
-**Review date:** 2026-11-11  
-**Scope:** frozen Week 3 S&P 500 addition events only. No dataset was purchased and no Synthetic Control benchmark was run.
+**As of:** 2026-11-12  
+**Branch:** `preksha/week3-benchmarks`  
+**Decision:** Free-source acquisition completed as far as accessible data permits. The original treated sample remains frozen at **8 firms**. No purchase was made and no Synthetic Control benchmark was executed.
 
-## Decision status
+## Frozen sample reconciliation
 
-The free-source review is not sufficient to admit a donor pool or run SCM. The repository price diagnostics show historical rows for six of the seven treated firms, with CTLT missing. They do not document a complete, sourced donor panel. The repository donor screening template is blank. The committed membership file's provenance is not recorded, and the available snapshot evidence is stale for the September 2020 events. SEC point-in-time evidence has been demonstrated for one 2008 issuer only.
+The two event files in the branch identify the same eight treated firms: CRM, FAST, ADS, MHK, SWKS, ETSY, TER and CTLT. The earlier seven-firm donor-screen template omitted CTLT; that was a template defect, not authority to alter the treated sample. The previous local diagnostics contained rows for seven firms and none for CTLT. The fresh Yahoo/yfinance acquisition on 2026-11-11 returned 313/313 expected sessions for six firms (CRM, FAST, MHK, SWKS, ETSY and TER), and no history for ADS or CTLT. The two missing cases remain in all coverage records.
 
-The public GitHub membership history is a useful free lead for event-date reconstruction. Its year coverage includes all five event periods, but it is a community-maintained reconstruction, not official S&P evidence. Each candidate's event-date status still needs corroboration against dated S&P announcements or another defensible contemporaneous record.
+## Event-level coverage
 
-## Locked events and price-window coverage
+| Treated firm(s) | Announcement / event day zero | Effective | Frozen cases | Fresh Yahoo coverage | Membership snapshot available | Status |
+|---|---|---|---:|---|---|---|
+| CRM, FAST | 2008-09-09 / 2008-09-10 | 2008-09-12 | 2 | CRM 313/313; FAST 313/313 | 2008-09-08 | **Blocked:** SEC filings inaccessible for SIC/shares extraction; official donor membership and contamination unresolved. |
+| ADS, MHK | 2013-12-11 / 2013-12-11 | 2013-12-20 | 2 | ADS 0/313; MHK 313/313 | 2013-12-10 | **Blocked:** ADS missing-price case; donor evidence and SEC fundamentals unresolved. |
+| SWKS | 2015-03-09 / 2015-03-09 | 2015-03-11 | 1 | SWKS 313/313 | 2015-03-03 (6 days earlier) | **Blocked:** donor membership and point-in-time SEC fundamentals unresolved. |
+| ETSY, TER, CTLT | 2020-09-04 / 2020-09-08 | 2020-09-21 | 3 | ETSY 313/313; TER 313/313; CTLT 0/313 | 2020-06-22 (74 days earlier) | **Blocked:** CTLT missing-price case; intervening membership reconstruction and donor evidence not independently validated. |
 
-The event dates below are from `week3_benchmark_candidates.csv` and `week3_event_day_zero.csv`. The documented target price windows in the prior Week 3 work span approximately the pre-event fitting, validation, and post-event periods; frozen specifications remain fit [-252, -21], validation [-20, -1], primary post [0, +20], and extended post [0, +60].
+The locked windows remain unchanged: fit [-252,-21], validation [-20,-1], primary post [0,+20], extended post [0,+60]. The requested event-window panels contain 313 SPY sessions (from day -252 to +60).
 
-| Cluster / treated ticker | Announcement | Event day zero | Effective date | Existing local price diagnostics | Free-source status |
-|---|---:|---:|---:|---|---|
-| CRM | 2008-09-09 | 2008-09-10 | 2008-09-12 | 3,525 rows; 2007-01-03–2020-12-31 | Contains the full event windows. Provider extraction provenance is not present in the committed diagnostics. |
-| FAST | 2008-09-09 | 2008-09-10 | 2008-09-12 | 3,525 rows; 2007-01-03–2020-12-31 | Contains the full event windows. Provider extraction provenance is not present in the committed diagnostics. |
-| ADS | 2013-12-11 | 2013-12-11 | 2013-12-20 | 3,525 rows; 2007-01-03–2020-12-31 | Contains the event windows in the existing local diagnostics; ADS later delisted, so do not infer Yahoo coverage for other delisted donors from this one file. |
-| MHK | 2013-12-11 | 2013-12-11 | 2013-12-20 | 3,525 rows; 2007-01-03–2020-12-31 | Contains the full event windows. Provider extraction provenance is not present in the committed diagnostics. |
-| SWKS | 2015-03-09 | 2015-03-09 | 2015-03-11 | 3,525 rows; 2007-01-03–2020-12-31 | Contains the full event windows. Provider extraction provenance is not present in the committed diagnostics. |
-| ETSY | 2020-09-04 | 2020-09-08 | 2020-09-21 | 1,440 rows; 2015-04-16–2020-12-31 | IPO history starts in 2015, but includes the event windows. |
-| TER | 2020-09-04 | 2020-09-08 | 2020-09-21 | 3,525 rows; 2007-01-03–2020-12-31 | Contains the full event windows. Provider extraction provenance is not present in the committed diagnostics. |
-| CTLT | 2020-09-04 | 2020-09-08 | 2020-09-21 | 0 rows; no first/last price date | Missing. Keep as a missing-data case unless a reliable, comparable adjusted series is obtained. |
+## Price acquisition
 
-The source for those observation counts is the branch's `data/processed/week3_price_diagnostics.csv`. The data itself is not present in the branch's raw-data directory, and the committed diagnostics do not identify the downloader, exact Yahoo query, retrieval timestamp, or adjustment checks. The terminal transcript supplied earlier showed one local `week3_adjusted_prices.csv`, but that is not a reproducible, branch-tracked donor dataset. Thus this table reports existing observed coverage, not certification that Yahoo is a suitable uniform source.
+The reproducible extraction is in `scripts/acquire_week3_yahoo_prices.py`. It uses yfinance 1.8.0, Python 3.14.8, daily interval, `auto_adjust=False`, `actions=True`, and exclusive end dates. SPY supplies the session calendar and is also saved for beta calculations. Raw OHLC/volume, Yahoo adjusted close, dividends and split fields are retained. The run retrieved at 2026-11-11 23:24:02 UTC (2026-11-12 in India) returned:
 
-## Source-by-source coverage
+- Six treated firms with complete 313-session panels and no missing raw close, adjusted close or volume values.
+- ADS and CTLT with no returned history; their 626 expected ticker-session observations are listed as missing.
+- Nine exploratory price leads with complete panels, five leads with no history. Price availability is not donor eligibility.
+- No split event was reported within the requested event windows. Dividend events are recorded in the raw files (FAST 3, SWKS 5, TER 5 among treated panels).
 
-| Source | Event-period coverage | Company coverage actually established | What it can support | Gaps / decision |
-|---|---|---|---|---|
-| Yahoo Finance historical prices | Existing diagnostics span the needed 2008–2020 windows for six treated firms. | Six treated tickers have rows in the existing diagnostics; CTLT has none. No systematic potential-donor or delisted-donor panel has been saved or audited. | Free candidate price source for currently available histories; existing data suggests useful event-window coverage for six treated tickers. | Not sufficient for the donor universe. Yahoo's own help page describes data as informational; export availability varies by instrument, and the repository contains no dated reproducible export log or verified adjustment comparison. ADS's existing rows do not establish reliable coverage for all delisted symbols. Keep CTLT excluded from any complete-case benchmark. |
-| GitHub historical S&P 500 membership, fja05680/sp500 | The public lifecycle file is described as covering S&P 500 history from 1996 onward, so its nominal date span includes 2008-09, 2013-12, 2015-03, and 2020-09. | Date-year coverage exists for every event cluster; exact candidate donor membership has not been screened against this source. | Free point-in-time membership candidate list and reconstruction aid, with dated changes and ticker lifecycle records. | Maintainer states the baseline was obtained from a book-associated file through 2019 and later changes were manually maintained using Wikipedia/searches. It is not an official S&P feed. Reconcile each required date and ticker identity against dated S&P announcements. The repo's `sp500_membership_history.csv` currently has no cited source/version in the audit record; the prior terminal check found a preceding snapshot 1 day before 2008 and 2013 events, 6 days before SWKS, and 74 days before 2020-09-04. That 2020 snapshot cannot certify September membership. |
-| SEC EDGAR filings and data | Filings exist across all five periods; the structured Company Facts data series is not a complete source for the 2008 event, so inspect original filings for 2008. | Evidence sampled for CRM only: a 2008 SEC filing reports about 120.1 million shares outstanding as of 2008-04-30. A filing detail page filed 2008-08-20 reports SIC 7372, but that filing is after the 2008 pre-event information cutoff and must not be used for that event. Full contemporaneous SIC and share-count extraction is not yet done for CRM/FAST, ADS/MHK, SWKS, ETSY/TER, or any donors. | Point-in-time SIC proxy from the latest eligible SEC filing header; shares outstanding from the latest eligible pre-cutoff filing. For 2008, original filings and filing index/header evidence are available. | SEC supplies no historical adjusted daily prices, beta, or liquidity. Shares counts need stock-split alignment through the cutoff and a price from the approved price source to calculate cap. Do not use a filing submitted after the applicable information cutoff. |
-| HistoricalData.net free stock sample | Only July–December 2022 (127 trading dates; TWTR ends 2022-10-27); it overlaps none of the project event windows. | Sample tickers are TSLA, KO, SPY, TWTR. It includes no treated firm and no selected donor. | Inspect CSV schema and adjustment conventions, including a split, dividends, and a delisted series. Provider's page exposes representative real rows and all column definitions. | The sample cannot prove project-company coverage. A binary ZIP download was attempted but this environment could not resolve the provider hostname; the browser handoff also could not safely determine the current browser URL. The sample inspection below is from the provider's published page, not a locally downloaded ZIP. |
-| HistoricalData.net paid daily archive (fallback only) | Provider advertises daily archive dates from 2003-10-01 through 2026-11-06, which spans all project periods. | Provider says stock history includes active and delisted names, but security-specific dates vary. No coverage lookup for CRM, FAST, ADS, MHK, SWKS, ETSY, TER, CTLT or donors was completed; therefore individual missing coverage remains unknown. | If approved later, one-time single-user daily archive is USD $199, includes two months of updates, and contains raw and split/dividend-adjusted series in per-security CSVs. | Do not purchase at this stage. Before any final purchase decision, obtain the provider's security-by-security coverage lookup for all treated firms and a pre-screened donor list, verify CTLT, and confirm project-use license terms. No security-specific missing-data rate can currently be stated. |
+Yahoo `Adj Close` is provider-adjusted and may reflect later distributions/corporate actions; the raw close, adjusted close, dividends and splits are retained separately. This is a reproducible extraction, not a point-in-time adjustment validation or approval of Yahoo as the final research source.
 
-### SEC point-in-time sample
+## September 2020 membership reconstruction
 
-For the CRM event, day zero is 2008-09-10. The frozen pre-event fitting/validation cutoff at event day -21 is 2008-08-11. Salesforce's 10-Q for the quarter ended 2008-04-30 states approximately 120.1 million common shares outstanding as of 2008-04-30; the report was filed before that cutoff. This is a usable share-count observation subject to checking for any subsequent share issuance/split and documenting its availability date. The SEC filing detail page for an 8-K filed 2008-08-20 displays SIC 7372, but because it was filed after 2008-08-11 it is not eligible for this event's point-in-time classification. Use the latest filing detail/header published on or before the cutoff instead. No market capitalization is calculated here because the cutoff-date price series and split alignment have not been validated.
+The local S&P membership file had its last pre-announcement snapshot on 2020-06-22, 74 days before the 2020-09-04 announcement. The downloaded public `fja05680/sp500` change log records no constituent change from 2020-06-22 through 2020-09-04. Its next listed change is 2020-09-18 (LUMN/CTL label change), followed by the 2020-09-21 treated additions ETSY, TER and CTLT and removals COTY, KSS and HRB. S&P's 2020-09-04 release confirms the September 21 changes; its 2020-06-12 release documents the June 22 snapshot updates. These dated releases support the endpoints, but do not constitute a complete official announcement archive for every possible intervening change. Therefore the community log and current treated/donor statuses remain provisional pending a complete official cross-check.
 
-For all event periods, apply the same rule: SIC and shares must come from the latest information publicly filed on or before the relevant pre-event cutoff. Treat SIC as the agreed proxy for industry. Use the pre-cutoff shares count aligned for corporate actions through cutoff, multiplied by the matching provider's cutoff-date close, only after the price source is approved.
+## SEC and price-based matching evidence
 
-## HistoricalData.net sample inspection (published sample rows)
+An automated SEC submissions search identified the latest filing records strictly before each pre-event cutoff for FAST/GWW, ADS/COF and ETSY/EBAY. Requests to the SEC Archives for filing indexes and filing documents returned HTTP 403 during this acquisition; the extraction therefore yielded **no verified SIC or shares outstanding**. Those fields and market capitalization are blank in the donor dataset, with accession identifiers and failure notes preserved in `data/processed/week3_sec_filing_access_attempts.csv`. The original 2008 SEC filings still need manual retrieval/review; no 2008 SIC or share count is inferred from current data.
 
-The provider's sample page describes eight stock CSVs: daily and 1-minute files for TSLA, KO, SPY, and TWTR. Daily files have 17 fields: `date, open, high, low, close, volume, vwap, transactions, adj_open, adj_high, adj_low, adj_close, adj_volume, adj_vwap, dividend, dividend_type, split`. Daily rows use US Eastern dates. Empty fields are blank, not zero.
+For candidate series with prices, the saved screening metrics report beta versus SPY and median daily raw-close × volume over the locked fit window, plus cumulative adjusted-close return over that fit window. These are descriptive price calculations only. No point-in-time shares, market capitalization, validated SIC, treatment-relative return correlation for every pair, or contamination review is available. No candidate is designated eligible.
 
-A published TSLA sample around the 2022-08-25 3-for-1 split shows:
+## Donor and benchmark decision
 
-| Date | Raw close | Adjusted close | Split |
-|---|---:|---:|---|
-| 2022-08-24 | 891.29 | 297.0967 | |
-| 2022-08-25 | 296.07 | 296.07 | 1:3 |
-| 2022-08-26 | 288.09 | 288.09 | |
+The candidate dataset now contains the previously researched 14 ticker/event leads and explicit price, membership-snapshot, price-metric, missing-field and exclusion/open-reason columns. Every row is **NOT ELIGIBLE**. Several prices exist; none clears all required evidence gates. No donor was added to the benchmark input, the original eight treated firms were not changed, and no SCM helper was run.
 
-The provider says the per-security `adj_*` fields adjust historical rows for later split and cash-distribution events; there is no fixed adjustment base date, and an event does not adjust its own effective-date row. This backward-adjusted convention differs from a point-in-time raw daily cross-section, whose adjusted fields equal raw values. The provider's sample includes KO dividend rows and a TWTR series ending before the rest of the sample continues, demonstrating the distribution and delisting file conventions. Its verifier checks file integrity, schema, and adjustment calculations. These provider-published sample rows and checks are useful to assess format, but do not validate the full paid archive or coverage of project tickers.
+**Event decision:** all four event clusters remain blocked for SCM. This is due to missing or unverified donor membership, SEC matching fields and contamination review; the ADS and CTLT treated-price gaps add separate event-specific blockers. The SCM approval remains conditional on successful validation.
 
-## Reproducibility and next gate
+## Data files and reproduction
 
-Before donor screening can be called complete, the project needs: (1) a versioned, sourced membership file with event-date identity checks; (2) a saved, uniformly adjusted price panel for treated firms and each candidate donor over the required windows; (3) a saved company/date coverage report and adjustment/corporate-action checks; (4) SEC filing accession, filing date, SIC, shares, and split-alignment evidence at the same cutoff for treated firms and donors; (5) screening records for industry, market cap, beta, liquidity, pre-event returns, and contamination.
+- Treated, donor-lead and SPY prices: `data/raw/week3_yahoo/`
+- Retrieval parameters and per-ticker status: `data/raw/week3_yahoo/manifest.json`, `retrieval_log.csv`, `candidate_price_coverage.csv`
+- Missing session and quality reports: `missing_sessions.csv`, `candidate_missing_sessions.csv`, `data_quality.csv`
+- Membership status evidence: `data/processed/week3_membership_evidence.csv`
+- Dated 2020 community change log excerpt: `data/processed/week3_2020_membership_change_log.csv`
+- SEC filing attempt trace: `data/processed/week3_sec_filing_access_attempts.csv`
+- Donor screening: `data/processed/week3_donor_candidates.csv`
+- Price metric calculation: `scripts/build_week3_screening_metrics.py`, output `data/processed/week3_price_screening_metrics.csv`
+- Final limitations and decision log: `docs/week3/donor_eligibility_report.md`
 
-Until those records are complete and reviewed, CTLT remains excluded from the primary complete-case set, the donor pool remains unapproved, no source purchase is authorized, and Synthetic Control remains blocked. Do not expand the frozen firms, criteria, or event windows.
+To regenerate prices in a compatible Python environment: install `pandas` and `yfinance==1.8.0`, then run `python scripts/acquire_week3_yahoo_prices.py`. The script stores the provider response panels, request window and retrieval/library metadata. To regenerate the price-derived screening metrics after that run, execute `python scripts/build_week3_screening_metrics.py`.
 
-## References
+## Sources
 
-- Project event and price coverage inputs: [Week 3 candidates](../../data/processed/week3_benchmark_candidates.csv), [event day zero](../../data/processed/week3_event_day_zero.csv), [price diagnostics](../../data/processed/week3_price_diagnostics.csv), [donor template](../../data/processed/week3_donor_candidates.csv).
-- GitHub membership reconstruction: [fja05680/sp500](https://github.com/fja05680/sp500), [ticker lifecycle file](https://github.com/fja05680/sp500/blob/master/sp500_ticker_start_end.csv), [maintainer's notes on source and updates](https://github.com/damschroder/sp500-components#notes).
-- Yahoo: [CRM history page](https://finance.yahoo.com/quote/CRM/history/), [Yahoo data-provider note](https://help.yahoo.com/kb/SLN2310.html).
-- SEC: [CRM 2008 Q2 Form 10-Q](https://www.sec.gov/Archives/edgar/data/1108524/000119312508121851/d10q.htm), [CRM 2008-08-20 filing detail (SIC 7372)](https://www.sec.gov/Archives/edgar/data/1108524/000119312508181542/0001193125-08-181542-index.html), [SEC EDGAR APIs](https://www.sec.gov/edgar/sec-api-documentation).
-- HistoricalData.net: [free sample page](https://historicaldata.net/samples.html), [sample stock rows and field definitions](https://historicaldata.net/stocks.html), [adjustment methodology](https://historicaldata.net/methodology.html), [daily archive price and coverage notes](https://historicaldata.net/stocks.html), [FAQ and license/pricing](https://historicaldata.net/faq.html).
+- S&P Dow Jones Indices, [June 12, 2020 announcement](https://press.spglobal.com/2020-06-12-S-P-Dow-Jones-Indices-Announces-Tyler-Technologies-Bio-Rad-Laboratories-and-Teledyne-Technologies-Set-to-Join-S-P-500-Others-to-Join-S-P-MidCap-400-and-S-P-SmallCap-600), [September 4, 2020 announcement](https://press.spglobal.com/2020-09-04-Etsy-Teradyne-and-Catalent-Set-to-Join-S-P-500-Others-to-Join-S-P-MidCap-400-and-S-P-SmallCap-600).
+- Community membership data: [fja05680/sp500 repository](https://github.com/fja05680/sp500), including [dated change log](https://github.com/fja05680/sp500/blob/master/sp500_changes_since_2019.csv) and [historical snapshots](https://github.com/fja05680/sp500/blob/master/S%26P%20500%20Historical%20Components%20%26%20Changes%20(Updated).csv).
+- SEC: [EDGAR API documentation](https://www.sec.gov/edgar/sec-api-documentation); filing index/document URLs and accession identifiers appear in the acquisition trace.
+- Yahoo Finance: [historical data help](https://help.yahoo.com/kb/SLN2310.html).
+
