@@ -34,3 +34,8 @@ The tracked VIX history exists, but the results note says its source snapshot/re
 The existing `docs/week3/final_audit_checklist.md` correctly leaves outstanding: clean-run provenance, historical donor-universe and adjusted-price validation, point-in-time screening evidence, an independent reviewer, and final donor-pool/input hashes. The exact Norgate historical sample is still gated on a separate purchase decision; the free trial cannot cover the 2008 event period.
 
 No event window, matching criterion, project scope, or scientific result was changed. No test or benchmark was run.
+
+
+## Collaboration route update
+
+The branch now includes `docs/week3/collaborator_data_access_request.md` with the treated securities, exact frozen event windows/date spans, a bounded CRM validation sample request, required price/membership/identity fields, SEC screening fields, and licence questions. This task has no connected email/contact directory and the repository contains no external university/research-lab contact list; no outreach has been sent. Finding a contact or obtaining a licensing answer remains an external dependency. SCM remains blocked.
