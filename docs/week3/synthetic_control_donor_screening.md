@@ -53,4 +53,4 @@ Primary methods references: Abadie, Diamond & Hainmueller (2010), https://doi.or
 
 ## Approval gate
 
-The team lead requires explicit approval before running the post-November 8 Synthetic Control benchmark. This document, screening, code review, and input preparation do not constitute approval. Do not invoke the SCM benchmark or report post-November 8 SCM results until that approval is recorded.
+The team lead's explicit approval was received on 2026-11-11, conditional on donor screening and price validation. Do not invoke the SCM benchmark or report post-November 8 SCM results until both prerequisites are satisfied.
