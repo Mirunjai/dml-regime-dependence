@@ -1,0 +1,22 @@
+{
+  "retrieved_utc": "2026-11-11T23:24:02+00:00",
+  "python_version": "3.14.8",
+  "yfinance_version": "1.8.0",
+  "interval": "1d",
+  "auto_adjust": false,
+  "actions": true,
+  "requested_end": "exclusive; CSV report stores inclusive requested window",
+  "calendar": "SPY observed sessions per date range; missingness check only",
+  "scope": "frozen treated roster plus price-only research leads; no donor eligibility implied",
+  "tickers": [
+    "CRM",
+    "FAST",
+    "ADS",
+    "MHK",
+    "SWKS",
+    "ETSY",
+    "TER",
+    "CTLT"
+  ]
+}
+
