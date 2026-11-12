@@ -1,0 +1,113 @@
+"""Exploratory, source-pinned DML size/coverage campaign.
+
+Runs the proposal's full 2x3x2 DGP grid at tau=0 and tau=1. This is a
+pre-production calibration, not an approved production run. Same replication
+seed is reused across paired conditions and all four estimator cells.
+"""
+from __future__ import annotations
+import json, hashlib, platform, time
+from pathlib import Path
+import numpy as np
+from src.infra import dml_engine as E
+
+ROOT = Path(__file__).resolve().parents[1]
+OUT = ROOT / "results" / "calibration" / "mirun_dml_size_coverage_2026-11-12.json"
+REPS = 100
+ROOT_SEED = 60000
+Z = 1.959963984540054
+
+def wilson(x, n):
+    if n == 0: return [None, None]
+    p=x/n; den=1+Z*Z/n
+    center=(p+Z*Z/(2*n))/den
+    half=Z*np.sqrt(p*(1-p)/n+Z*Z/(4*n*n))/den
+    return [float(max(0,center-half)),float(min(1,center+half))]
+
+def summarize(records, truth):
+    good=[r for r in records if r["status"]=="ok"]
+    fail=len(records)-len(good)
+    covered=[r["lower"] <= truth <= r["upper"] for r in good]
+    rejected=[not (r["lower"] <= 0.0 <= r["upper"]) for r in good]
+    n=len(good); hits=sum(covered); rej=sum(rejected)
+    return {
+      "planned":len(records),"valid":n,"failed":fail,
+      "coverage_conditional":hits/n if n else None,
+      "coverage_mcse":float(np.sqrt((hits/n)*(1-hits/n)/n)) if n else None,
+      "coverage_wilson95":wilson(hits,n),
+      "rejection_rate":rej/n if n else None,
+      "rejection_wilson95":wilson(rej,n),
+      "mean_ci_width":float(np.mean([r["upper"]-r["lower"] for r in good])) if n else None,
+      "mean_estimate":float(np.mean([r["estimate"] for r in good])) if n else None,
+      "all_attempted_coverage_bounds":[hits/len(records),(hits+fail)/len(records)] if records else [None,None],
+    }
+
+def main():
+    cfg=E.load_proposal(ROOT/"configs/mirun_gate3.yaml")
+    values=E.resolve_parameters(cfg,smoke=True)
+    conditions=[]
+    for d in (0.25,0.50,0.75):
+      for k in (4,16):
+       for gamma in (0.0,1.0):
+        for kind,tau in (("zero_effect",0.0),("coverage",1.0)):
+         conditions.append({"name":f"d{d:g}_K{k}_g{gamma:g}_{kind}",
+            "density":d,"K":k,"gamma":gamma,"tau":tau,"kind":kind})
+    allrows=[]; started=time.time()
+    for ci,c in enumerate(conditions,1):
+      print(f"[{ci}/{len(conditions)}] {c['name']}",flush=True)
+      reps=[]
+      for rep in range(REPS):
+        record=E.run_replication(cfg,values,c,rep,ROOT_SEED,label="exploratory_calibration")
+        record["cells"]=[{**cell,"replication_id":rep} for cell in record["cells"]]
+        reps.append(record)
+        if (rep+1)%10==0: print(f"  {rep+1}/{REPS}",flush=True)
+      summaries={}
+      for cell in E.CELL_MAP:
+        cellrows=[]
+        for record in reps:
+          x=next(v for v in record["cells"] if v["cell"]==cell)
+          cellrows.append(x)
+        summaries[cell]=summarize(cellrows,c["tau"])
+      # Paired difference in binary CI coverage, grouped robust minus random robust.
+      a="random_xfit__robust_var"; b="grouped_xfit__robust_var"
+      by_a={r["replication_id"]:r for r in (next(x for x in q["cells"] if x["cell"]==a) for q in reps)}
+      by_b={r["replication_id"]:r for r in (next(x for x in q["cells"] if x["cell"]==b) for q in reps)}
+      diffs=[]
+      for rid in sorted(set(by_a)&set(by_b)):
+        ra,rb=by_a[rid],by_b[rid]
+        if ra["status"]=="ok" and rb["status"]=="ok":
+          ca=ra["lower"]<=c["tau"]<=ra["upper"]
+          cb=rb["lower"]<=c["tau"]<=rb["upper"]
+          diffs.append(float(cb)-float(ca))
+      summaries["paired_grouped_robust_minus_random_robust"]={
+        "valid_pairs":len(diffs),"difference":float(np.mean(diffs)) if diffs else None,
+        "mcse":float(np.std(diffs,ddof=1)/np.sqrt(len(diffs))) if len(diffs)>1 else None,
+      }
+      allrows.append({"condition":c,"cells":summaries,
+        "paired_worlds":sum(r["paired_block_status"]=="complete" for r in reps),
+        "incomplete_worlds":sum(r["paired_block_status"]!="complete" for r in reps),
+        "mean_seconds_per_replication":float(np.mean([r["total_seconds"] for r in reps]))})
+    result={
+      "schema":"project_a_dml_size_coverage_calibration_v1",
+      "status":"EXPLORATORY_NOT_GATE_APPROVAL_NOT_PRODUCTION",
+      "grid":"density={0.25,0.50,0.75} x K={4,16} x gamma={0,1} x tau={0,1}",
+      "replications_per_condition":REPS,"root_seed":ROOT_SEED,
+      "same_seed_pairing":"Same seed IDs across tau=0/tau=1 and grid conditions; each DGP stream remains internally named.",
+      "estimator":"Unmodified research.week2_completion.dml.run_dml; naive and overlap-sandwich CR0-normal",
+      "dgp_git_blob_sha1":hashlib.sha1((ROOT/"research/week2_completion/dgp.py").read_bytes()).hexdigest(),
+      "dml_sha256":hashlib.sha256((ROOT/"research/week2_completion/dml.py").read_bytes()).hexdigest(),
+      "engine_sha256":hashlib.sha256((ROOT/"src/infra/dml_engine.py").read_bytes()).hexdigest(),
+      "python":platform.python_version(),"numpy":np.__version__,
+      "elapsed_seconds":time.time()-started,"conditions":allrows,
+      "limitations":[
+        "100 replications per cell are a screening/calibration run, not final precision for a 95% coverage claim.",
+        "Coverage and size are conditional on successful intervals; all-attempted bounds and failure counts are also reported.",
+        "tau=0 rejection rate is empirical size; tau=1 rejection rate is power; tau=1 coverage is reported separately.",
+        "CR0-normal is evaluated as implemented; this campaign does not select CR0-t or CR1-regime-t.",
+        "No production approval or Gate 2/3 sign-off is implied."
+      ]
+    }
+    OUT.parent.mkdir(parents=True,exist_ok=True)
+    OUT.write_text(json.dumps(result,indent=2,allow_nan=False)+"\n")
+    print(f"Saved {OUT}; elapsed={result['elapsed_seconds']:.1f}s",flush=True)
+
+if __name__=="__main__": main()
