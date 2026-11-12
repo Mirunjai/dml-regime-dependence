@@ -8,7 +8,7 @@ def test_fixed_and_canonical_garch_hold_same_unconditional_variance_at_point_nin
     fixed = garch_parameters(0.90, arch_share=0.10 / 0.90)
     assert canonical.unconditional_variance == fixed.unconditional_variance == 1.0
     assert np.isclose(canonical.omega, 0.10) and np.isclose(fixed.omega, 0.10)
-    assert canonical.alpha == 0.09
+    assert np.isclose(canonical.alpha, 0.09)
     assert fixed.alpha == 0.10
     assert canonical.beta == 0.81
     assert fixed.beta == 0.80

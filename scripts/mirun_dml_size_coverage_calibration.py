@@ -106,6 +106,13 @@ def main():
         "paired_worlds":sum(r["paired_block_status"]=="complete" for r in reps),
         "incomplete_worlds":sum(r["paired_block_status"]!="complete" for r in reps),
         "mean_seconds_per_replication":float(np.mean([r["total_seconds"] for r in reps]))})
+      partial={"schema":"project_a_dml_size_coverage_calibration_v1",
+        "status":"RUNNING_EXPLORATORY_NOT_GATE_APPROVAL",
+        "grid":"density={0.25,0.50,0.75} x K={4,16} x gamma={0,1} x tau={0,1}",
+        "conditions_planned":len(conditions),"conditions_completed":len(allrows),
+        "replications_per_condition":REPS,"root_seed":ROOT_SEED,"conditions":allrows}
+      OUT.parent.mkdir(parents=True,exist_ok=True)
+      OUT.write_text(json.dumps(partial,indent=2,allow_nan=False))
     result={
       "schema":"project_a_dml_size_coverage_calibration_v1",
       "status":"EXPLORATORY_NOT_GATE_APPROVAL_NOT_PRODUCTION",
