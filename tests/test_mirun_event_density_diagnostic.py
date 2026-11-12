@@ -30,3 +30,9 @@ def test_multi_membership_pairs_are_not_double_counted():
 def test_invalid_membership_id_is_rejected():
     with pytest.raises(ValueError):
         summarize_memberships([(0,),(2,)],2)
+
+def test_pair_density_does_not_overflow_for_large_membership_sets():
+    shared = tuple(range(256))
+    result = summarize_memberships([shared, shared], n_regimes=256)
+    assert result["shared_regime_pair_density"] == 1.0
+    assert result["mean_regimes_per_event"] == 256.0
