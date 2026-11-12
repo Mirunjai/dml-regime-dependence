@@ -28,7 +28,7 @@ def summarize_memberships(memberships, n_regimes: int):
     n = len(memberships)
     if n < 2 or n_regimes < 0:
         raise ValueError("Need at least two events and nonnegative n_regimes")
-    matrix = np.zeros((n, n_regimes), dtype=np.uint8)
+    matrix = np.zeros((n, n_regimes), dtype=np.int64)
     for i, membership in enumerate(memberships):
         for regime in membership:
             if type(regime) is not int or not 0 <= regime < n_regimes:
