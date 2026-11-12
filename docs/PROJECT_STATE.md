@@ -1,3 +1,36 @@
+## Project close-out execution work — 12 November 2026
+
+A draft close-out PR (#14) adds a consolidated audit, an event-level density
+mapping proposal, a variance-estimator decision protocol, and a reproducible
+calendar-DGP event-density diagnostic. The diagnostic reproduces
+`build_world` event memberships from the same named RNG streams and
+`simulate_calendar_regimes` function. Its tests cover exact membership parity,
+zero exposure, one-cluster pair density, multi-membership deduplication and
+invalid labels.
+
+GitHub Actions on the close-out branch ran the full suite with warnings treated
+as errors: **400 passed** (Python 3.13.18; run
+[43201307789](https://github.com/Mirunjai/dml-regime-dependence/actions/runs/43201307789)).
+An earlier run failed one newly written test because its expected pair count
+was wrong; the test expectation was corrected and the full suite then passed.
+The failed run is retained as history, not hidden.
+
+The density mapping reconstruction shows that the configured calendar-time
+fraction differs from both exposed-event share and shared-regime event-pair
+density. Matching exposed-event share across K leaves a pair-density contrast;
+this is a plausible H4 operationalization but remains a proposal until the team
+ratifies the estimand and thresholds. Gate 2 and Gate 3 remain unapproved.
+
+The variance decision memo lists CR0-normal, CR0-t, CR1-regime+t, CR2/BRL with
+Satterthwaite degrees of freedom, and restricted wild cluster bootstrap-t as
+candidates. None is newly designated as the primary estimator by this work.
+Production execution remains blocked by the existing approval guard until the
+team records Gate 2/3 decisions.
+
+This PR does not complete production Monte Carlo results, independently verify
+the science, or close the missing labelled daily return panel / SCM donor data.
+Historical CAR summaries remain unverified. These limits remain explicit.
+
 # Project state
 
 ## Preksha Week 3 integration — 12 November 2026
