@@ -11,6 +11,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import numpy as np
+from scipy.stats import t as student_t
 from src.infra import dml_engine as E
 
 OUT = ROOT / "results" / "calibration" / "mirun_dml_size_coverage_2026-11-12.json"
@@ -25,14 +26,31 @@ def wilson(x, n):
     half=Z*np.sqrt(p*(1-p)/n+Z*Z/(4*n*n))/den
     return [float(max(0,center-half)),float(min(1,center+half))]
 
-def summarize(records, truth):
+def summarize(records, truth, k):
     good=[r for r in records if r["status"]=="ok"]
     fail=len(records)-len(good)
     covered=[r["lower"] <= truth <= r["upper"] for r in good]
     rejected=[not (r["lower"] <= 0.0 <= r["upper"]) for r in good]
     n=len(good); hits=sum(covered); rej=sum(rejected)
+    variance_sensitivity={}
+    if records and records[0]["cell"].endswith("robust_var"):
+      valid=[r for r in good if r.get("se") is not None and r.get("estimate") is not None]
+      df=max(int(k)-1,1)
+      crit=float(student_t.ppf(0.975,df))
+      lo=[r["estimate"]-crit*r["se"] for r in valid]
+      hi=[r["estimate"]+crit*r["se"] for r in valid]
+      nh=sum(a <= truth <= b for a,b in zip(lo,hi))
+      nr=sum(not (a <= 0.0 <= b) for a,b in zip(lo,hi))
+      nv=len(valid)
+      variance_sensitivity={"cr0_t_df_K_minus_1":{
+        "valid":nv,"degrees_freedom":df,"critical_value":crit,
+        "coverage_conditional":nh/nv if nv else None,
+        "coverage_wilson95":wilson(nh,nv),
+        "rejection_rate":nr/nv if nv else None,
+        "rejection_wilson95":wilson(nr,nv)}}
     return {
       "planned":len(records),"valid":n,"failed":fail,
+      "variance_sensitivity":variance_sensitivity,
       "coverage_conditional":hits/n if n else None,
       "coverage_mcse":float(np.sqrt((hits/n)*(1-hits/n)/n)) if n else None,
       "coverage_wilson95":wilson(hits,n),
@@ -68,7 +86,7 @@ def main():
         for record in reps:
           x=next(v for v in record["cells"] if v["cell"]==cell)
           cellrows.append(x)
-        summaries[cell]=summarize(cellrows,c["tau"])
+        summaries[cell]=summarize(cellrows,c["tau"],c["K"])
       # Paired difference in binary CI coverage, grouped robust minus random robust.
       a="random_xfit__robust_var"; b="grouped_xfit__robust_var"
       by_a={r["replication_id"]:r for r in (next(x for x in q["cells"] if x["cell"]==a) for q in reps)}
@@ -104,7 +122,7 @@ def main():
         "100 replications per cell are a screening/calibration run, not final precision for a 95% coverage claim.",
         "Coverage and size are conditional on successful intervals; all-attempted bounds and failure counts are also reported.",
         "tau=0 rejection rate is empirical size; tau=1 rejection rate is power; tau=1 coverage is reported separately.",
-        "CR0-normal is evaluated as implemented; this campaign does not select CR0-t or CR1-regime-t.",
+        "CR0-normal is evaluated as implemented; CR0-t with df=K-1 is a same-world sensitivity. CR1-regime-t is not computed because the current estimator does not expose a separately validated regime-only meat component.",
         "No production approval or Gate 2/3 sign-off is implied."
       ]
     }
