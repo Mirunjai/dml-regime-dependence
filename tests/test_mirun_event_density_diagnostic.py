@@ -25,7 +25,7 @@ def test_multi_membership_pairs_are_not_double_counted():
     r=summarize_memberships([(0,),(0,1),(1,),tuple()],2)
     assert r["exposed_event_share"] == .75
     assert r["multi_regime_event_share"] == .25
-    assert r["shared_regime_pair_density"] == pytest.approx(3/6)
+    assert r["shared_regime_pair_density"] == pytest.approx(2/6)
 
 def test_invalid_membership_id_is_rejected():
     with pytest.raises(ValueError):
