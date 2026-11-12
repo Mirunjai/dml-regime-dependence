@@ -9,17 +9,20 @@ zero exposure, one-cluster pair density, multi-membership deduplication and
 invalid labels.
 
 GitHub Actions on the close-out branch ran the full suite with warnings treated
-as errors: **400 passed** (Python 3.13.18; run
-[43201307789](https://github.com/Mirunjai/dml-regime-dependence/actions/runs/43201307789)).
+as errors: **401 passed** (Python 3.13.18; run
+[43203132264](https://github.com/Mirunjai/dml-regime-dependence/actions/runs/43203132264)).
 An earlier run failed one newly written test because its expected pair count
 was wrong; the test expectation was corrected and the full suite then passed.
 The failed run is retained as history, not hidden.
 
-The density mapping reconstruction shows that the configured calendar-time
-fraction differs from both exposed-event share and shared-regime event-pair
-density. Matching exposed-event share across K leaves a pair-density contrast;
-this is a plausible H4 operationalization but remains a proposal until the team
-ratifies the estimand and thresholds. Gate 2 and Gate 3 remain unapproved.
+The density diagnostic distinguishes configured calendar fraction, event-exposed
+share, and unconditional shared-pair density. The Plan B structural audit proposes
+event-exposed share as the main descriptive density axis and a separate H4
+pair-density match (K=4, calendar fraction .31; K=16, .50). Pair density is
+approximately .03585 in both cells, while event-exposed shares differ (.37869
+versus .75334). This is one matched structural quantity, not equivalent overall
+dependence structures. The team must ratify it and the thresholds. Gate 2 and
+Gate 3 remain unapproved.
 
 The variance decision memo lists CR0-normal, CR0-t, CR1-regime+t, CR2/BRL with
 Satterthwaite degrees of freedom, and restricted wild cluster bootstrap-t as
