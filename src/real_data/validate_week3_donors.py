@@ -19,6 +19,7 @@ TREATED = {
     "SWKS": "2015-03-11",
     "ETSY": "2020-09-21",
     "TER": "2020-09-21",
+    "CTLT": "2020-09-21",
 }
 REQUIRED_EVIDENCE = [
     "security_type", "us_domicile", "sp500_member_on_event",
@@ -40,12 +41,14 @@ def main() -> int:
     if not path.exists():
         raise SystemExit(f"Missing donor table: {path}")
     df = pd.read_csv(path, dtype=str, keep_default_na=False)
-    required_columns = {"treated_ticker", "event_date", "donor_ticker", *REQUIRED_EVIDENCE}
+    required_columns = {"treated_ticker", "event_date", "donor_ticker", "exclusion_reason", *REQUIRED_EVIDENCE}
     missing_columns = sorted(required_columns - set(df.columns))
     if missing_columns:
         raise SystemExit("Missing columns: " + ", ".join(missing_columns))
 
     errors: list[str] = []
+    if df.empty:
+        errors.append("donor table is empty; no donor screening has been completed")
     allowed_status = {"eligible", "excluded", "pending"}
     for idx, row in df.iterrows():
         line = idx + 2

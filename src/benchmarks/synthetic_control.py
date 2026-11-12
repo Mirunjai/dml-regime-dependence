@@ -49,6 +49,8 @@ def fit_synthetic_control(
     arrays = (y_pre, y0_pre, y_post, y0_post)
     if any(not np.isfinite(a).all() for a in arrays):
         raise ValueError("Synthetic Control inputs contain missing or nonfinite values")
+    if any(not isinstance(i, str) or not i.strip() for i in ids):
+        raise ValueError("donor_ids must be nonempty strings")
     if len(set(ids)) != len(ids):
         raise ValueError("donor_ids must be unique")
 
@@ -69,8 +71,10 @@ def fit_synthetic_control(
     )
     if not result.success:
         raise RuntimeError(f"Synthetic Control optimization failed: {result.message}")
-    weights = np.clip(result.x, 0.0, 1.0)
-    weights /= weights.sum()
+    weights = np.asarray(result.x, dtype=float)
+    if (not np.isfinite(weights).all() or (weights < 0).any() or (weights > 1).any()
+            or not np.isclose(weights.sum(), 1., atol=1e-8, rtol=0)):
+        raise RuntimeError("Optimizer returned infeasible donor weights")
     synthetic_pre = y0_pre @ weights
     synthetic_post = y0_post @ weights
     pre_gap = y_pre - synthetic_pre

@@ -75,6 +75,15 @@ figure and reproducibility log can be regenerated with
 [his reporting handoff](reports/sudarshan_week3.md). This compares saved summaries;
 it does not replace an independent raw-result replication or real-data analysis.
 
+## Preksha’s Week 3 benchmark tools
+
+Dated event-study and Synthetic Control helpers, pre-announcement VIX event labels,
+source audits and acquisition tools are integrated. See the
+[review and remaining data gaps](reports/preksha_week3_review.md). Install optional
+acquisition/calendar dependencies with `python -m pip install -r requirements-data.txt`.
+The saved historical CARs remain unverified without their original inputs; SCM
+and daily labelled-panel diagnostics remain pending.
+
 ## Installation
 
 Use Python 3.11 or newer (tested locally with 3.13.13). No GPU is required.

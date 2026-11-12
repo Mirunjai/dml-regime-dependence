@@ -144,7 +144,10 @@ def adjusted_prices_to_returns(
         raise ValueError("Price panel contains duplicate dates")
     frame = frame.sort_index()
     frame.index.name = "Date"
-    numeric = frame.apply(pd.to_numeric, errors="coerce")
+    numeric = frame.apply(pd.to_numeric, errors="raise")
+    present = numeric.to_numpy(dtype=float)
+    if np.isinf(present).any() or (present <= 0).any():
+        raise ValueError("Observed adjusted prices must be finite and positive")
     return numeric.pct_change(fill_method=None)
 
 
@@ -156,6 +159,7 @@ def estimate_market_model_event_study(
     event_session: str | pd.Timestamp,
     estimation_window: tuple[int, int],
     event_window: tuple[int, int],
+    expected_sessions=None,
 ) -> dict[str, object]:
     """Estimate a market-model event study on a dated return panel.
 
@@ -163,6 +167,10 @@ def estimate_market_model_event_study(
     example, ``(-250, -30)`` means estimation sessions 250 through 30 before
     the anchor. No window values are supplied by default: they are design
     decisions, not hidden implementation choices.
+
+    ``expected_sessions`` supplies the exchange calendar. Missing rows are then
+    reindexed as missing rather than shifting offsets. Without it, the caller
+    must supply a complete ordered trading-session index.
 
     ``event_session`` must be the trading session chosen by the frozen event
     timing convention. In particular, an announcement/effective change after
@@ -174,6 +182,9 @@ def estimate_market_model_event_study(
         raise KeyError(f"Return panel is missing columns: {', '.join(missing)}")
     if len(estimation_window) != 2 or len(event_window) != 2:
         raise ValueError("Windows must be (start_offset, end_offset) pairs")
+    if any(isinstance(v, (bool, np.bool_)) or not isinstance(v, (int, np.integer))
+           for v in (*estimation_window, *event_window)):
+        raise ValueError("Window offsets must be integers")
     est_start, est_end = map(int, estimation_window)
     evt_start, evt_end = map(int, event_window)
     if est_start > est_end or evt_start > evt_end or est_end >= evt_start:
@@ -182,8 +193,13 @@ def estimate_market_model_event_study(
     frame = returns[[stock_ticker, market_ticker]].copy()
     frame.index = pd.to_datetime(frame.index, errors="raise").normalize()
     frame = frame.sort_index()
-    if frame.index.has_duplicates:
-        raise ValueError("Return panel contains duplicate dates")
+    if frame.index.has_duplicates or frame.index.hasnans:
+        raise ValueError("Return panel contains duplicate or invalid dates")
+    if expected_sessions is not None:
+        sessions = pd.DatetimeIndex(pd.to_datetime(expected_sessions)).normalize()
+        if sessions.has_duplicates or sessions.hasnans or not sessions.is_monotonic_increasing:
+            raise ValueError("Expected sessions must be unique ordered dates")
+        frame = frame.reindex(sessions)
     anchor = pd.Timestamp(event_session).normalize()
     position = frame.index.get_indexer([anchor])[0]
     if position < 0:
@@ -195,8 +211,8 @@ def estimate_market_model_event_study(
         raise ValueError("Requested windows extend beyond available return dates")
     estimation = frame.iloc[est_lo : est_hi + 1]
     event = frame.iloc[evt_lo : evt_hi + 1]
-    if estimation.isna().any().any() or event.isna().any().any():
-        raise ValueError("Selected estimation/event windows contain missing returns")
+    if not np.isfinite(estimation.to_numpy(dtype=float)).all() or not np.isfinite(event.to_numpy(dtype=float)).all():
+        raise ValueError("Selected estimation/event windows contain missing or nonfinite returns")
 
     x = estimation[market_ticker].to_numpy(dtype=float)
     y = estimation[stock_ticker].to_numpy(dtype=float)
@@ -209,6 +225,8 @@ def estimate_market_model_event_study(
 
     event_market = event[market_ticker].to_numpy(dtype=float)
     abnormal = event[stock_ticker].to_numpy(dtype=float) - (alpha + beta * event_market)
+    if not np.isfinite(abnormal).all() or not np.isfinite([alpha, beta]).all():
+        raise ValueError("Nonfinite market-model output")
     ar = pd.Series(abnormal, index=event.index, name="abnormal_return")
     car = ar.cumsum().rename("cumulative_abnormal_return")
     return {

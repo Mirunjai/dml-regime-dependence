@@ -4,6 +4,7 @@
 from pathlib import Path
 
 import pandas as pd
+import exchange_calendars as xc
 
 from src.benchmarks.event_study import estimate_market_model_event_study
 
@@ -26,6 +27,7 @@ ESTIMATION_WINDOW = (-250, -31)
 def main():
     prices = pd.read_csv(PRICES, parse_dates=["Date"])
     prices = prices.set_index("Date").sort_index()
+    sessions = xc.get_calendar("XNYS").sessions_in_range(prices.index.min(), prices.index.max()).tz_localize(None)
     events = pd.read_csv(EVENTS)
 
     results = []
@@ -60,6 +62,7 @@ def main():
                 event_session=event_date,
                 estimation_window=ESTIMATION_WINDOW,
                 event_window=window,
+                expected_sessions=sessions,
             )
 
             row[f"car_{name}"] = result["car"]

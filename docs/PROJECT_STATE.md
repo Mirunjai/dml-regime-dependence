@@ -1,5 +1,18 @@
 # Project state
 
+## Preksha Week 3 integration — 12 November 2026
+
+Reviewed source `21b9e38`: date-aware classical/SCM helpers, VIX event labels,
+acquisition/source/donor tools and documented data gaps are integrated with
+corrections. 395 tests pass with warnings as errors. All eight VIX event labels
+reproduce; saved fresh prices cover six of eight treated firms. Historical CAR
+results lack their original combined input and remain unverified; SCM has no
+eligible donors or executed results. Event-specific calm/mixed/turbulent labels
+are not a frozen daily binary-labelled panel. Raw price responses are preserved
+in ignored local evidence, excluded from the integration tree. See
+[the detailed review](../reports/preksha_week3_review.md).
+
+
 ## Sudarshan local Week 3 check on 11 November 2026
 
 Compared Mirun's saved calendar-pilot table against the pinned-source replay
