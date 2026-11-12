@@ -1,0 +1,17 @@
+{
+  "id": "deeptanshukumar/ada-frozen-exploratory-archive",
+  "title": "ADA frozen exploratory archive",
+  "code_file": "collect.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [],
+  "kernel_sources": [
+    "deeptanshukumar/ada-exploratory-tau-0-validation",
+    "deeptanshukumar/ada-exploratory-tau-1-validation"
+  ],
+  "competition_sources": []
+}

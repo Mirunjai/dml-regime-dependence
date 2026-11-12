@@ -1,0 +1,14 @@
+{
+  "id": "deeptanshukumar/ada-exploratory-tau-0-validation",
+  "title": "ADA exploratory tau 0 validation",
+  "code_file": "validation.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [],
+  "kernel_sources": [],
+  "competition_sources": []
+}

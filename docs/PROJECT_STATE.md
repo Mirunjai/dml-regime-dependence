@@ -1,5 +1,48 @@
 # Project state
 
+## Reviewed Week 4 integration — 12 November 2026
+
+The user authorized merging the reviewed Week 4 package and deleting the seven
+previously named obsolete branches. This integration includes Mirun PR #14/#15
+source additions with the independent review fixes, final-week raw-result and
+daily-data auditors, registered exploratory configurations, narrated notebook
+build/clean-run tools and submission source. The generated deliverables folder,
+raw/provider data and private Kaggle bundle remain outside Git.
+
+Validation: **427 tests pass with warnings as errors**; the expanded notebook has
+**38 executed code cells**, verified in a fresh Kaggle CPU kernel against its
+checksummed frozen inputs. Production remains NO-GO / Plan B; the independent
+control shortfall, matched-H4 and original-input limitations are unchanged.
+
+All seven explicitly approved obsolete remote branches and the clean local
+Session5 branch/checkout were deleted after tip checks and verified Git-bundle
+backup. Preksha Week 3 and both new Mirun source branches are retained. Earlier
+entries below are dated audit snapshots and retain their pre-integration status.
+See [the Week 4 integration note](final_review/WEEK4_INTEGRATION_20261112.md).
+
+## Local final scope audit — 12 November 2026
+
+Fresh main at `502bfa9`: **395 tests pass**. Reviewed local combination of open
+Mirun PRs #14/#15 plus final-week tools: **427 tests pass with warnings as errors**.
+Control-path crashes, invalid-diagnostic accounting, membership overflow, pairing
+identity and calibration raw-record retention are corrected locally. The exact
+calendar-DGP structural/control diagnostic has been rerun (2,800 world builds).
+
+The submission notebook is expanded to **38 code cells and 40 Markdown cells**,
+with real DGP, fold/residual/variance inspection and independently recomputed raw
+statistics; fresh Kaggle execution verifies all stages. The frozen exploratory
+campaign remains 3,200 complete worlds / 12,800 intervals. See
+[the source/weekly audit](final_review/PROJECT_SCOPE_AUDIT_20261112.md) and
+[branch cleanup proposal](final_review/BRANCH_CLEANUP_PROPOSAL_20261112.md).
+
+Week 1–3 reviewed implementations are on main, but the two open PRs and the
+current final-week working source are **not yet committed/merged**. Production
+remains NO-GO under Plan B. The original Week 2 handout supplies seven explicit
+Gate 2 criteria; its independent-baseline calibration requirement is not met.
+No branches deleted; the seven candidates await the user's explicit confirmation.
+No new video rendering, Drive upload or form submission was performed.
+
+
 ## Preksha Week 3 integration — 12 November 2026
 
 Reviewed source `21b9e38`: date-aware classical/SCM helpers, VIX event labels,
@@ -303,3 +346,34 @@ or third-party implementation has been ported into project source.
 
 No final DML ablation, real-data analysis, estimator coverage claim, or gate
 approval is implied by this component milestone.
+
+
+## Final-week exploratory release - 12 November 2026
+
+The final-week v3 plan is implemented as a Plan B exploratory submission, under
+the user's delegated preparation authority. No teammate approval, production GO
+or mentor approval is inferred. See [the decision memo](final_review/DECISIONS_20261112.md),
+[independent audit](final_review/INDEPENDENT_AUDIT_20261112.md) and
+[literature verification](final_review/LITERATURE_VERIFICATION.md).
+
+- Fresh CPU Kaggle grid: 16 registered scenarios x 200 worlds, tau=0 and tau=1;
+  3,200 complete four-cell blocks and 12,800 intervals; zero failed/missing cells.
+- Raw/source/plan hashes and denominators checked independently. Paired comparisons
+  require all four successful cells; the production runner's aggregate is corrected
+  accordingly. Marginal successful cells remain counted individually.
+- Fresh independent-control robust coverage: 174/200=.870 and 175/200=.875.
+  All 120 recovered printed control fields reproduce at printed precision; this
+  is fresh reconstruction, not authentication of the missing original archive.
+- 404 tests pass with warnings as errors; the actual submission notebook's ten
+  code cells pass in a fresh Kaggle CPU kernel using the checksummed declared
+  bundle. A matching-environment actual DML replay agrees with saved intervals.
+- Six saved price histories supply 1,872 daily returns over 1,249 label dates.
+  Prior-VIX label arithmetic independently agrees. This is an illustrative
+  descriptive case study, not a broad calm/turbulent causal/dependence claim.
+- SCM remains NOT EXECUTED and closed under the final-week plan. Missing original
+  historical price/market inputs are not substituted with fresh SPY responses.
+- A sibling `ADA PROJECT DELIVERABLES` folder contains the one-pager, notebook,
+  generated simulation data/metadata, PPT content, video rehearsal and IEEE report.
+  Team/section blanks are intentional. Actual course-template mapping, all-member
+  recordings, team review, Drive permissions and form submission remain human
+  release controls. No new commit/push/main merge is claimed by this build.

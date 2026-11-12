@@ -1,0 +1,101 @@
+\documentclass[conference]{IEEEtran}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,graphicx,booktabs,url}
+\usepackage[hidelinks]{hyperref}
+\input{facts.tex}
+\begin{document}
+\title{Auditing DML Confidence Intervals under Regime-Level Dependence:\\A Reproducible Exploratory Study}
+\author{\IEEEauthorblockN{Deeptanshu Kumar, Mirunjai Suresh Kumar, Preksha K, Sudarshan G}
+\IEEEauthorblockA{Advanced Data Analytics Course Project\\
+PES1UG24AM357 \quad PES1UG24AM161 \quad PES1UG24AM907 \quad PES1UG24AM450}}
+\maketitle
+\begin{abstract}
+We present a reproducible study of confidence-interval calibration for double machine learning (DML) in a financial-event-inspired regime design. The experiment crosses random and regime-grouped cross-fitting with naive and overlap-sandwich variance estimates. A registered exploratory grid contains \NumScenarios{} conditions with \Reps{} simulated worlds each, separately evaluating zero and known nonzero effects. All four cells share one world per replication. Independent verification reports exact denominators, Monte Carlo uncertainty and complete-block paired contrasts. The independent-control reference robust intervals cover \IndependentRandomCoverage{} and \IndependentGroupedCoverage{} of the known nonzero effects, highlighting the importance of baseline calibration before interpreting fold comparisons. A six-firm descriptive case study adds financial-event and volatility context. The contribution is a tested, auditable pipeline with reproducible calibration evidence and clearly specified estimands, methods and performance measures. Results are exploratory within the implemented DGP and bounded grid; they do not establish a general validity guarantee for dense-regime inference.
+\end{abstract}
+\begin{IEEEkeywords}
+double machine learning, cross-fitting, clustered inference, event studies, Monte Carlo, reproducibility
+\end{IEEEkeywords}
+
+\section{Question, Related Work and Evidence Boundary}
+Financial events may share shocks through market dates and regimes. Orthogonal scores and cross-fitting reduce nuisance-estimation bias, but dependence assumptions and valid uncertainty quantification remain necessary. Our locked comparison is random versus regime-grouped cross-fitting, each crossed with naive versus robust variance. The central contrast is grouped+robust minus random+robust. A similar result for the robust cells is an admissible outcome; narrower intervals or greater power alone do not demonstrate better inference.
+
+Double/debiased machine learning (DML) combines orthogonal scores with nuisance fitting \cite{dml}. Multiway cluster-robust DML develops inference under a specified multiway sampling structure \cite{multiway}; its correction notice should also be consulted \cite{correction}. Its assumptions do not automatically justify the arbitrary overlap graph used here. Balkus, Laith and Hejazi study correlated-unit cross-fitting under explicit dependence and rate conditions \cite{correlated}; their 2026 preprint gives conditional results whose rate and dependence assumptions must be checked for the selected DGP. Classical event-study inference can also be sensitive to event-induced and cross-sectional dependence \cite{kolari}. Goldsmith-Pinkham and Lyu's working paper \cite{financial} motivates careful assessment of factor-model misspecification and benchmark design.
+
+Our contribution is a controlled application-level assessment of the implemented fold--variance combination, including independent known-truth controls and realized dependence measures. It uses established estimators and makes the complete computational evidence available. Every result is labelled \textbf{EXPLORATORY}, \textbf{MOCK}, \textbf{PRODUCTION} or \textbf{NOT EXECUTED}. The present report contains exploratory results and labelled software checks; a confirmatory production design was not completed. Software correctness and diagnostic evidence are therefore interpreted within their stated scope.
+
+\section{Data-Generating Process and Estimation}
+\subsection{Calendar-time candidate}
+Each world has $n=400$ events/firms, $T=260$ time points and an $H=5$ event window. Independent named random streams generate covariates, dates, idiosyncratic volatility, calendar factors, regime layout, shocks and treatment draws. For event $i$ starting at $t_i$, the implemented response is
+\begin{equation}
+\begin{aligned}
+Y_i={}&g(X_i)+\beta_i\sum_{h=0}^{H-1}F_{t_i+h}+\sum_{h=0}^{H-1}U_{t_i+h}\\
+ &+\sum_{h=0}^{H-1}\sigma_{i,t_i+h}z_{i,t_i+h}+\tau D_i.
+\end{aligned}
+\end{equation}
+Here $g(X)=.5X_1+.3X_2^2+.2X_1X_3$, $\beta_i=1+.3X_{i4}$, $F_t$ has standard deviation .5 and each active regime has a shared Gaussian shock with standard deviation .4. Treatment is Bernoulli with logit $-.5+.5X_{i1}+.3X_{i2}+\gamma \bar v_i$, where $\bar v_i$ averages independent regime treatment effects over the event's touched regimes (zero for unexposed events). The dependence factor $\gamma$ is varied between 0 and 1. Treatment heterogeneity by regime is intentional; independence from the regime \emph{shock draws} is a separate property.
+
+The calendar candidate uses fixed-alpha Gaussian GARCH(1,1): $h_{it}=\omega+\alpha r_{i,t-1}^2+\beta h_{i,t-1}$, with $r_{it}=\sqrt{h_{it}}z_{it}$, $\alpha=.1$, $\beta=.8$, $\omega=.1$ and a 500-step burn-in. Its intended unconditional variance is one and the Gaussian fourth-moment factor is .83, below one. Only own idiosyncratic returns update $h$. Common factors, regime shocks, treatment and total returns never enter that recursion. The canonical standalone component uses a different alpha mapping, 1000-step burn-in and innovation draw order; it is not substituted into the calendar experiment. The legacy first-membership DGP is also kept separate.
+
+Contiguous regimes occupy configured calendar fraction .5 with $K\in\{4,16\}$. Calendar fraction is not the exposed-event share or pair density. An event's membership includes every active regime touched by its window. Grouped folds allocate connected components of the regime-membership graph; this prevents splitting a touched regime between training and scoring, but does not remove every possible calendar-factor link.
+
+\subsection{Four cells and exact reference inference}
+Five-fold random forests fit outcome and treatment nuisance regressions on training folds only: 40 trees, minimum leaf size 8 and maximum-feature fraction .5. Simulated truth is evaluation metadata, never a nuisance input. With held-out residuals $\widetilde Y_i,\widetilde D_i$, define
+\begin{equation}
+\widehat\tau=\frac{\sum_i\widetilde D_i\widetilde Y_i}{J},\quad
+J=\sum_i\widetilde D_i^2,\quad
+\psi_i=\widetilde D_i(\widetilde Y_i-\widehat\tau\widetilde D_i).
+\end{equation}
+Naive variance is $\sum_i\psi_i^2/J^2$. The reference robust variance is $\psi^\top A\psi/J^2$, where $A_{ii}=1$ and $A_{ij}=1$ when events share at least one regime. This is called \emph{overlap-sandwich CR0}, without claiming a general multiway theorem. Both use the normal 97.5th percentile, 1.959963984540054. Multiple membership can make $A$ indefinite: a negative variance is retained as a failed cell, never clipped. CR0+$t(G-1)$ and CR1-regime+$t(G-1)$ are secondary heuristic sensitivities on the same residuals. They do not replace the reference after results are seen.
+
+\section{Registered Validation and Independent Audit}
+The registered exploratory grid has \NumScenarios{} scenarios and \Reps{} worlds per scenario: two values of $K$, two $\gamma$ values and $\tau\in\{0,1\}$ at the baseline, plus independent, factor-only, factor-off and rounded variance-matched factor-off controls for each effect at $K=4$. The last control fixes idiosyncratic variance at 1.29 from a recovered rounded calibration; exact variance matching to missing original inputs is not claimed. These checks do not execute the unapproved full production density grid, 10-fold, larger-sample or second-learner robustness proposals.
+
+Seeds are 70000--70199 for $K=4$ and 71000--71199 for $K=16$. Intentional common random numbers across effects and controls preclude pooling scenarios as independent replications. The independent unit is a whole simulated world, not a firm, event or fold. Each block saves all four cells, the shared world fingerprint, folds, seeds, configuration and numerical diagnostics. Atomic files and source/environment fingerprints make scheduling irrelevant to replication identity. CPU-only Kaggle executions produce the raw archive; independent standard-library arithmetic recomputes the metrics from saved intervals.
+
+Coverage includes interval endpoints. Rejection of zero is empirical size only when $\tau=0$; for $\tau=1$ it is power. We report attempted, valid, failed and missing counts, conditional-on-success metrics where needed and all-planned coverage bounds. No failure is silently retried or counted as a rejection. Marginal Monte Carlo standard error (MCSE) is $\sqrt{\widehat p(1-\widehat p)/R}$, accompanied by a 95\% Wilson interval. For paired contrast $d_r=I_{\mathrm{grouped,robust},r}-I_{\mathrm{random,robust},r}$, MCSE is $s_d/\sqrt{R_{\rm complete}}$. All four cells must succeed for a block to enter paired comparisons. A failed naive cell therefore excludes the block even when both robust cells are valid. Failures remain in per-cell accounting.
+
+At $R=200$, anticipated marginal MCSE near .95 is 1.54 percentage points and the worst-case bound is 3.54 points. Zero plug-in MCSE at a boundary is not certainty. We make no equivalence or across-grid superiority claim, and do not adopt a materiality rule after examining results. Simulation planning and reporting follow the ADEMP emphasis on aims, data generation, estimands, methods and performance measures \cite{ademp}.
+
+\section{Exploratory Results and Validation Insights}
+\subsection{Independent known-truth control}
+\input{control_table.tex}
+Table~\ref{tab:control} reports fresh independent-control results with every count recomputed from raw intervals. The robust cells cover 174/200 and 175/200 known effects, respectively; their Wilson intervals make the Monte Carlo uncertainty explicit. This calibration insight motivates assessing the baseline before attributing a fold difference to the intended dependence mechanism. Across the five recovered nonzero-effect control tables, 120/120 numeric fields agree with the historical printed precision, including coverage, MCSE and SE/SD diagnostics. The fresh archive supports numerical reconstructability, while the absent original archive remains unauthenticated. The independent control switches off common-factor and regime-shock scales and regime treatment heterogeneity while retaining regime labels in the variance/grouping procedures. Artificially clustering independent data with few regimes can itself distort finite-sample inference; this control does not identify dense common shocks as the cause of all observed undercoverage.
+
+\subsection{Four-cell comparison and sensitivities}
+\input{baseline_table.tex}
+\input{paired_table.tex}
+\input{results_interpretation.tex}
+\begin{figure}[t]
+\centering\includegraphics[width=\columnwidth]{coverage_report.png}
+\caption{EXPLORATORY. Known-effect reference coverage in the independent and calendar conditions. Bars/points and 95\% Wilson intervals describe Monte Carlo uncertainty, not parameter confidence intervals from a single dataset. All denominators are reported in the audit archive.}
+\label{fig:coverage}
+\end{figure}
+
+Earlier source-checked overlap corroboration found 0/80,000 multi-membership events at $K=4$ and 280/80,000 at $K=16$, with calendar-window-sharing pair fraction .03481485. These quantities are not interchangeable with configured density. Sparse multi-membership limits any claim about the dense-overlap mechanism or H4. Existing volatility separation screens detected the deliberately dependent control in 20/20 worlds and flagged the independent condition in 0/20, with Wilson intervals approximately [.839,1] and [0,.161]. This supports diagnostic sensitivity and source separation, not a proof of independence. These diagnostics motivate further baseline calibration and manipulation validation before a confirmatory extension. The available software and exploratory checks are kept distinct from that future scientific validation.
+
+\section{Illustrative Financial-Event Context}
+The descriptive illustration uses the latest saved price histories for CRM, FAST, MHK, SWKS, ETSY and TER, with 313 observations per firm. The full candidate roster, availability matrix and source hashes are preserved in the dataset metadata. Only the six available histories enter the daily calculations reported here. Previously archived classical CARs are not used as verified evidence because their original combined-price and market inputs cannot be authenticated; newly retrieved SPY-based responses are a different snapshot.
+
+All eight event-level calm/mixed/turbulent labels regenerate from saved VIX history, including an independent NumPy calculation. A further registered descriptive feasibility check applies that existing rule at each observed return date: use only strictly prior VIX observations, a trailing five-calendar-year reference, a 20-observation average and earlier rolling-average quartiles. Equality to a quartile is mixed. This extension to daily dates is exploratory, not the team's approved daily regime convention. Simple adjacent-observed-session adjusted-close returns are not imputed or market-residualized.
+
+Across \LabelDates{} distinct dates, the six firms provide \ReturnRows{} returns. Every possible candidate-firm pair is retained in the diagnostics, including missing and insufficient pairs. The descriptive threshold is 20 aligned observations per label. \DailySummary{} Calm and mixed observations are never silently relabelled turbulent. The staggered histories provide descriptive financial context; no pooled calm-versus-turbulent effect, IID $p$-value, causal conclusion or real-data coverage claim is made. Source accuracy, security identity, exchange-calendar completeness and point-in-time adjustment provenance remain limitations. Provider price data and source VIX levels are excluded from redistribution; extraction scripts, hashes, labels and aggregate diagnostics are supplied.
+
+Synthetic Control is \textbf{NOT EXECUTED} and remains outside the reported empirical comparison because donor eligibility and data were not validated. Its helper's known-weight checks are labelled MOCK software evidence. The method follows the convex donor-matching idea of Abadie, Diamond and Hainmueller \cite{scm}; no synthetic performance numbers are inserted.
+
+\section{Reproducibility, Limitations and Conclusion}
+The release includes a runnable notebook, registered configurations, raw simulated replication records, independent audit source, environment manifests, input hashes, tables and figures. \ArchiveSummary{} The test suite passes \TestCount{} tests with warnings treated as errors, including shared-world, incomplete-block, tampered-record, wrong-seed and source-version checks. These are implementation checks. The notebook separately regenerates figures from the frozen exploratory archive and labels mock arithmetic explicitly. Missing original historical inputs remain missing; a fresh replay is not their replacement.
+
+The study delivers a reproducible four-cell workflow, an independent interval audit, fresh known-truth calibration evidence and descriptive financial-event context. Its scope is one candidate DGP family and a bounded exploratory grid. A few-cluster correction can trade undercoverage for overcoverage, so no sensitivity variant is selected as a successful primary method after inspection. A confirmatory extension should establish baseline calibration, verify the intended dependence manipulation and match the H4 comparison quantity before broader inference. Production and unexecuted robustness conditions remain labelled NOT EXECUTED. The current findings provide a transparent foundation for that extension without claiming a validated answer to the full dense-regime question.
+
+\IEEEtriggeratref{2}
+\begin{thebibliography}{10}
+\bibitem{dml} V. Chernozhukov et al., ``Double/debiased machine learning for treatment and structural parameters,'' \emph{Econometrics Journal}, vol. 21, no. 1, pp. C1--C68, 2018, doi:10.1111/ectj.12097.
+\bibitem{multiway} H. D. Chiang, K. Kato, Y. Ma and Y. Sasaki, ``Multiway cluster robust double/debiased machine learning,'' \emph{J. Bus. Econ. Stat.}, vol. 40, no. 3, pp. 1046--1056, 2022, doi:10.1080/07350015.2021.1895815.
+\bibitem{correction} ``Correction,'' \emph{J. Bus. Econ. Stat.}, 2021, doi:10.1080/07350015.2021.1970572. Correction associated with \cite{multiway}.
+\bibitem{correlated} S. V. Balkus, H. Laith and N. S. Hejazi, ``On the use of cross-fitting in causal machine learning with correlated units,'' arXiv:2601.10899v3, 2026, working paper.
+\bibitem{kolari} J. W. Kolari and S. Pynn\"onen, ``Event study testing with cross-sectional correlation of abnormal returns,'' \emph{Rev. Financ. Stud.}, vol. 23, no. 11, pp. 3996--4025, 2010, doi:10.1093/rfs/hhq072.
+\bibitem{financial} P. Goldsmith-Pinkham and T. Lyu, ``Causal inference in financial event studies,'' arXiv:2511.15123, 2025, working paper.
+\bibitem{ademp} T. P. Morris, I. R. White and M. J. Crowther, ``Using simulation studies to evaluate statistical methods,'' \emph{Stat. Med.}, vol. 38, no. 11, pp. 2074--2102, 2019, doi:10.1002/sim.8086.
+\bibitem{scm} A. Abadie, A. Diamond and J. Hainmueller, ``Synthetic control methods for comparative case studies: Estimating the effect of California's tobacco control program,'' \emph{J. Am. Stat. Assoc.}, vol. 105, no. 490, pp. 493--505, 2010, doi:10.1198/jasa.2009.ap08746.
+\end{thebibliography}
+\end{document}

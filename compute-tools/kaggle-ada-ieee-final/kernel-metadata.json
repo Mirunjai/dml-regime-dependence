@@ -1,0 +1,14 @@
+{
+  "id": "deeptanshukumar/ada-ieee-final-report",
+  "title": "ADA IEEE final report",
+  "code_file": "compile.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "kernel_sources": [],
+  "competition_sources": []
+}

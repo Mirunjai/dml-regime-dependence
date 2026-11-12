@@ -1,0 +1,101 @@
+{
+  "schema": "project_a_garch_parameterization_comparison_v1",
+  "status": "TECHNICAL_RECONCILIATION_NOT_SCIENTIFIC_GATE_APPROVAL",
+  "fixed_alpha_definition": "alpha=0.10; beta=rho-alpha",
+  "canonical_definition": "alpha=0.10*rho; beta=rho-alpha",
+  "both_hold_unconditional_variance_at_one": true,
+  "dgp_file_sha1": "59bd1d2fc456713f5129d074fdd98e88b7882abd",
+  "canonical_sha256": "a80ae7d53a14c6fe6d0515d4092e2a23db85aa52522a3d0314813ae54abe15a9",
+  "rows": [
+    {
+      "mode": "fixed_alpha",
+      "rho": 0.9,
+      "alpha": 0.1,
+      "beta": 0.8,
+      "omega": 0.09999999999999995,
+      "persistence": 0.9,
+      "unconditional_variance_target": 1.0,
+      "finite_fourth_moment": true,
+      "fourth_moment_margin": 0.16999999999999993,
+      "sample_mean_conditional_variance": 0.9982413357465223,
+      "sample_mean_squared_return": 0.9964707411382847,
+      "sample_squared_return_acf1": 0.14050926475961342,
+      "population_squared_return_acf1": 0.14,
+      "sample_shape": [
+        200,
+        5000
+      ],
+      "seed": 20261112,
+      "burn_in": 1000
+    },
+    {
+      "mode": "canonical",
+      "rho": 0.9,
+      "alpha": 0.09000000000000001,
+      "beta": 0.81,
+      "omega": 0.09999999999999994,
+      "persistence": 0.9,
+      "unconditional_variance_target": 1.0,
+      "finite_fourth_moment": true,
+      "fourth_moment_margin": 0.1737999999999999,
+      "sample_mean_conditional_variance": 0.9995324563300124,
+      "sample_mean_squared_return": 0.9989927826855026,
+      "sample_squared_return_acf1": 0.1212806430198625,
+      "population_squared_return_acf1": 0.12311963654719843,
+      "sample_shape": [
+        200,
+        5000
+      ],
+      "seed": 20261112,
+      "burn_in": 1000
+    },
+    {
+      "mode": "fixed_alpha",
+      "rho": 0.99,
+      "alpha": 0.1,
+      "beta": 0.89,
+      "omega": 0.009999999999999981,
+      "persistence": 0.99,
+      "unconditional_variance_target": 1.0,
+      "finite_fourth_moment": false,
+      "fourth_moment_margin": -0.00010000000000004103,
+      "sample_mean_conditional_variance": 0.9802345444467251,
+      "sample_mean_squared_return": 0.9781264490390804,
+      "sample_squared_return_acf1": null,
+      "population_squared_return_acf1": null,
+      "sample_shape": [
+        200,
+        5000
+      ],
+      "seed": 20261112,
+      "burn_in": 1000
+    },
+    {
+      "mode": "canonical",
+      "rho": 0.99,
+      "alpha": 0.099,
+      "beta": 0.891,
+      "omega": 0.009999999999999981,
+      "persistence": 0.99,
+      "unconditional_variance_target": 1.0,
+      "finite_fourth_moment": true,
+      "fourth_moment_margin": 0.0002979999999999615,
+      "sample_mean_conditional_variance": 1.0005330113888835,
+      "sample_mean_squared_return": 1.0003028232387026,
+      "sample_squared_return_acf1": 0.3497303751770567,
+      "population_squared_return_acf1": 0.3930201003333225,
+      "sample_shape": [
+        200,
+        5000
+      ],
+      "seed": 20261112,
+      "burn_in": 1000
+    }
+  ],
+  "conclusion": "The implementations are not pathwise or parametrically identical. At rho=.90 both have finite fourth moments but different ARCH response and squared-return ACF. At rho=.99 fixed alpha=.10 violates the Gaussian fourth-moment condition while canonical alpha=.099 retains a small positive margin. Both retain finite unconditional variance. Do not describe the rho=.99 variants as moment-equivalent.",
+  "limitations": [
+    "Different RNG draw order means same seed does not create pathwise identical shocks.",
+    "Finite sample moment estimates are diagnostics, not proof of stationary population moments.",
+    "No GARCH parameterization is selected as the team's approved production choice."
+  ]
+}

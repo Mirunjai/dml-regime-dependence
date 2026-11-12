@@ -84,6 +84,20 @@ acquisition/calendar dependencies with `python -m pip install -r requirements-da
 The saved historical CARs remain unverified without their original inputs; SCM
 and daily labelled-panel diagnostics remain pending.
 
+## Final-week exploratory release
+
+The 12 November review completes a registered 16-scenario, 200-world-per-scenario
+CPU Kaggle audit: **3,200 complete four-cell blocks, 12,800 interval records and
+zero failed/missing cells**. The independent-control reference robust coverage is
+.870/.875, so the final-week plan's exploratory submission path is retained.
+See the [decision memo](docs/final_review/DECISIONS_20261112.md),
+[independent audit](docs/final_review/INDEPENDENT_AUDIT_20261112.md) and
+[scoped literature verification](docs/final_review/LITERATURE_VERIFICATION.md).
+All 427 software tests pass; all 38 submission-notebook code cells pass in a
+fresh Kaggle CPU kernel with the declared frozen bundle. These are reproducibility
+and exploratory findings, not production-gate approval. Build inputs/commands are
+in [submission/README.md](submission/README.md). No provider prices are redistributed.
+
 ## Installation
 
 Use Python 3.11 or newer (tested locally with 3.13.13). No GPU is required.
@@ -228,8 +242,9 @@ Exact reproduction across operating systems/hardware has not been established.
 
 ## Scope and remaining team decisions
 
-The supplied plans report Gate 1 as locked, but the authoritative
-`docs/gate1_specification.md` is absent. No Gate 2/3 approval memo was found.
+The supplied plans report Gate 1 as locked. A source-grounded navigation summary
+is available in `docs/gate1_specification.md`; the supplied proposal/weekly files
+remain the source of the specification. No Gate 2/3 production approval is claimed.
 All diagnostic settings, return flags, budgets and materiality thresholds are
 proposals, not final experimental design. Team review must settle the frozen
 regime version, time/window mapping, robust variance, grid, budget and benchmark
@@ -238,3 +253,5 @@ comparability. Other teammates retain their scientific tracks.
 See [AGENTS.md](AGENTS.md) and [CONTRIBUTING.md](CONTRIBUTING.md) for workflow.
 Commits and pushes require explicit user authorization. No project license has
 been selected; reference licenses remain separate.
+
+This reviewed Week 4 package incorporates Mirun PR #14/#15 additions with review fixes, the exploratory audit pipeline and the 38-stage notebook source. See [the integration note](docs/final_review/WEEK4_INTEGRATION_20261112.md), [the earlier proposal/weekly audit](docs/final_review/PROJECT_SCOPE_AUDIT_20261112.md) and [the authorized branch cleanup record](docs/final_review/BRANCH_CLEANUP_PROPOSAL_20261112.md). The generated submission folder and raw data are distributed separately; production gates remain unapproved.

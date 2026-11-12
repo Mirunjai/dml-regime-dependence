@@ -1,0 +1,16 @@
+{
+  "id": "deeptanshukumar/ada-notebook-clean-reproduction",
+  "title": "ADA notebook clean reproduction",
+  "code_file": "reproduce.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "deeptanshukumar/ada-dml-final-exploratory-bundle"
+  ],
+  "kernel_sources": [],
+  "competition_sources": []
+}

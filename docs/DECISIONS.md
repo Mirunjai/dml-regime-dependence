@@ -327,3 +327,14 @@ replication counts, labels and probe thresholds are software fixtures. Actual
 robustness scenarios, real-data value/label definitions, DML runs and final
 materiality criteria require the locked team inputs. No final experiment is
 launched, no grid is selected, and no gate is marked complete by this package.
+
+
+## Final-week delegated preparation - 12 November 2026
+
+See [DEC-1 through DEC-8 and their evidence boundary](final_review/DECISIONS_20261112.md).
+The user explicitly delegated memo preparation. The resulting disposition is
+Plan B / production NO-GO, not an invented team meeting or signature. Existing
+Gate 3 proposal approval fields remain unchanged. The registered fresh runs are
+EXPLORATORY, with the existing CR0-normal robust reference and separately labelled
+heuristic sensitivities. The full independent audit and fresh-kernel record are
+in the final review package; no approval is inferred from passing software tests.
