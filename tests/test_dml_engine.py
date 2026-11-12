@@ -70,6 +70,11 @@ def test_record_schema_seed_and_label(cfg, tmp_path):
     rec = json.loads((d / "rep_000001.json").read_text())
     assert rec["seed"] == 778 and rec["label"] == "smoke_exploratory" and rec["truth"] == cond["tau"]
     assert [c["cell"] for c in rec["cells"]] == list(E.CELL_MAP)
+    assert rec["paired_block_id"] == f"{cond['name']}::rep_000001"
+    assert rec["paired_block_status"] in ("complete", "incomplete")
+    assert rec["world_sha256"] is None or len(rec["world_sha256"]) == 64
+    assert all(c["paired_block_id"] == rec["paired_block_id"] for c in rec["cells"])
+    assert all(c["world_sha256"] == rec["world_sha256"] for c in rec["cells"])
     for c in rec["cells"]:
         assert c["status"] in ("ok", "failed") and set(c) >= {"estimate", "lower", "upper", "error"}
 
@@ -161,3 +166,110 @@ def test_resume_and_aggregate_reject_tampered_seed(cfg, tmp_path):
         E.run_condition(cfg, condition, d, 1, 777, smoke=True, overrides=SMALL)
     with pytest.raises(ValueError, match='seed'):
         E.aggregate(d)
+
+
+def test_run_replication_uses_one_shared_world_for_all_four_cells(cfg, monkeypatch):
+    import numpy as np
+
+    values = E.resolve_parameters(cfg, smoke=True)
+    condition = E.make_conditions(cfg, values)[0]
+    world = {
+        "Y": np.array([1.0, 2.0, 3.0, 4.0]),
+        "D": np.array([0.0, 1.0, 0.0, 1.0]),
+        "X": np.arange(8.0).reshape(4, 2),
+        "t0": np.array([0, 1, 2, 3]),
+        "idx": np.array([[0], [1], [2], [3]]),
+        "cluster_memberships": [(0,), (1,), (0,), (1,)],
+    }
+    calls = {"build": 0, "dml": 0, "world": None}
+
+    def fake_build_world(wcfg):
+        calls["build"] += 1
+        return world
+
+    def fake_run_dml(data, **kwargs):
+        calls["dml"] += 1
+        calls["world"] = data
+        return [
+            {"folds": fold, "variance": variance, "status": "ok", "tau": 0.5,
+             "lo": 0.1, "hi": 0.9, "error": None, "se": 0.2, "n_dependency_pairs": 0}
+            for fold, variance in E.CELL_MAP.values()
+        ], {"random": 0.1, "grouped": 0.1}
+
+    monkeypatch.setattr(E, "build_world", fake_build_world)
+    monkeypatch.setattr(E, "run_dml", fake_run_dml)
+    record = E.run_replication(cfg, values, condition, 3, 9000, label="smoke_exploratory", overrides=SMALL)
+
+    assert calls["build"] == 1
+    assert calls["dml"] == 1
+    assert calls["world"] is world
+    assert record["paired_block_status"] == "complete"
+    assert len(record["world_sha256"]) == 64
+    assert len({cell["paired_block_id"] for cell in record["cells"]}) == 1
+    assert len({cell["world_sha256"] for cell in record["cells"]}) == 1
+
+
+def _force_successful_fixture_cells(record):
+    """Make deterministic synthetic intervals for aggregation-contract tests only."""
+    for cell in record["cells"]:
+        cell.update({"status": "ok", "estimate": 0.2, "lower": 0.1, "upper": 0.3,
+                     "error": None, "se": 0.1, "point_estimate": 0.2})
+    record["paired_block_status"] = "complete"
+
+
+def test_paired_contrasts_use_only_complete_four_cell_blocks(cfg, tmp_path):
+    d, _, _ = run_small(cfg, tmp_path, reps=3, seed=9100)
+    for rep in range(3):
+        path = d / f"rep_{rep:06d}.json"
+        record = json.loads(path.read_text())
+        _force_successful_fixture_cells(record)
+        if rep == 0:
+            failed = next(c for c in record["cells"] if c["cell"] == "grouped_xfit__robust_var")
+            failed.update({"status": "failed", "estimate": None, "lower": None, "upper": None,
+                           "error": "synthetic aggregation fixture failure", "se": None})
+            record["paired_block_status"] = "incomplete"
+        path.write_text(json.dumps(record))
+    summary = E.aggregate(d)
+    assert summary["paired_audit"]["complete_blocks"] == 2
+    assert summary["paired_audit"]["incomplete_blocks"] == 1
+    assert summary["paired_audit"]["unverified_blocks"] == 0
+    assert summary["paired"]["grouped_robust_minus_random_robust"]["valid_pairs"] == 2
+
+
+def test_partial_aggregate_reports_not_started_replications(cfg, tmp_path):
+    d, _, _ = run_small(cfg, tmp_path, reps=3, seed=9200)
+    for rep in range(3):
+        path = d / f"rep_{rep:06d}.json"
+        record = json.loads(path.read_text())
+        _force_successful_fixture_cells(record)
+        path.write_text(json.dumps(record))
+    (d / "rep_000002.json").unlink()
+    with pytest.raises(FileNotFoundError, match="Missing planned replications"):
+        E.aggregate(d)
+    summary = E.aggregate(d, allow_partial=True)
+    assert summary["execution_status"] == "partial"
+    assert summary["planned_reps"] == 3
+    assert summary["saved_reps"] == 2
+    assert summary["not_started_reps"] == 1
+    assert summary["paired_audit"]["complete_blocks"] == 2
+    assert summary["paired_audit"]["not_started_blocks"] == 1
+    assert summary["paired"]["grouped_robust_minus_random_robust"]["valid_pairs"] == 2
+
+
+def test_legacy_records_without_paired_world_fingerprint_are_not_used_for_pairs(cfg, tmp_path):
+    d, _, _ = run_small(cfg, tmp_path, reps=2, seed=9300)
+    for rep in range(2):
+        path = d / f"rep_{rep:06d}.json"
+        record = json.loads(path.read_text())
+        _force_successful_fixture_cells(record)
+        record.pop("paired_block_id")
+        record.pop("world_sha256")
+        record.pop("paired_block_status")
+        for cell in record["cells"]:
+            cell.pop("paired_block_id")
+            cell.pop("world_sha256")
+        path.write_text(json.dumps(record))
+    summary = E.aggregate(d)
+    assert summary["paired_audit"]["unverified_blocks"] == 2
+    assert summary["paired_audit"]["complete_blocks"] == 0
+    assert "At least two" in summary["paired"]["grouped_robust_minus_random_robust"]["error"]

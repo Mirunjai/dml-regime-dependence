@@ -117,15 +117,43 @@ def failed_cells(message):
              "error": message, "se": None} for c in CELL_MAP]
 
 
+def _paired_block_id(condition_name, replication_id):
+    return f"{condition_name}::rep_{int(replication_id):06d}"
+
+
+def _world_fingerprint(data):
+    """Fingerprint the shared inputs consumed by all four estimator cells."""
+    digest = hashlib.sha256()
+    for name in ("Y", "D", "X", "t0", "idx"):
+        value = np.ascontiguousarray(np.asarray(data[name]))
+        if value.dtype.kind not in "biuf":
+            raise TypeError(f"World field {name} must have a numeric dtype")
+        digest.update(name.encode("utf-8"))
+        digest.update(value.dtype.str.encode("ascii"))
+        digest.update(json.dumps(value.shape).encode("ascii"))
+        digest.update(memoryview(value).cast("B"))
+    memberships = [[int(regime) for regime in member] for member in data["cluster_memberships"]]
+    digest.update(json.dumps(memberships, separators=(",", ":")).encode("utf-8"))
+    return digest.hexdigest()
+
+
 def run_replication(cfg, values, condition, replication_id, root_seed, *, label, overrides=None):
     seed = int(root_seed) + int(replication_id)
     wcfg = world_config(cfg, values, condition, seed, overrides)
+    block_id = _paired_block_id(condition["name"], replication_id)
+    world_sha256 = None
     started = time.perf_counter()
     try:
+        # One world is built once; the single run_dml call evaluates all four cells
+        # against this exact shared object.
         data = build_world(wcfg)
+        world_sha256 = _world_fingerprint(data)
         rows, runtime = run_dml(data, n_folds=int(values["estimator.n_folds"]), seed=seed,
                                 alpha=1 - float(values["estimator.confidence_level"]))
-        by = {(r["folds"], r["variance"]): r for r in rows}
+        keys = [(r["folds"], r["variance"]) for r in rows]
+        if len(rows) != len(CELL_MAP) or len(set(keys)) != len(CELL_MAP) or set(keys) != set(CELL_MAP.values()):
+            raise RuntimeError("DML runner must return exactly one outcome for each of the four cells")
+        by = {key: row for key, row in zip(keys, rows)}
         cells = []
         for cell, key in CELL_MAP.items():
             r = by[key]
@@ -137,10 +165,16 @@ def run_replication(cfg, values, condition, replication_id, root_seed, *, label,
                           "n_dependency_pairs": r["n_dependency_pairs"]})
     except Exception as exc:                                  # retained, never dropped
         cells, runtime = failed_cells(f"{type(exc).__name__}: {exc}"), {}
+    paired_status = "complete" if all(cell["status"] == "ok" for cell in cells) else "incomplete"
+    for cell in cells:
+        cell["paired_block_id"] = block_id
+        cell["world_sha256"] = world_sha256
     return {"schema": "calendar_dml_v1", "label": label, "condition": condition["name"],
             "replication_id": int(replication_id), "seed": seed, "root_seed": int(root_seed),
             "config_hash": config_hash({"cfg": _jsonable(cfg), "values": _jsonable(values)}),
             "truth": condition["tau"], "world_config": asdict(wcfg), "cells": cells,
+            "paired_block_id": block_id, "world_sha256": world_sha256,
+            "paired_block_status": paired_status,
             "runtime": runtime, "total_seconds": time.perf_counter() - started}
 
 
@@ -175,10 +209,12 @@ def run_condition(cfg, condition, out_dir, reps, root_seed, *, smoke=False, budg
     manifest_path = out_dir / "manifest.json"
     manifest = {"schema": "calendar_dml_v1", "label": label, "condition": condition, "reps_planned": reps,
                 "root_seed": int(root_seed), "config_hash": chash, "values": _jsonable(values),
-                "overrides": overrides or {}, "world_config": asdict(world_config(cfg, values, condition, root_seed, overrides)), "source_sha256": hashes, "git": git_state(), "software": software_versions()}
+                "overrides": overrides or {}, "world_config": asdict(world_config(cfg, values, condition, root_seed, overrides)),
+                "paired_block_contract": "one build_world result per replication; all four cells share its input fingerprint",
+                "source_sha256": hashes, "git": git_state(), "software": software_versions()}
     if manifest_path.exists():
         old = json.loads(manifest_path.read_text())
-        for key in ("config_hash", "root_seed", "condition", "label", "reps_planned", "overrides", "source_sha256", "software", "world_config"):
+        for key in ("config_hash", "root_seed", "condition", "label", "reps_planned", "overrides", "source_sha256", "software", "world_config", "paired_block_contract"):
             if old[key] != manifest[key]:
                 raise ValueError(f"Existing run directory has a different {key}; refusing to mix runs")
     else:
@@ -211,6 +247,27 @@ def _validate_record(record, manifest, rep):
     cells = record.get("cells", [])
     if len(cells) != 4 or sorted(c.get("cell", "") for c in cells) != sorted(CELL_MAP):
         raise ValueError("Replication must contain four unique cells")
+    pairing_fields = ("paired_block_id", "world_sha256", "paired_block_status")
+    if any(field in record for field in pairing_fields):
+        if not all(field in record for field in pairing_fields):
+            raise ValueError("Paired-block metadata must be complete when present")
+        expected_block = _paired_block_id(manifest["condition"]["name"], rep)
+        if record["paired_block_id"] != expected_block:
+            raise ValueError("Paired-block ID does not match the condition and replication")
+        fingerprint = record["world_sha256"]
+        if fingerprint is not None and (
+            not isinstance(fingerprint, str) or len(fingerprint) != 64
+            or any(ch not in "0123456789abcdef" for ch in fingerprint)
+        ):
+            raise ValueError("Invalid shared-world SHA-256 fingerprint")
+        if fingerprint is None and any(cell.get("status") == "ok" for cell in cells):
+            raise ValueError("Successful cells require a shared-world fingerprint")
+        for cell in cells:
+            if cell.get("paired_block_id") != expected_block or cell.get("world_sha256") != fingerprint:
+                raise ValueError("Cell outcomes do not share the replication's paired-world identity")
+        expected_status = "complete" if all(cell.get("status") == "ok" for cell in cells) else "incomplete"
+        if record["paired_block_status"] != expected_status:
+            raise ValueError("Paired-block status does not match the four cell outcomes")
     for cell in cells:
         if cell.get("status") not in ("ok", "failed"):
             raise ValueError("Invalid cell status")
@@ -222,46 +279,109 @@ def _validate_record(record, manifest, rep):
                 raise ValueError("Invalid successful interval")
 
 
-def aggregate(out_dir):
-    """Summarise a completed condition directory; every planned replication must exist."""
+def aggregate(out_dir, *, allow_partial=False):
+    """Summarise a condition; partial runs are opt-in and never hide unstarted replications."""
     out_dir = Path(out_dir)
     manifest = json.loads((out_dir / "manifest.json").read_text())
     reps, truth = manifest["reps_planned"], manifest["condition"]["tau"]
-    records = []
+    records, missing_ids = [], []
     for rep in range(reps):
         path = out_dir / f"rep_{rep:06d}.json"
         if not path.is_file():
-            raise FileNotFoundError(f"Missing planned replication {rep}")
+            missing_ids.append(rep)
+            continue
         rec = json.loads(path.read_text())
         _validate_record(rec, manifest, rep)
         records.append(rec)
-    cells, hits = {}, {}
+    if missing_ids and not allow_partial:
+        raise FileNotFoundError(f"Missing planned replications: {missing_ids[:10]}")
+    saved_ids = [int(record["replication_id"]) for record in records]
+    cells, saved_hits = {}, {}
     for cell in CELL_MAP:
-        rows = [next(c for c in r["cells"] if c["cell"] == cell) for r in records]
-        ok = np.array([c["status"] == "ok" for c in rows])
-        lo = [c["lower"] if c["status"] == "ok" else np.nan for c in rows]
-        hi = [c["upper"] if c["status"] == "ok" else np.nan for c in rows]
-        s = summarize_intervals(lo, hi, truth, success=ok, failure_policy="report", expected_replications=reps)
-        cells[cell] = {"attempted": s.attempted, "valid": s.valid, "failed": s.failed,
-                       "coverage": s.coverage.rate if s.coverage else None,
-                       "coverage_mcse": s.coverage.mcse if s.coverage else None,
-                       "coverage_wilson95": list(s.coverage.wilson95) if s.coverage else None,
-                       "coverage_bounds_all_attempted": s.coverage_bounds_all_attempted,
-                       "size": s.size.rate if s.size else None, "power": s.power.rate if s.power else None,
-                       "mean_width": s.mean_width, "conditional_on_success": s.conditional_on_success}
-        hits[cell] = {i: (bool(l <= truth <= u) if o else None)
-                      for i, (l, u, o) in enumerate(zip(lo, hi, ok))}
+        rows = [next(c for c in record["cells"] if c["cell"] == cell) for record in records]
+        ok = np.array([item["status"] == "ok" for item in rows], dtype=bool)
+        lo = [item["lower"] if item["status"] == "ok" else np.nan for item in rows]
+        hi = [item["upper"] if item["status"] == "ok" else np.nan for item in rows]
+        if records:
+            summary = summarize_intervals(lo, hi, truth, success=ok, failure_policy="report",
+                                          expected_replications=len(records))
+            covered = summary.coverage.successes if summary.coverage else 0
+            failed_count = summary.failed
+            bounds_saved = list(summary.coverage_bounds_all_attempted)
+            coverage = summary.coverage.rate if summary.coverage else None
+            coverage_mcse = summary.coverage.mcse if summary.coverage else None
+            coverage_wilson = list(summary.coverage.wilson95) if summary.coverage else None
+            size = summary.size.rate if summary.size else None
+            power = summary.power.rate if summary.power else None
+            mean_width = summary.mean_width
+            conditional = summary.conditional_on_success
+        else:
+            covered, failed_count = 0, 0
+            bounds_saved = None
+            coverage = coverage_mcse = coverage_wilson = size = power = mean_width = None
+            conditional = False
+        bounds_planned = [covered / reps, (covered + failed_count + len(missing_ids)) / reps]
+        cells[cell] = {"planned": reps, "attempted": len(records), "valid": int(ok.sum()),
+                       "failed": failed_count, "not_started": len(missing_ids),
+                       "coverage": coverage, "coverage_mcse": coverage_mcse,
+                       "coverage_wilson95": coverage_wilson,
+                       "coverage_bounds_all_attempted": bounds_saved,
+                       "coverage_bounds_all_planned": bounds_planned,
+                       "size": size, "power": power, "mean_width": mean_width,
+                       "conditional_on_success": conditional}
+        saved_hits[cell] = {
+            int(record["replication_id"]): (bool(item["lower"] <= truth <= item["upper"])
+                                             if item["status"] == "ok" else None)
+            for record, item in zip(records, rows)
+        }
+
+    # Only a four-cell-successful block with a matching shared-world fingerprint
+    # contributes to any paired comparison.
+    complete_ids, incomplete_ids, unverified_ids = [], [], []
+    for record in records:
+        record_cells = record["cells"]
+        has_verified_identity = (
+            record.get("paired_block_id") == _paired_block_id(record["condition"], record["replication_id"])
+            and isinstance(record.get("world_sha256"), str)
+            and len(record["world_sha256"]) == 64
+            and all(cell.get("paired_block_id") == record["paired_block_id"]
+                    and cell.get("world_sha256") == record["world_sha256"] for cell in record_cells)
+        )
+        if not has_verified_identity:
+            unverified_ids.append(record["replication_id"])
+        elif all(cell["status"] == "ok" for cell in record_cells):
+            complete_ids.append(record["replication_id"])
+        else:
+            incomplete_ids.append(record["replication_id"])
+
+    paired_hits = {
+        cell: {rep_id: saved_hits[cell][rep_id] for rep_id in complete_ids}
+        for cell in CELL_MAP
+    }
     pairs = {}
-    for name, (a, b) in {"grouped_robust_minus_random_robust": ("grouped_xfit__robust_var", "random_xfit__robust_var"),
-                         "random_robust_minus_random_naive": ("random_xfit__robust_var", "random_xfit__naive_var"),
-                         "grouped_robust_minus_grouped_naive": ("grouped_xfit__robust_var", "grouped_xfit__naive_var")}.items():
+    comparisons = {
+        "grouped_robust_minus_random_robust": ("grouped_xfit__robust_var", "random_xfit__robust_var"),
+        "random_robust_minus_random_naive": ("random_xfit__robust_var", "random_xfit__naive_var"),
+        "grouped_robust_minus_grouped_naive": ("grouped_xfit__robust_var", "grouped_xfit__naive_var"),
+    }
+    for name, (a, b) in comparisons.items():
         try:
-            p = paired_binary_difference(hits[a], hits[b], failure_policy="report")
-            pairs[name] = {"difference": p.difference, "mcse": p.mcse, "valid_pairs": p.valid_pairs}
+            result = paired_binary_difference(paired_hits[a], paired_hits[b], failure_policy="report")
+            pairs[name] = {"difference": result.difference, "mcse": result.mcse,
+                           "valid_pairs": result.valid_pairs, "attempted_complete_blocks": len(complete_ids)}
         except ValueError as exc:
-            pairs[name] = {"error": str(exc)}
+            pairs[name] = {"error": str(exc), "valid_pairs": 0,
+                           "attempted_complete_blocks": len(complete_ids)}
     return {"label": manifest["label"], "condition": manifest["condition"]["name"], "reps": reps,
-            "truth": truth, "cells": cells, "paired": pairs}
+            "planned_reps": reps, "saved_reps": len(records), "not_started_reps": len(missing_ids),
+            "execution_status": "partial" if missing_ids else "planned_budget_attempted",
+            "truth": truth, "cells": cells, "paired": pairs,
+            "paired_audit": {"planned_blocks": reps, "saved_blocks": len(records),
+                             "complete_blocks": len(complete_ids), "incomplete_blocks": len(incomplete_ids),
+                             "unverified_blocks": len(unverified_ids), "not_started_blocks": len(missing_ids),
+                             "complete_block_replication_ids": complete_ids,
+                             "incomplete_block_replication_ids": incomplete_ids,
+                             "unverified_block_replication_ids": unverified_ids}}
 
 
 def main(argv=None):
@@ -274,10 +394,12 @@ def main(argv=None):
     ap.add_argument("--root-seed", type=int)
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--budget-seconds", type=float)
+    ap.add_argument("--allow-partial", action="store_true",
+                    help="report a partially executed condition, including planned but unstarted replications")
     ap.add_argument("--override", nargs="*", default=[], help="smoke world-size overrides, e.g. n=120 T=60")
     a = ap.parse_args(argv)
     if a.action == "aggregate":
-        print(json.dumps(aggregate(a.out), indent=1))
+        print(json.dumps(aggregate(a.out, allow_partial=a.allow_partial), indent=1))
         return 0
     cfg = load_proposal(a.config)
     values = resolve_parameters(cfg, smoke=a.smoke)
