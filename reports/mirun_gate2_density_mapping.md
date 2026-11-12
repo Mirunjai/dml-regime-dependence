@@ -68,7 +68,7 @@ Example:
       --calibrate-targets 0.32 0.56 0.82 \
       --out results/tables/mirun_event_density_audit.json
 
-The tests in tests/test_mirun_event_density_diagnostic.py check exact membership parity against build_world, boundary cases, multi-membership counting and invalid IDs. The CI run on the close-out branch passed 400 tests with warnings treated as errors.
+The tests in tests/test_mirun_event_density_diagnostic.py check exact membership parity against build_world, boundary cases, multi-membership counting and invalid IDs. The CI run on the close-out branch passed 401 tests with warnings treated as errors.
 
 ## Gate decision still required
 
