@@ -21,9 +21,9 @@ The primary question remains: under dense regime-clustered common-shock dependen
 
 ## Scientific blockers that must be resolved before production
 
-### 1. Gate 2: current calendar DGP has not demonstrated dense multi-membership dependence
+### 1. Gate 2: event-level density and matched-K semantics are not yet locked
 
-The current `research/week2_completion/dgp.py` generator sets a fraction of calendar periods active, then allocates contiguous blocks across regimes. Its `density` parameter is therefore an active-calendar-time fraction, not the realized exposed-event share and not the share of event pairs sharing a regime shock.
+The current `research/week2_completion/dgp.py` generator sets a fraction of calendar periods active, then allocates contiguous blocks across regimes. Its `density` parameter is an active-calendar-time fraction. It is not the realized exposed-event share or the share of event pairs sharing a regime shock. The generator does create shared-regime event clusters; the issue is that the configured value is not the event-level estimand and the K comparison is not matched as currently configured.
 
 Existing evidence in `reports/mirun_gate2_evidence.md` and `reports/mirun_undercoverage_diagnosis.md` reports:
 - At K=4, density=.5, no multi-regime events in 80,000 events.
@@ -31,18 +31,29 @@ Existing evidence in `reports/mirun_gate2_evidence.md` and `reports/mirun_underc
 - Calendar-window overlap share is about 3.48% in the cited diagnostic.
 - The canonical `src/dgp/matched_density.py` measures single-membership event-index pair density and explicitly does not accept the calendar DGP's multi-membership contract.
 
-A separate exploratory reimplementation of the current contiguous-block layout was run for 1,000 seeds per K/density setting (n=400, T=260, H=5). These values are diagnostic only; they are not a rerun of the repository's exact DGP source or a Gate 2 validation result.
+A source-faithful independent replay of the membership portion of `simulate_calendar_regimes` and the DGP's named `SeedSequence` streams was run for 40 seeds per K/calendar-density setting (n=400, T=260, H=5). It reproduces the event start-time and regime-layout stream contract, but it is not an execution of the full repository module; treat it as an independent diagnostic reconstruction, not Gate 2 approval.
 
 | K | Active calendar fraction | Exposed-event share | Event-pair share sharing ≥1 regime | Multi-regime event share |
 |---:|---:|---:|---:|---:|
-| 4 | .25 | .3176 | .0252 | .0000 |
-| 4 | .50 | .5700 | .0812 | .0000 |
-| 4 | .75 | .8245 | .1700 | .0000 |
-| 16 | .25 | .5028 | .0158 | .0003 |
-| 16 | .50 | .7534 | .0358 | .0040 |
-| 16 | .75 | .9560 | .0628 | .0494 |
+| 4 | .25 | .3181 | .0253 | .0000 |
+| 4 | .50 | .5646 | .0799 | .0000 |
+| 4 | .75 | .8195 | .1683 | .0000 |
+| 16 | .25 | .5048 | .0159 | .0000 |
+| 16 | .50 | .7544 | .0359 | .0026 |
+| 16 | .75 | .9594 | .0630 | .0469 |
 
-This demonstrates why configured active-time fraction cannot be called realized dependence density, and why the K comparison is not matched by holding that fraction fixed. The team must choose the estimand for density (recommended primary diagnostic: realized event-pair share with at least one common regime; also report exposure share, multi-membership share and the distribution of memberships). The design should match the chosen pair-density target across K, or explicitly treat K and pair density as jointly varying. Do not describe the current K/density grid as a matched-density H4 test.
+A second calibration scan (30 seeds per candidate calendar-density value, step .025) matched **exposed-event share** across K, consistent with the tracker’s candidate density definition (“fraction of events whose windows overlap a common regime shock”):
+
+| K | Target exposed-event share | Calendar fraction used | Realized exposed share | Event-pair shared-regime density | Multi-regime event share |
+|---:|---:|---:|---:|---:|---:|
+| 4 | .32 | .250 | .3183 | .0253 | .0000 |
+| 4 | .56 | .500 | .5665 | .0800 | .0000 |
+| 4 | .82 | .750 | .8243 | .1697 | .0000 |
+| 16 | .32 | .075 | .3212 | .0064 | .0000 |
+| 16 | .56 | .300 | .5528 | .0190 | .0008 |
+| 16 | .82 | .575 | .8232 | .0431 | .0093 |
+
+Interpretation: the current calendar-time parameter is not itself the event-level density. At a matched exposed-event share, K=4 and K=16 generate very different shares of event pairs that share a shock. This is potentially the intended H4 contrast (few versus many regime shocks), but the team must explicitly decide that **exposed-event share is the matched quantity** and report pair density, membership-count distribution and multi-regime share as structural diagnostics. Since multi-regime events remain rare, the current design is predominantly one-regime-per-event clustering; it should not be described as a heavily exercised multi-membership design. The monotone movement of exposure and pair density is encouraging, but the exact full DGP must run the diagnostic through `build_world` and the team must set thresholds before Gate 2 can pass.
 
 ### 2. Variance estimator: CR0-normal is anti-conservative even in a control
 
