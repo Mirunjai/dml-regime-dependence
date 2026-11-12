@@ -1,0 +1,15 @@
+WEEK 2: DEPENDENCE VALIDATION
+-----------------------------------------------------------------
+
+Experiment 1: Vary density
+Density=0.1 | Avg correlation=0.0544 | Pair density=0.0019
+Density=0.3 | Avg correlation=0.1199 | Pair density=0.0177
+Density=0.5 | Avg correlation=0.1685 | Pair density=0.0495
+Density=0.7 | Avg correlation=0.5077 | Pair density=0.0974
+Density=0.9 | Avg correlation=0.2523 | Pair density=0.1613
+
+Experiment 2: Vary regime count
+Regimes= 5 | Avg correlation=0.1685 | Pair density=0.0495
+Regimes=10 | Avg correlation=0.2067 | Pair density=0.0245
+Regimes=20 | Avg correlation=0.3128 | Pair density=0.0120
+Regimes=50 | Avg correlation=0.3574 | Pair density=0.0045
