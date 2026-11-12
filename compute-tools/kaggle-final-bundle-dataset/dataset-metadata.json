@@ -1,0 +1,14 @@
+{
+  "title": "ADA DML final exploratory reproducibility bundle",
+  "id": "deeptanshukumar/ada-dml-final-exploratory-bundle",
+  "licenses": [
+    {
+      "name": "other"
+    }
+  ],
+  "description": "Private course-project reproducibility input. Team-generated exploratory simulation records, own project source, derived labels and descriptive aggregates. No third-party provider prices or source VIX levels. No production approval. Code retains its repository/source terms; no blanket open-source license is granted. Members: Deeptanshu Kumar, Mirunjai Suresh Kumar, Preksha K, Sudarshan G.",
+  "keywords": [
+    "simulation",
+    "reproducibility"
+  ]
+}

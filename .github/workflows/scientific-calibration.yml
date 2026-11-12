@@ -1,0 +1,45 @@
+name: Project A scientific calibration
+on:
+  push:
+    branches: [mirun/week5, mirun/project-closeout-audit]
+  workflow_dispatch:
+concurrency:
+  group: project-a-calibration-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  full-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pytest -q -W error
+  scientific-calibration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Compare GARCH parameterizations
+        run: python scripts/mirun_garch_parameterization_comparison.py
+      - name: Run DML size, coverage and power screening campaign
+        run: python scripts/mirun_dml_size_coverage_calibration.py
+      - name: Upload calibration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-a-scientific-calibration
+          path: |
+            results/calibration/mirun_dml_size_coverage_2026-11-12.json
+            results/calibration/mirun_dml_size_coverage_2026-11-12/
+            results/tables/mirun_garch_parameterization_comparison_2026-11-12.json
+          if-no-files-found: error

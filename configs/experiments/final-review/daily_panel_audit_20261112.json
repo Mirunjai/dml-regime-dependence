@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "evidence_class": "EXPLORATORY",
+  "purpose": "Descriptive feasibility check using already saved six-firm Yahoo extraction; never a frozen/approved dataset v1 or coverage validation",
+  "registered_before_diagnostic_execution": true,
+  "price_input": "results/raw/preksha_week3_review_20261112/incoming_raw/week3_yahoo/treated_prices.csv",
+  "vix_input": "data/processed/vix_history.csv",
+  "candidates": "data/processed/week3_benchmark_candidates.csv",
+  "value": "simple adjacent-observed-session adjusted-close return; no imputation or market residualization",
+  "label_rule": "Existing classify_regimes at each return date: strictly pre-date VIX, 20-observation mean, trailing five calendar years, earlier rolling means p25/p75, strict below/above; equality mixed",
+  "vix_window": 20,
+  "reference_years": 5,
+  "minimum_aligned_sessions": 20,
+  "comparison": "Pair-specific Pearson correlation on common dates, separate calm/mixed/turbulent labels; all firm pairs enumerated; undefined and insufficient pairs retained",
+  "inference": "Descriptive only; no p-value, no IID confidence interval, no coverage, no hypothesis confirmation",
+  "limitations": ["Security identity, provider accuracy and point-in-time adjustments not certified", "SPY-observed sessions are not independent exchange-calendar completeness validation", "Prices and source VIX levels are not redistributed", "Dates/labels and aggregate statistics can be shared; recomputation of price statistics requires licensed local inputs", "Event-specific label design extended to dates for this exploratory feasibility check; not ratified as the team's daily regime definition"]
+}

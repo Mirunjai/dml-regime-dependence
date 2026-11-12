@@ -56,3 +56,6 @@ backup_before_original_restore/
 original_week2_reference/
 **/results_before_execution/
 research/week2_completion/original/
+
+# Private generated Kaggle bundle input; release data is distributed separately.
+compute-tools/kaggle-final-bundle-dataset/*.bin
