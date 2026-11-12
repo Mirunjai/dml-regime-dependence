@@ -1,0 +1,157 @@
+{
+ "purpose": "exploratory undercoverage diagnosis; alternatives are proposals; oracle uses truth",
+ "args": {
+  "K": 16,
+  "n": 400,
+  "density": 0.5,
+  "tau": 0.0,
+  "gamma": 1.0,
+  "seed0": 50000
+ },
+ "table": {
+  "rf_random": {
+   "reps": 1000,
+   "sd_tau": 0.3809100118757164,
+   "bias_over_sd": 0.0532489483001596,
+   "mean_G_reg": 16.0,
+   "variants": {
+    "existing_cr0_normal": {
+     "valid": 1000,
+     "undefined": 0,
+     "coverage": 0.913,
+     "mcse": 0.008912407082264588,
+     "mean_se_over_sd": 0.9111751495158523,
+     "mean_halfwidth_over_sd": 1.7858704766589695
+    },
+    "cr1_all_normal": {
+     "valid": 1000,
+     "undefined": 0,
+     "coverage": 0.914,
+     "mcse": 0.008865889690267975,
+     "mean_se_over_sd": 0.9152085628789571,
+     "mean_halfwidth_over_sd": 1.793775821585418
+    },
+    "cr0_t": {
+     "valid": 1000,
+     "undefined": 0,
+     "coverage": 0.93,
+     "mcse": 0.008068457101577721,
+     "mean_se_over_sd": 0.9111751495158523,
+     "mean_halfwidth_over_sd": 1.9421238583609242
+    },
+    "cr1reg_t": {
+     "valid": 1000,
+     "undefined": 0,
+     "coverage": 0.937,
+     "mcse": 0.007683163410991592,
+     "mean_se_over_sd": 0.9365295515671939,
+     "mean_halfwidth_over_sd": 1.9961654870911962
+    },
+    "hc3_cr0_normal": {
+     "valid": 1000,
+     "undefined": 0,
+     "coverage": 0.914,
+     "mcse": 0.008865889690267975,
+     "mean_se_over_sd": 0.9145105342815278,
+     "mean_halfwidth_over_sd": 1.7924077106742773
+    },
+    "naive_normal": {
+     "valid": 1000,
+     "undefined": 0,
+     "coverage": 0.878,
+     "mcse": 0.010349685985574635,
+     "mean_se_over_sd": 0.7771983300592594,
+     "mean_halfwidth_over_sd": 1.5232807357608222
+    }
+   }
+  },
+  "rf_grouped": {
+   "reps": 1000,
+   "sd_tau": 0.3959666879552344,
+   "bias_over_sd": 0.05232278583556819,
+   "mean_G_reg": 16.0,
+   "variants": {
+    "existing_cr0_normal": {
+     "valid": 1000,
+     "undefined": 0,
+     "coverage": 0.917,
+     "mcse": 0.008724161850859943,
+     "mean_se_over_sd": 0.9123997509660345,
+     "mean_halfwidth_over_sd": 1.7882706513967421
+    },
+    "cr1_all_normal": {
+     "valid": 1000,
+     "undefined": 0,
+     "coverage": 0.918,
+     "mcse": 0.008676174272108645,
+     "mean_se_over_sd": 0.9164382043560314,
+     "mean_halfwidth_over_sd": 1.7961858745943797
+    },
+    "cr0_t": {
+     "valid": 1000,
+     "undefined": 0,
+     "coverage": 0.938,
+     "mcse": 0.00762600813007697,
+     "mean_se_over_sd": 0.9123997509660345,
+     "mean_halfwidth_over_sd": 1.9447340345654067
+    },
+    "cr1reg_t": {
+     "valid": 1000,
+     "undefined": 0,
+     "coverage": 0.946,
+     "mcse": 0.0071473071852271785,
+     "mean_se_over_sd": 0.9382053787398874,
+     "mean_halfwidth_over_sd": 1.9997374281568703
+    },
+    "hc3_cr0_normal": {
+     "valid": 1000,
+     "undefined": 0,
+     "coverage": 0.918,
+     "mcse": 0.008676174272108645,
+     "mean_se_over_sd": 0.9158021351200029,
+     "mean_halfwidth_over_sd": 1.7949392018000898
+    },
+    "naive_normal": {
+     "valid": 1000,
+     "undefined": 0,
+     "coverage": 0.855,
+     "mcse": 0.011134406135937382,
+     "mean_se_over_sd": 0.7511278547824137,
+     "mean_halfwidth_over_sd": 1.4721835431583623
+    }
+   }
+  }
+ },
+ "paired_size_random_vs_grouped": {
+  "existing_cr0_normal": {
+   "n": 1000,
+   "grouped_minus_random_rejection": -0.004,
+   "mcse": 0.006166199966107329
+  },
+  "cr1_all_normal": {
+   "n": 1000,
+   "grouped_minus_random_rejection": -0.004,
+   "mcse": 0.00616619996610733
+  },
+  "cr0_t": {
+   "n": 1000,
+   "grouped_minus_random_rejection": -0.008,
+   "mcse": 0.005095288211864169
+  },
+  "cr1reg_t": {
+   "n": 1000,
+   "grouped_minus_random_rejection": -0.009,
+   "mcse": 0.00478977472768208
+  },
+  "hc3_cr0_normal": {
+   "n": 1000,
+   "grouped_minus_random_rejection": -0.004,
+   "mcse": 0.00616619996610733
+  },
+  "naive_normal": {
+   "n": 1000,
+   "grouped_minus_random_rejection": 0.023,
+   "mcse": 0.00790781471289847
+  }
+ }
+}

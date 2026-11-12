@@ -1,0 +1,35 @@
+{
+ "purpose": "exploratory factor-off check",
+ "K": 4,
+ "reps": 200,
+ "table": {
+  "random/naive": {
+   "valid": 200,
+   "failed": 0,
+   "coverage": 0.705,
+   "mcse": 0.03224709289222828,
+   "sd_tau": 0.500986782211557
+  },
+  "random/multiway": {
+   "valid": 200,
+   "failed": 0,
+   "coverage": 0.83,
+   "mcse": 0.026561249970586856,
+   "sd_tau": 0.500986782211557
+  },
+  "grouped/naive": {
+   "valid": 200,
+   "failed": 0,
+   "coverage": 0.58,
+   "mcse": 0.034899856733230296,
+   "sd_tau": 0.6261964903556273
+  },
+  "grouped/multiway": {
+   "valid": 200,
+   "failed": 0,
+   "coverage": 0.785,
+   "mcse": 0.02904952667428507,
+   "sd_tau": 0.6261964903556273
+  }
+ }
+}

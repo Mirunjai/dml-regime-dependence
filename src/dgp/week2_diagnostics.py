@@ -1,20 +1,8 @@
-
+"""Event-index toy diagnostics; descriptive associations do not prove independence."""
 import numpy as np
 
 from src.dgp.regime_shocks import simulate_regimes
-
-
-def pair_density(ids):
-    """Fraction of all window pairs sharing an active regime."""
-    n = len(ids)
-    active = ids[ids >= 0]
-
-    if n < 2 or len(active) == 0:
-        return 0.0
-
-    counts = np.unique(active, return_counts=True)[1]
-    shared = np.sum(counts * (counts - 1) / 2)
-    return float(shared / (n * (n - 1) / 2))
+from src.dgp.matched_density import pair_density
 
 
 def experiment(density, n_regimes, seed):
@@ -33,9 +21,9 @@ def experiment(density, n_regimes, seed):
 
     # Association between treatment and shock exposure.
     exposure = (ids >= 0).astype(float)
-    association = np.corrcoef(treatment, exposure)[0, 1]
+    association = None if np.ptp(treatment) == 0 or np.ptp(exposure) == 0 else float(np.corrcoef(treatment, exposure)[0, 1])
 
-    return pair_density(ids), float(association)
+    return pair_density(ids), association
 
 
 def main():
@@ -72,14 +60,16 @@ def main():
         )
 
     print("\nEXPERIMENT C: TREATMENT INDEPENDENCE")
-    associations = np.array([
+    associations = [
         experiment(0.5, 5, seed)[1]
         for seed in seeds
-    ])
-
-    print("Mean association:", associations.mean())
-    print("SD association:", associations.std(ddof=1))
-    print("Max absolute association:", np.abs(associations).max())
+    ]
+    valid = np.array([value for value in associations if value is not None])
+    print(f"Defined associations: {valid.size}/{len(associations)}; undefined values are not zero.")
+    print("Mean association:", valid.mean() if valid.size else None)
+    print("SD association:", valid.std(ddof=1) if valid.size > 1 else None)
+    print("Max absolute association:", np.abs(valid).max() if valid.size else None)
+    print("Descriptive toy checks only. Balanced regime counts fix pair density across seeds; small treatment correlations do not prove independence.")
 
 
 if __name__ == "__main__":

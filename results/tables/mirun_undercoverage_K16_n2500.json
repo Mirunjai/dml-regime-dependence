@@ -1,0 +1,66 @@
+{
+ "purpose": "exploratory undercoverage diagnosis; alternatives are proposals; oracle uses truth",
+ "args": {
+  "K": 16,
+  "n": 2500,
+  "density": 0.5
+ },
+ "table": {
+  "rf_random": {
+   "reps": 200,
+   "sd_tau": 0.2597655173705632,
+   "bias_over_sd": -0.005851842833921206,
+   "mean_G_reg": 16.0,
+   "variants": {
+    "existing_cr0_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.92,
+     "mcse": 0.019183326093250873,
+     "mean_se_over_sd": 0.8969816010328254,
+     "mean_halfwidth_over_sd": 1.7580516328194133
+    },
+    "cr1_all_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.92,
+     "mcse": 0.019183326093250873,
+     "mean_se_over_sd": 0.8976936305873582,
+     "mean_halfwidth_over_sd": 1.759447185102226
+    },
+    "cr0_t": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.955,
+     "mcse": 0.014658615214269054,
+     "mean_se_over_sd": 0.8969816010328254,
+     "mean_halfwidth_over_sd": 1.9118710258968958
+    },
+    "cr1reg_t": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.955,
+     "mcse": 0.014658615214269054,
+     "mean_se_over_sd": 0.9248273304777124,
+     "mean_halfwidth_over_sd": 1.9712227932679804
+    },
+    "hc3_cr0_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.92,
+     "mcse": 0.019183326093250873,
+     "mean_se_over_sd": 0.8975015051358837,
+     "mean_halfwidth_over_sd": 1.7590706261368223
+    },
+    "naive_normal": {
+     "valid": 200,
+     "undefined": 0,
+     "coverage": 0.64,
+     "mcse": 0.03394112549695428,
+     "mean_se_over_sd": 0.4547739938795029,
+     "mean_halfwidth_over_sd": 0.8913406491092646
+    }
+   }
+  }
+ }
+}

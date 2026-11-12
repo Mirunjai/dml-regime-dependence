@@ -50,7 +50,9 @@ data/raw/
 # --- Large / generated artifacts ---
 *.pkl
 *.joblib
-__pycache__/
-*.py[cod]
-.pytest_cache/
-.venv/
+
+# --- Local research backups and duplicate references ---
+backup_before_original_restore/
+original_week2_reference/
+**/results_before_execution/
+research/week2_completion/original/

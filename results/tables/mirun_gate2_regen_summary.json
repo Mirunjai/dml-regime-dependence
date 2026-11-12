@@ -1,0 +1,146 @@
+{
+ "purpose": "exploratory Gate 2 diagnostic regeneration; not an approval; thresholds not pre-declared by team",
+ "provenance": {
+  "command": "/home/claude/dml-regime-dependence/scripts/mirun_regen_gate2.py --raw results/raw/mirun_session4/gate2_regen.json --summary results/tables/mirun_gate2_regen_summary.json",
+  "git": {
+   "commit": "b5581562d818534a802f060920465df5fddf8a67",
+   "dirty": true
+  },
+  "software": {
+   "python": "3.12.3",
+   "numpy": "2.5.4",
+   "matplotlib": "3.11.2",
+   "pyyaml": "6.0.3",
+   "rng_bit_generator": "PCG64"
+  },
+  "python": "3.12.3",
+  "config": {
+   "n": 400,
+   "T": 260,
+   "H": 5,
+   "p": 5,
+   "persistence": 0.9,
+   "garch_alpha": 0.1,
+   "sigma2_bar": 1.0,
+   "density": 0.5,
+   "n_regimes": 4,
+   "sd_shock": 0.4,
+   "sd_factor": 0.5,
+   "gamma": 1.0,
+   "tau": 1.0,
+   "seed": 0,
+   "break_vol_independence": false,
+   "break_treat_independence": false
+  },
+  "config_hash": "c1f8848f383c03a2930e685d252905500921296148547cd93b65359648070a20",
+  "seeds": [
+   60000,
+   60099
+  ],
+  "n_seeds": 100,
+  "raw_file": "results/raw/mirun_session4/gate2_regen.json",
+  "wall_seconds": 5.986196279525757,
+  "schema_version": 2
+ },
+ "garch_theory": [
+  {
+   "persistence": 0.5,
+   "alpha": 0.1,
+   "beta": 0.4,
+   "omega": 0.5,
+   "unconditional_variance": 1.0,
+   "fourth_moment_condition_value": 0.27,
+   "fourth_moment_finite": true,
+   "gaussian_kurtosis": 3.0821917808219177
+  },
+  {
+   "persistence": 0.8,
+   "alpha": 0.1,
+   "beta": 0.7,
+   "omega": 0.19999999999999996,
+   "unconditional_variance": 1.0,
+   "fourth_moment_condition_value": 0.6600000000000001,
+   "fourth_moment_finite": true,
+   "gaussian_kurtosis": 3.1764705882352944
+  },
+  {
+   "persistence": 0.9,
+   "alpha": 0.1,
+   "beta": 0.8,
+   "omega": 0.09999999999999998,
+   "unconditional_variance": 1.0,
+   "fourth_moment_condition_value": 0.8300000000000002,
+   "fourth_moment_finite": true,
+   "gaussian_kurtosis": 3.3529411764705888
+  },
+  {
+   "persistence": 0.95,
+   "alpha": 0.1,
+   "beta": 0.85,
+   "omega": 0.050000000000000044,
+   "unconditional_variance": 1.0,
+   "fourth_moment_condition_value": 0.9224999999999999,
+   "fourth_moment_finite": true,
+   "gaussian_kurtosis": 3.7741935483870965
+  },
+  {
+   "persistence": 0.98,
+   "alpha": 0.1,
+   "beta": 0.88,
+   "omega": 0.020000000000000018,
+   "unconditional_variance": 1.0,
+   "fourth_moment_condition_value": 0.9803999999999999,
+   "fourth_moment_finite": true,
+   "gaussian_kurtosis": 6.061224489795907
+  },
+  {
+   "persistence": 0.99,
+   "alpha": 0.1,
+   "beta": 0.89,
+   "omega": 0.010000000000000009,
+   "unconditional_variance": 1.0,
+   "fourth_moment_condition_value": 1.0001,
+   "fourth_moment_finite": false,
+   "gaussian_kurtosis": null
+  }
+ ],
+ "empirical": {
+  "mean_overlap_density": 0.5756500000000001,
+  "mean_pair_density": 0.08282456140350876,
+  "mean_exposed_share": 0.57565,
+  "multi_regime_events_total": 0,
+  "worlds_with_multi_regime": 0,
+  "mean_r2_of_unit_variance_returns": 0.9987227118023112,
+  "max_abs_return_overall": 8.107299014669008,
+  "n_nan_total": 0,
+  "n_inf_total": 0,
+  "same_X_dates_U_across_gamma_all_seeds": true
+ },
+ "independence": {
+  "production_corr_D_Uwin": {
+   "n": 100,
+   "mean": -0.014182042636725994,
+   "sd": 0.1526790419356269,
+   "t": -0.9288794622319859
+  },
+  "production_corr_sigma_abs_U": {
+   "n": 100,
+   "mean": 0.008345108902238862,
+   "sd": 0.06793504610342199,
+   "t": 1.228395265903633
+  },
+  "positive_control_treat_dependence_corr_D_Uwin": {
+   "n": 100,
+   "mean": 0.42491821558855447,
+   "sd": 0.13754862374211677,
+   "t": 30.89221862264598
+  },
+  "positive_control_vol_dependence_corr_sigma_abs_U": {
+   "n": 100,
+   "mean": 0.7613264132725164,
+   "sd": 0.06520649710951976,
+   "t": 116.7562201652705
+  },
+  "note": "Non-rejection in production does not prove independence; controls show the diagnostics can detect injected dependence"
+ }
+}

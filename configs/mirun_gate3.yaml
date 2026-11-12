@@ -1,0 +1,87 @@
+# PROPOSAL ONLY -- NOT AN APPROVED CONFIGURATION.
+# Each tunable parameter has `proposed` (Mirun's suggestion) and `approved` (must be set by the team).
+# `approved: AWAITING_TEAM_APPROVAL` means the engine (src/infra/dml_engine.py) refuses a production run.
+# Smoke runs may use `proposed` values only with --smoke and are labelled exploratory.
+experiment:
+  name: mirun-gate3-proposal
+  owner: Mirun
+  gate: gate3
+  status: PROPOSAL_NOT_APPROVED
+  description: "Four-cell (random|grouped x naive|robust) DML coverage/size study on the calendar-time DGP"
+approval:
+  gate2: AWAITING_TEAM_APPROVAL
+  gate3: AWAITING_TEAM_APPROVAL
+  approved_by: AWAITING_TEAM_APPROVAL
+  approval_date: AWAITING_TEAM_APPROVAL
+engine: calendar_dml            # NOT accepted by src/infra/experiment_runner.py (mock only)
+dgp:
+  module: research.week2_completion.dgp
+  fixed:                        # evidence-backed defaults of the existing Config; see proposal sec. 2
+    n: 400
+    T: 260
+    H: 5
+    p: 5
+    garch_alpha: 0.10
+    sigma2_bar: 1.0
+    sd_shock: 0.40
+  parameters:
+    persistence:      {proposed: 0.90, approved: AWAITING_TEAM_APPROVAL, basis: "finite 4th moment (.83<1); .99 infinite under fixed-alpha"}
+    sd_factor:        {proposed: 0.50, approved: AWAITING_TEAM_APPROVAL, basis: "shared calendar factor; factor-off check (200 reps) showed it does NOT explain undercoverage; kept for realism, factor-off stays in robustness subset"}
+    density:          {proposed: [0.25, 0.50, 0.75], approved: AWAITING_TEAM_APPROVAL, basis: "calendar-time fraction; NOT exposed-event share; quantity to match undecided"}
+    n_regimes:        {proposed: [4, 16], approved: AWAITING_TEAM_APPROVAL, basis: "K=4 shows grouped spread inflation (1.23x), K=16 does not"}
+    gamma:            {proposed: [0.0, 1.0], approved: AWAITING_TEAM_APPROVAL, basis: "naive miscalibration only appears for gamma>0; gamma=0 is the control. Must be fixed BEFORE seeing primary results"}
+    tau:              {proposed: {coverage: 1.0, zero_effect: 0.0}, approved: AWAITING_TEAM_APPROVAL, basis: "zero-effect condition is run separately; size = rejection of H0:tau=0"}
+estimator:
+  parameters:
+    n_folds:          {proposed: 5, approved: AWAITING_TEAM_APPROVAL, basis: "used in all pilots"}
+    learner:          {proposed: "RandomForestRegressor(n_estimators=40,min_samples_leaf=8,max_features=.5)", approved: AWAITING_TEAM_APPROVAL, basis: "existing implementation; learner sensitivity not yet run"}
+    robust_variance:  {proposed: "overlap_sandwich_full_membership_CR0_normal", approved: AWAITING_TEAM_APPROVAL, basis: "existing week2_completion estimator; alternatives (CR1 first-regime, t(G-1)) undecided"}
+    confidence_level: {proposed: 0.95, approved: AWAITING_TEAM_APPROVAL, basis: "locked Gate 1 outcome is 95% coverage"}
+ablation_cells:                 # same ids as src/infra/experiment_runner.py CELL_SPEC; 'robust' = overlap sandwich
+  - {id: random_xfit__naive_var,   cross_fitting: random,  variance_estimation: naive}
+  - {id: random_xfit__robust_var,  cross_fitting: random,  variance_estimation: robust}
+  - {id: grouped_xfit__naive_var,  cross_fitting: grouped, variance_estimation: naive}
+  - {id: grouped_xfit__robust_var, cross_fitting: grouped, variance_estimation: robust}
+replications:
+  count:            {proposed: 1000, approved: AWAITING_TEAM_APPROVAL, basis: "MCSE<=0.7pp near .95 needs 970; 0.68 s/rep => 24 x 1000 x 0.68 s = 16,320 s ~ 4.5 h single-core CPU (0.68 s = one run_dml call = all four cells; measured 0.67-0.68 s at n=400 for K in {4,8,16}, density {.5,.75}; larger n costs more)"}
+  minimum_count:    {proposed: 500,  approved: AWAITING_TEAM_APPROVAL, basis: "MCSE 1pp needs 475"}
+provenance:
+  seed_rule:        {proposed: "seed = root_seed + replication_id (same worlds across cells; independent named streams via SeedSequence.spawn inside the DGP)", approved: AWAITING_TEAM_APPROVAL}
+  root_seed:        {proposed: AWAITING_TEAM_APPROVAL, approved: AWAITING_TEAM_APPROVAL, basis: "must be chosen and recorded before the run; 10000-10199, 20000-20019, 30000-30199 already used in pilots"}
+failure_policy:
+  rule:             {proposed: "retain every failed cell; denominator = attempted replications; report conditional-on-success coverage AND all-attempted bounds; never retry silently", approved: AWAITING_TEAM_APPROVAL}
+  max_failure_rate: {proposed: 0.02, approved: AWAITING_TEAM_APPROVAL, basis: "0/200 failures in every probed setting (upper 1.9%)"}
+decision_rules:                 # from docs/WEEK2_COMPLETION_PACK.md (draft); ratification required
+  material_difference_pp: {proposed: 3.0, approved: AWAITING_TEAM_APPROVAL}
+  paired_contrast: "random_xfit__robust_var vs grouped_xfit__robust_var (paired by replication id)"
+  manipulation_check: {proposed: "naive coverage must be < 0.93 at gamma=1 in the high-dependence condition, else classify as DGP failure", approved: AWAITING_TEAM_APPROVAL, basis: "threshold invented by Mirun as a proposal; no team threshold exists"}
+robustness_subset:  {proposed: {factor_off: {sd_factor: 0.0}, folds10: {n_folds: 10}, linear_learner: true}, approved: AWAITING_TEAM_APPROVAL}
+outputs:
+  raw_dir: results/raw
+  summary_dir: results/tables
+  figures_dir: results/figures
+
+# ---- Session 5 additions (PROPOSALS; every approved field awaits the team) ----
+analysis_tiers:
+  primary:   {conditions: "K{4,16} x density{.25,.5,.75} x gamma{0,1}; tau=1 (coverage) and tau=0 (size)", approved: AWAITING_TEAM_APPROVAL}
+  negative_controls:
+    - {id: independent_control, params: {sd_factor: 0.0, sd_shock: 0.0, gamma: 0.0}, purpose: "no regime shock, no common factor, no regime treatment effect; all four cells must be ~nominal or the pipeline/estimator is suspect", approved: AWAITING_TEAM_APPROVAL}
+    - {id: factor_only,          params: {sd_shock: 0.0, gamma: 0.0}, purpose: "calendar factor without regime shocks", approved: AWAITING_TEAM_APPROVAL}
+  sensitivity:
+    - {id: factor_off_unmatched,        params: {sd_factor: 0.0}, approved: AWAITING_TEAM_APPROVAL}
+    - {id: factor_off_variance_matched, params: {sd_factor: 0.0, sigma2_bar: "calibrated by scripts/mirun_session5_checks.py (1.29 at default)"}, purpose: "removes the factor while holding outcome-noise variance fixed", approved: AWAITING_TEAM_APPROVAL}
+    - {id: sample_size,   params: {n: [400, 1000]}, approved: AWAITING_TEAM_APPROVAL}
+    - {id: second_learner, params: {learner: gradient_boosting}, approved: AWAITING_TEAM_APPROVAL}
+  estimator_proposals:             # SEPARATELY LABELLED; none replaces the primary estimator
+    - {id: cr0_t,     se: "overlap sandwich CR0", critical: "t(G_reg-1)", approved: AWAITING_TEAM_APPROVAL}
+    - {id: cr1reg_t,  se: "regime part x G/(G-1)", critical: "t(G_reg-1)", approved: AWAITING_TEAM_APPROVAL}
+compute:
+  seconds_per_replication: {value: 0.68, scope: "one run_dml call = all four cells, n=400"}
+  primary_hours_single_core: {value: 4.53, derivation: "24 conditions x 1000 reps x 0.68 s"}
+  note: "controls/sensitivity add ~ (5 conditions x 1000 reps x 0.68 s) = 0.94 h; n=1000 roughly 2x per replication"
+output_schema:
+  per_replication_file: "rep_<id>.json: schema, label, condition, replication_id, seed, config_hash, truth, world_config, cells[{cell,status,estimate,lower,upper,error,se,point_estimate,n_dependency_pairs}], runtime"
+  manifest_file: "manifest.json: label, condition, reps_planned, root_seed, config_hash, values, git, software"
+acceptance_rules:                  # proposed; not ratified
+  negative_control_pass: {proposed: "naive-cell coverage within 2 MCSE of .95 in independent_control", approved: AWAITING_TEAM_APPROVAL, observed_pilot: "random/naive .93 +- .018; grouped/naive .90 +- .021 (200 reps)"}
+  central_contrast: {proposed: "paired coverage difference (grouped+robust - random+robust) with 95% interval; |difference| >= 3 pp AND interval excludes 0 -> material", approved: AWAITING_TEAM_APPROVAL}
