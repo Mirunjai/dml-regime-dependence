@@ -7,10 +7,12 @@ seed is reused across paired conditions and all four estimator cells.
 from __future__ import annotations
 import json, hashlib, platform, time
 from pathlib import Path
+import sys
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 import numpy as np
 from src.infra import dml_engine as E
 
-ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "results" / "calibration" / "mirun_dml_size_coverage_2026-11-12.json"
 REPS = 100
 ROOT_SEED = 60000

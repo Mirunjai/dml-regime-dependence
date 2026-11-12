@@ -8,6 +8,9 @@ differences and runs a finite-sample diagnostic at rho=.90 and .99.
 from __future__ import annotations
 import json, hashlib
 from pathlib import Path
+import sys
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 import numpy as np
 from research.week2_completion.dgp import simulate_volatility as fixed_alpha_sim
 from src.dgp.volatility import simulate_volatility as canonical_sim, garch_parameters
