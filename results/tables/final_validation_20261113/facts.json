@@ -1,0 +1,154 @@
+{
+  "schema": "ada_final_research_facts_v1",
+  "evidence_date": "2026-11-13",
+  "team_name": "",
+  "sections": "",
+  "members": [
+    {
+      "name": "Deeptanshu Kumar",
+      "SRN": "PES1UG24AM357"
+    },
+    {
+      "name": "Mirunjai Suresh Kumar",
+      "SRN": "PES1UG24AM161"
+    },
+    {
+      "name": "Preksha K",
+      "SRN": "PES1UG24AM907"
+    },
+    {
+      "name": "Sudarshan G",
+      "SRN": "PES1UG24AM450"
+    }
+  ],
+  "scenarios": 78,
+  "planned_blocks": 43200,
+  "complete_blocks": 43200,
+  "interval_rows": 172800,
+  "failed_primary_cells": 0,
+  "missing_primary_cells": 0,
+  "controls_passed": true,
+  "control_cells": 24,
+  "control_coverage_range": [
+    0.944,
+    0.958
+  ],
+  "focal_H3": [
+    {
+      "scenario": "main_K4_d0.5_g1_tau1",
+      "K": 4,
+      "paired_coverage": {
+        "n": 500,
+        "difference": -0.006,
+        "mcse": 0.008722394185121496,
+        "percentile95": [
+          -0.022,
+          0.012
+        ]
+      },
+      "discordant_grouped_only": 8,
+      "discordant_random_only": 11,
+      "exact_p": 0.6476058959960938,
+      "coverage_calibration_improvement": -0.006000000000000005,
+      "null_size_loss_worsening": 0.009999999999999995,
+      "holm_p": 1.0,
+      "registered_material_benefit": false
+    },
+    {
+      "scenario": "main_K16_d0.5_g1_tau1",
+      "K": 16,
+      "paired_coverage": {
+        "n": 500,
+        "difference": -0.006,
+        "mcse": 0.007213325455589572,
+        "percentile95": [
+          -0.02,
+          0.008
+        ]
+      },
+      "discordant_grouped_only": 5,
+      "discordant_random_only": 8,
+      "exact_p": 0.5810546875,
+      "coverage_calibration_improvement": -0.006000000000000005,
+      "null_size_loss_worsening": 0.0,
+      "holm_p": 1.0,
+      "registered_material_benefit": false
+    }
+  ],
+  "panel_dates": 1511,
+  "panel_returns": 9066,
+  "label_counts": {
+    "mixed": 669,
+    "turbulent": 510,
+    "calm": 332
+  },
+  "raw_correlation": {
+    "observed": {
+      "calm": 0.2347449683835411,
+      "turbulent": 0.4758355864916295,
+      "difference": 0.24109061810808838,
+      "aligned_sessions": {
+        "calm": 332,
+        "turbulent": 510
+      }
+    },
+    "block_length": 20,
+    "planned": 2000,
+    "valid": 2000,
+    "failed": 0,
+    "failures": [],
+    "percentile95": [
+      0.09072951064836174,
+      0.3562734374984876
+    ],
+    "bootstrap_sd": 0.07063964348472805,
+    "seed": 2026111221,
+    "interpretation": "Descriptive moving-block uncertainty, not causal or known-truth coverage inference"
+  },
+  "residual_correlation": {
+    "observed": {
+      "calm": 0.06270189164830596,
+      "turbulent": 0.08294055201166009,
+      "difference": 0.02023866036335413,
+      "aligned_sessions": {
+        "calm": 332,
+        "turbulent": 491
+      }
+    },
+    "block_length": 20,
+    "planned": 2000,
+    "valid": 2000,
+    "failed": 0,
+    "failures": [],
+    "percentile95": [
+      -0.030168561058480495,
+      0.07018821023392366
+    ],
+    "bootstrap_sd": 0.02559578227753473,
+    "seed": 2026111221,
+    "interpretation": "Descriptive moving-block uncertainty, not causal or known-truth coverage inference"
+  },
+  "tests": {
+    "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 .venv/bin/python -m pytest -q",
+    "tests_passed": 439,
+    "warnings": 7,
+    "warning_kind": "Python 3.13 multithreaded-fork deprecation in multiprocessing tests",
+    "elapsed_seconds": 24.4,
+    "status": "PASS"
+  },
+  "notebook_code_cells": 48,
+  "producer_source_zip_sha256": "293ecdbbdef85e58afd2f0e9bc6433730228bdaccb2b938b5fdee04cc34b0e53",
+  "campaign_archive_sha256": {
+    "core": "d4d3b232a92d62e2c94941a99d13b23d67c2adba83bf065d499e66e887e90c68",
+    "robustness": "049cb2d9a30ba9791790edfb65d22a2d098b87689bb5fe238448ed116616f0cb"
+  },
+  "historical_original_inputs_authenticated": false,
+  "technical_authorization": "User-delegated final design and technical acceptance; no invented teammate signatures or mentor approval.",
+  "scope": "Registered finite-grid study using established methods; no general theorem, universal validity or estimator novelty claimed.",
+  "excluded": [
+    "Synthetic Control",
+    "video production",
+    "Drive sharing",
+    "Google Form submission"
+  ]
+}

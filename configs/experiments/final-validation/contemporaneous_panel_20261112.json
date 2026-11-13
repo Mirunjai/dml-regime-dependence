@@ -1,0 +1,51 @@
+{
+  "registered_utc": "2026-11-12T16:37:26.104179+00:00",
+  "purpose": "Separate contemporaneous six-firm descriptive validation; original event roster retained",
+  "tickers": [
+    "CRM",
+    "FAST",
+    "MHK",
+    "SWKS",
+    "ETSY",
+    "TER"
+  ],
+  "panel_start": "2016-01-01",
+  "panel_end_exclusive": "2022-01-01",
+  "acquisition_start": "2007-01-01",
+  "acquisition_end_exclusive": "2022-01-01",
+  "vix_start": "2000-01-01",
+  "market_tickers": [
+    "SPY",
+    "^GSPC"
+  ],
+  "vix_ticker": "^VIX",
+  "price_field": "Adj Close",
+  "auto_adjust": false,
+  "repair": false,
+  "fill_missing": false,
+  "return_definition": "adjacent common-session adjusted-close simple return",
+  "label_rule": "strictly prior 20-observation VIX mean, trailing-five-calendar-year earlier means p25/p75; equality mixed",
+  "minimum_pair_label_sessions": 60,
+  "uncertainty": "calendar-block bootstrap for paired calm/turbulent descriptive correlation contrasts; no causal or CI-coverage inference",
+  "scm": "OUT OF SCOPE BY USER INSTRUCTION",
+  "analysis_addendum_before_correlations_utc": "2026-11-12T17:05:20.436953+00:00",
+  "bootstrap": {
+    "primary_block_length": 20,
+    "primary_replications": 2000,
+    "sensitivity_block_lengths": [
+      10,
+      40
+    ],
+    "sensitivity_replications": 1000,
+    "seed": 2026111201,
+    "scheme": "non-circular moving blocks of jointly aligned dates/returns/labels; no independent-firm resampling"
+  },
+  "secondary_market_residuals": {
+    "window": 252,
+    "minimum_observations": 200,
+    "information_cutoff": "strictly prior sessions only",
+    "market": "^GSPC",
+    "purpose": "descriptive sensitivity, not causal inference"
+  },
+  "secondary_rank_correlation": true
+}

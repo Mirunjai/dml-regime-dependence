@@ -1,0 +1,178 @@
+{
+  "panel_sessions": 1511,
+  "firms": [
+    "CRM",
+    "FAST",
+    "MHK",
+    "SWKS",
+    "ETSY",
+    "TER"
+  ],
+  "first_date": "2016-01-04",
+  "last_date": "2021-12-31",
+  "label_counts": {
+    "mixed": 669,
+    "turbulent": 510,
+    "calm": 332
+  },
+  "valid_returns": 9066,
+  "missing_returns": 0,
+  "label_check": {
+    "mismatches": 0,
+    "maximum_absolute_difference": 1.4210854715202004e-14
+  },
+  "block_bootstrap": {
+    "raw_returns": [
+      {
+        "observed": {
+          "calm": 0.2347449683835411,
+          "turbulent": 0.4758355864916295,
+          "difference": 0.24109061810808838,
+          "aligned_sessions": {
+            "calm": 332,
+            "turbulent": 510
+          }
+        },
+        "block_length": 20,
+        "planned": 2000,
+        "valid": 2000,
+        "failed": 0,
+        "failures": [],
+        "percentile95": [
+          0.09072951064836174,
+          0.3562734374984876
+        ],
+        "bootstrap_sd": 0.07063964348472805,
+        "seed": 2026111221,
+        "interpretation": "Descriptive moving-block uncertainty, not causal or known-truth coverage inference"
+      },
+      {
+        "observed": {
+          "calm": 0.2347449683835411,
+          "turbulent": 0.4758355864916295,
+          "difference": 0.24109061810808838,
+          "aligned_sessions": {
+            "calm": 332,
+            "turbulent": 510
+          }
+        },
+        "block_length": 10,
+        "planned": 1000,
+        "valid": 1000,
+        "failed": 0,
+        "failures": [],
+        "percentile95": [
+          0.11218502603129571,
+          0.3514714056276011
+        ],
+        "bootstrap_sd": 0.06147987387358257,
+        "seed": 2026111211,
+        "interpretation": "Descriptive moving-block uncertainty, not causal or known-truth coverage inference"
+      },
+      {
+        "observed": {
+          "calm": 0.2347449683835411,
+          "turbulent": 0.4758355864916295,
+          "difference": 0.24109061810808838,
+          "aligned_sessions": {
+            "calm": 332,
+            "turbulent": 510
+          }
+        },
+        "block_length": 40,
+        "planned": 1000,
+        "valid": 1000,
+        "failed": 0,
+        "failures": [],
+        "percentile95": [
+          0.07952189477351383,
+          0.37869430280718835
+        ],
+        "bootstrap_sd": 0.08134518983885641,
+        "seed": 2026111241,
+        "interpretation": "Descriptive moving-block uncertainty, not causal or known-truth coverage inference"
+      }
+    ],
+    "prior_market_residuals": [
+      {
+        "observed": {
+          "calm": 0.06270189164830596,
+          "turbulent": 0.08294055201166009,
+          "difference": 0.02023866036335413,
+          "aligned_sessions": {
+            "calm": 332,
+            "turbulent": 491
+          }
+        },
+        "block_length": 20,
+        "planned": 2000,
+        "valid": 2000,
+        "failed": 0,
+        "failures": [],
+        "percentile95": [
+          -0.030168561058480495,
+          0.07018821023392366
+        ],
+        "bootstrap_sd": 0.02559578227753473,
+        "seed": 2026111221,
+        "interpretation": "Descriptive moving-block uncertainty, not causal or known-truth coverage inference"
+      },
+      {
+        "observed": {
+          "calm": 0.06270189164830596,
+          "turbulent": 0.08294055201166009,
+          "difference": 0.02023866036335413,
+          "aligned_sessions": {
+            "calm": 332,
+            "turbulent": 491
+          }
+        },
+        "block_length": 10,
+        "planned": 1000,
+        "valid": 1000,
+        "failed": 0,
+        "failures": [],
+        "percentile95": [
+          -0.028257633306296166,
+          0.06793307680557067
+        ],
+        "bootstrap_sd": 0.024808816614498307,
+        "seed": 2026111211,
+        "interpretation": "Descriptive moving-block uncertainty, not causal or known-truth coverage inference"
+      },
+      {
+        "observed": {
+          "calm": 0.06270189164830596,
+          "turbulent": 0.08294055201166009,
+          "difference": 0.02023866036335413,
+          "aligned_sessions": {
+            "calm": 332,
+            "turbulent": 491
+          }
+        },
+        "block_length": 40,
+        "planned": 1000,
+        "valid": 1000,
+        "failed": 0,
+        "failures": [],
+        "percentile95": [
+          -0.036069699766504114,
+          0.07169302199783119
+        ],
+        "bootstrap_sd": 0.027715173725909373,
+        "seed": 2026111241,
+        "interpretation": "Descriptive moving-block uncertainty, not causal or known-truth coverage inference"
+      }
+    ]
+  },
+  "original_missing_inputs_authenticated": false,
+  "ADS_identity": {
+    "historical_ticker": "ADS",
+    "current_ticker": "BFH",
+    "issuer_CIK": "0001101215",
+    "ticker_change": "2022-04-04",
+    "source": "https://www.sec.gov/Archives/edgar/data/1101215/000110121522000058/form_8-k.htm",
+    "scope": "Same issuer verified; freshly reacquired adjusted history, not original missing file."
+  },
+  "scope": "Descriptive selected six-firm common-window analysis; no causal effect or known-truth coverage claim."
+}

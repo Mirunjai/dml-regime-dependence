@@ -1,0 +1,17 @@
+{
+  "recorded_utc": "2026-11-12T17:05:20.436709+00:00",
+  "timing": "Analysis addendum recorded after job launch but before accessing any final-run estimates, intervals, summaries or logs. The execution grid/source remain unchanged.",
+  "primary_focal_conditions": [
+    "main_K4_d0.5_g1_tau1",
+    "main_K16_d0.5_g1_tau1"
+  ],
+  "primary_comparison": "grouped CR2 minus random CR2 coverage on complete shared-world blocks",
+  "material_coverage_improvement": 0.02,
+  "maximum_null_size_calibration_loss_worsening": 0.01,
+  "benefit_rule": "Require >=.02 improvement in absolute distance to .95, exact paired discordance-test Holm-adjusted p<.05 over the two focal conditions, and no >.01 worsening of absolute null-size distance to .05. This is a prespecified evidence criterion, not a theorem or equivalence claim.",
+  "paired_test": "Exact two-sided binomial/McNemar test among discordant world-level coverage indicators; Holm over two focal conditions.",
+  "uncertainty": "Per-cell Wilson95 and observed binomial MCSE; paired differences use SD(differences)/sqrt(R) and paired whole-world percentile bootstrap.",
+  "all_other_grid_comparisons": "Descriptive/exploratory with full-grid reporting; no favourable subset replacement or omnibus superiority claim.",
+  "H4": "Report K16-minus-K4 differences at the registered pair-density match, alongside exposure, covariance-strength and variance differences. Repeat with the secondary exposure match; do not call either full dependence-structure equivalence.",
+  "no_dependence_interpretation": "Dense outcome dependence need not imply identical dependence in orthogonal scores; gamma=0 and gamma=1 are reported separately."
+}

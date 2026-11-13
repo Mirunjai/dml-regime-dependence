@@ -1,5 +1,34 @@
 # Project state
 
+## Final registered research completion — 13 November 2026
+
+The final study was developed on `deeptanshu/final-research-validation`, based
+on main `0561ec6`. The user delegated final design decisions, technical acceptance
+and, subsequently, publication and merging into main through a reviewed PR.
+The separately frozen 78-scenario study has **43,200 complete four-cell blocks,
+172,800 primary intervals and zero failed/missing cells**. All 24 independent
+control cells meet the registered calibration/bias criteria. External R CR2
+verification and a fresh 12-record source-pinned Kaggle replay pass.
+
+The common six-firm 2016–2021 panel now has **1,511 aligned dates and 9,066
+returns**, with independently regenerated prior-only labels and block-bootstrap
+diagnostics. An independent real-data audit passes 39,377 numerical comparisons.
+Fresh seven-event classical calculations include the SEC-verified ADS/BFH
+crosswalk. Original missing historical inputs remain unauthenticated.
+
+**439 tests pass**. The current submission notebook has **48 code stages**, with
+source/bundle-specific execution receipts. Final report, supplied course-template
+PPT and one-pager reflect the new evidence. The
+[final technical review](final_validation/FINAL_RESULTS_AND_TECHNICAL_REVIEW.md)
+records decisions, results and Week 4 closure. Earlier entries below are dated
+historical snapshots; their 404/427-test or 10/38-cell counts and pending-panel
+statements do not describe this new final study. Source/configs, tests and small
+summary tables/figures belong in Git; raw archives/provider prices and the final
+deliverables folder remain outside Git. Publication is explicitly authorized.
+
+Synthetic Control is excluded. Team name/sections remain blank. Video and
+Drive/Form submission remain with the team, as explicitly instructed.
+
 ## Reviewed Week 4 integration — 12 November 2026
 
 The user authorized merging the reviewed Week 4 package and deleting the seven
