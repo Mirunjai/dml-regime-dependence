@@ -4,6 +4,26 @@
 Testing DML confidence-interval calibration under dense regime-level common shocks.
 ADA Finance Track: Mirun (lead), Deeptanshu, Preksha, Sudarshan.
 
+## Final research release
+
+The registered final study contains **78 scenarios, 43,200 complete four-cell
+blocks and 172,800 primary intervals**, with zero failed or missing cells.
+All 24 independent-control cells pass the frozen calibration/bias criteria.
+CR2 improves focal coverage; grouped folds add no material benefit under the
+prespecified paired rule. Few-regime undercoverage remains a reported finding.
+
+The real-data illustration now uses **six firms over 1,511 common trading dates**
+(2016–2021), with 9,066 returns, strictly prior VIX labels, joint calendar-block
+uncertainty and prior-only market residuals. The fresh seven-event classical
+benchmark uses the actual S&P 500 index and an SEC-verified ADS/BFH crosswalk.
+Original missing archives remain unauthenticated; fresh evidence is separately
+saved and audited. **439 tests pass**, and the submission notebook contains
+**48 explained code stages**. See the [final technical review](docs/final_validation/FINAL_RESULTS_AND_TECHNICAL_REVIEW.md)
+and [reproduction commands](submission/README.md). Source, registered configs and
+small summary tables/figures are versioned; the sibling submission folder and
+raw archives stay outside Git. Older sections below describe the component and
+historical releases.
+
 ## Research objective
 
 The core experiment is random/grouped cross-fitting × naive/robust variance.
@@ -12,7 +32,8 @@ intervals is primary; empirical size under a zero effect is the key diagnostic.
 Similar performance of the robust cells is a valid result. Width and power alone
 cannot establish inferential benefit.
 
-Classical event studies and Synthetic Control are secondary contextual benchmarks.
+Classical event studies provide a secondary contextual benchmark. Synthetic
+Control is excluded by the final-week plan and the user's explicit instruction.
 S&P 500 inclusions provide a qualitative real-data check, not coverage evidence.
 The project introduces no new estimator, variance formula, or theorem.
 
@@ -64,8 +85,8 @@ The independent review reconstructed 5,360 interval rows from the existing pilot
 and ablation settings; all 76 reported coverage rates match. Small continuous
 legacy discrepancies remain flagged. The actual calendar runner now has a strict
 raw-file adapter and monitoring support. See the [Week 3 report](reports/deeptanshu_week3.md).
-Approved robustness runs, full-run verification and real-data conclusions still
-require the team design decisions and labelled return/residual panel.
+This historical Week 3 package preceded the new final design, robustness runs
+and labelled panel documented in the final research release above.
 
 ## Sudarshan’s Week 3 reporting
 
@@ -81,10 +102,11 @@ Dated event-study and Synthetic Control helpers, pre-announcement VIX event labe
 source audits and acquisition tools are integrated. See the
 [review and remaining data gaps](reports/preksha_week3_review.md). Install optional
 acquisition/calendar dependencies with `python -m pip install -r requirements-data.txt`.
-The saved historical CARs remain unverified without their original inputs; SCM
-and daily labelled-panel diagnostics remain pending.
+The saved historical CARs remain unauthenticated without their original inputs.
+The final release executes fresh classical calculations and daily labelled-panel
+diagnostics; SCM stays excluded.
 
-## Final-week exploratory release
+## Historical final-week exploratory release
 
 The 12 November review completes a registered 16-scenario, 200-world-per-scenario
 CPU Kaggle audit: **3,200 complete four-cell blocks, 12,800 interval records and
@@ -93,7 +115,7 @@ zero failed/missing cells**. The independent-control reference robust coverage i
 See the [decision memo](docs/final_review/DECISIONS_20261112.md),
 [independent audit](docs/final_review/INDEPENDENT_AUDIT_20261112.md) and
 [scoped literature verification](docs/final_review/LITERATURE_VERIFICATION.md).
-All 427 software tests pass; all 38 submission-notebook code cells pass in a
+That frozen source passed 427 software tests; its 38 notebook code cells passed in a
 fresh Kaggle CPU kernel with the declared frozen bundle. These are reproducibility
 and exploratory findings, not production-gate approval. Build inputs/commands are
 in [submission/README.md](submission/README.md). No provider prices are redistributed.

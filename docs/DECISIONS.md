@@ -1,5 +1,14 @@
 # Decisions and proposals
 
+13 November 2026: the user explicitly delegated final research decisions and
+technical acceptance. The [new DEC-1–DEC-8 record](final_validation/FINAL_RESULTS_AND_TECHNICAL_REVIEW.md)
+applies to the separately registered final study, whose design/source/budgets
+were frozen before final seeds. All 24 independent-control cells pass; the full
+43,200-block campaign and robustness/H4 comparisons are independently audited.
+This does not relabel the historical RF/overlap-CR0 archive or invent teammate
+signatures/mentor approval. Earlier proposals and dated decisions below remain
+historical records.
+
 31 October 2026: the user approved the proposed approach and explicitly requested
 implementation of Deeptanshu's Week 1 and Week 2 work. P1-P4 now describe that
 authorized implementation. This is not team approval of a final simulation grid,

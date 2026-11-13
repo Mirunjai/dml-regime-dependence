@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "fixtures": 20,
+  "numeric_comparisons": 60,
+  "maximum_absolute_difference": 1.9539925233402755e-14,
+  "reference": "Unmodified clubSandwich 0.7.0 in isolated R environment",
+  "inference_source_sha256": "2278f99f038ba32236b8ebee54f10989dbc93e232b0b29af165a58a173dfbb18"
+}
