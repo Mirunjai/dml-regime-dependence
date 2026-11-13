@@ -4,7 +4,9 @@ The latest study is the separately registered 78-scenario / 43,200-block campaig
 in `configs/experiments/final-validation/`. Its frozen source and raw archives are
 not substituted for the older 3,200-block RF/overlap-CR0 exploratory evidence.
 Read `docs/final_validation/FINAL_RESULTS_AND_TECHNICAL_REVIEW.md` for the final
-user-delegated decisions, acceptance criteria, results and scope.
+user-delegated decisions, acceptance criteria, results and scope. The
+[scope/submission crosswalk](../docs/final_validation/FINAL_SCOPE_AND_SUBMISSION_CROSSWALK.md)
+separates the completed implementation from the remaining handoff items.
 
 The current main Git checkout passes 439 tests in CI. The submission notebook has 48 explained
 code stages and independently recomputes the full raw audit, actual DGP/fold/CR2
