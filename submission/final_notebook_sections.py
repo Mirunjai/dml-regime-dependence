@@ -88,7 +88,37 @@ We cross random/grouped cross-fitting with naive/CR2 uncertainty. Known-truth si
     ''')
     step('9. Reconcile frozen summaries','Recomputation must agree with the published audit, rather than simply displaying a saved PASS flag.', '''
         frozen_audit=json.loads((frozen/'campaign_audit.json').read_text())
-        assert audited==frozen_audit
+        import math
+
+        def assert_audit_equal(actual, expected, path="audit"):
+            # Preserve exact identity/count/config checks; allow only tiny
+            # cross-runtime differences in derived floating-point summaries.
+            if isinstance(actual, bool) or isinstance(expected, bool):
+                assert type(actual) is type(expected) and actual == expected, path
+            elif isinstance(actual, int) or isinstance(expected, int):
+                assert type(actual) is type(expected) and actual == expected, path
+            elif isinstance(actual, float) or isinstance(expected, float):
+                assert isinstance(actual, float) and isinstance(expected, float), path
+                if math.isnan(actual) or math.isnan(expected):
+                    assert math.isnan(actual) and math.isnan(expected), path
+                else:
+                    assert math.isclose(actual, expected, rel_tol=1e-12, abs_tol=1e-12), (
+                        f"{path}: {actual!r} != {expected!r}"
+                    )
+            elif isinstance(actual, dict) or isinstance(expected, dict):
+                assert isinstance(actual, dict) and isinstance(expected, dict), path
+                assert actual.keys() == expected.keys(), path
+                for key in actual:
+                    assert_audit_equal(actual[key], expected[key], f"{path}.{key}")
+            elif isinstance(actual, list) or isinstance(expected, list):
+                assert isinstance(actual, list) and isinstance(expected, list), path
+                assert len(actual) == len(expected), path
+                for index, (left, right) in enumerate(zip(actual, expected)):
+                    assert_audit_equal(left, right, f"{path}[{index}]")
+            else:
+                assert type(actual) is type(expected) and actual == expected, path
+
+        assert_audit_equal(audited, frozen_audit)
         summary=pd.DataFrame(interpretation['summaries'])
         display(summary[['scenario','cell','valid','failed','missing','coverage95','empirical_size','bias']].head(12))
     ''')
