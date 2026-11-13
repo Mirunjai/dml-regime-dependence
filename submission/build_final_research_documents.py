@@ -10,7 +10,7 @@ DEST=BASE/'release_stage/ADA PROJECT DELIVERABLES'
 facts=json.loads((BASE/'final_assets/facts.json').read_text());study=json.loads((BASE/'final_interpretation/interpretation.json').read_text())
 by={(r['scenario'],r['cell']):r for r in study['summaries']}
 doc=Document(template('DefaultCourseProject_OnePager.docx'))
-text={0:'Team Name: Bullish Breakout',1:'Project Title:',2:'DML Confidence Intervals under Regime-Level Dependence',3:'Extension(s):',
+text={0:'Team Name: ',1:'Project Title:',2:'DML Confidence Intervals under Regime-Level Dependence',3:'Extension(s):',
 4:'A registered 2 x 2 comparison of random/grouped cross-fitting and naive/CR2 inference. We validate established CR2/Satterthwaite algebra against R clubSandwich, independently audit every simulated interval, and evaluate explicitly matched dependence comparisons. No new estimator or theorem is claimed.',
 5:'Possible Dataset(s) and Source(s):',
 6:f"Synthetic: {facts['scenarios']} registered scenarios, {facts['complete_blocks']:,} complete four-cell blocks and {facts['interval_rows']:,} primary intervals. Real: six selected firms, 1,511 common trading dates (2016-2021), 9,066 returns and strictly prior VIX labels. Yahoo Finance acquisition records, SEC issuer crosswalk, derived returns and source hashes are in 03_Dataset.",
@@ -44,7 +44,7 @@ for table in doc.tables:
                 p.paragraph_format.space_before=Pt(2);p.paragraph_format.space_after=Pt(2)
                 for r in p.runs:r.font.name='Calibri';r.font.size=Pt(9)
 doc.core_properties.title='ADA Final One Pager';doc.core_properties.author='; '.join(m['name'] for m in facts['members'])
-doc.core_properties.subject='Registered finite-grid study; team: Bullish Breakout; no section'
+doc.core_properties.subject='Registered finite-grid study; team name and sections intentionally blank'
 doc.save(DEST/'01_One_Pager/ADA_Final_One_Pager.docx')
 
 REPORT=DEST/'06_IEEE_Report';REPORT.mkdir(exist_ok=True)
