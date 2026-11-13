@@ -27,7 +27,7 @@ does not retrospectively relabel historical results as validated.
 | DEC-5: H4 | Primary match: unconditional shared-regime pair probability, K4 d=.31 vs K16 d=.5, tolerance .002. Secondary: event exposure, K4 d=.5 vs K16 d=.3, tolerance .02. Both structural tolerances pass. Neither equalizes the full covariance structure. All comparisons executed and reported with paired uncertainty. |
 | DEC-6: execution acceptance | Registered finite-grid execution and independent raw audit PASS. Controls PASS. This is acceptance of completed technical work and scoped evidence, not a claim that every dependent condition attains nominal coverage. K4 undercoverage is a reported result. |
 | DEC-7: evidence labels | New final campaign: REGISTERED FINITE-GRID STUDY. Earlier 3,200-block archive: HISTORICAL EXPLORATORY. Hand-constructed tests: SOFTWARE/MOCK. Daily panel/CARs: DESCRIPTIVE. Original missing archives: NOT AUTHENTICATED. |
-| DEC-8: exclusions | Synthetic Control closed/excluded by final plan and user instruction. No donor search/results. No video rendering, Drive sharing or Google Form submission. Team-name and section fields remain blank. |
+| DEC-8: exclusions | Synthetic Control closed/excluded by final plan and user instruction. No donor search/results. No video rendering, Drive sharing or Google Form submission. The team name is Bullish Breakout; no course section was provided. The team handles video and submission. |
 
 ## Evidence and results
 
@@ -70,7 +70,7 @@ small printed-field differences cannot authenticate those original bytes.
 | Preksha | Available-data reconciliation, common labelled panel, prior-only VIX/market checks, fresh classical benchmark and methods/provenance documentation |
 | Sudarshan | Complete archives, source-pinned cloud replay, granular notebook, dataset package, figures, reproducibility receipts and document integration |
 
-Team entry of name/sections, video recording and Drive/Form submission are the
-explicit remaining handoff actions. Few-regime inference, broader generalization,
+The non-PPT one-pager uses the Bullish Breakout team name; no section was supplied.
+The team handles video and Drive/Form handoff. Few-regime inference, broader generalization,
 fully matched covariance comparisons and absent-original authentication are
 research boundaries/extensions, not undisclosed unexecuted reported experiments.
