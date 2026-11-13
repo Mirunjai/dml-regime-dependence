@@ -28,7 +28,7 @@ The offline requirements file cited in the independent audit is not tracked in t
 
 - Team name provided: **Bullish Breakout**.
 - Course section: none provided.
-- The one-pager builder now inserts the team name; its generated DOCX/PDF still needs rebuilding and visual review from the final asset bundle.
+- The one-pager was explicitly left unchanged, along with the PPT and video.
 - PPT editing is intentionally left untouched at the user's request.
 - Video production is being handled by the team.
 - Drive sharing and form submission remain team handoff items; no receipt is recorded in Git.
