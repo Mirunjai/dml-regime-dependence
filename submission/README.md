@@ -4,13 +4,27 @@ The latest study is the separately registered 78-scenario / 43,200-block campaig
 in `configs/experiments/final-validation/`. Its frozen source and raw archives are
 not substituted for the older 3,200-block RF/overlap-CR0 exploratory evidence.
 Read `docs/final_validation/FINAL_RESULTS_AND_TECHNICAL_REVIEW.md` for the final
-user-delegated decisions, acceptance criteria, results and scope.
+user-delegated decisions, acceptance criteria, results and scope. The
+[scope/submission crosswalk](../docs/final_validation/FINAL_SCOPE_AND_SUBMISSION_CROSSWALK.md)
+separates the completed implementation from the remaining handoff items.
 
-The complete suite passes 439 tests. The submission notebook has 48 explained
+The current main Git checkout passes 439 tests in CI. The submission notebook has 48 explained
 code stages and independently recomputes the full raw audit, actual DGP/fold/CR2
 components, external-reference fixtures, daily labels, block bootstraps and CARs.
 Source and input digests identify the exact matching clean-run receipt. Never
 reuse an older notebook's PASS after rebuilding its source/bundle.
+
+### Supported verification environments
+
+Run the full pytest suite from a Git checkout. The standalone source ZIP has no
+Git metadata, while six repository tests/tools resolve committed files with
+`git show` or `git rev-parse`; those checks fail when invoked from that ZIP. This
+is an archive-portability limitation, not evidence that six scientific tests
+failed in CI. Do not claim the full suite passed from a ZIP. The notebook also
+requires IPython and a Jupyter kernel (`ipykernel`); include both in any offline
+reproduction environment file. The exact five-package requirements file
+mentioned in the independent audit is not tracked in this repository, so its
+pins still need to be reconciled with the final deliverables bundle.
 
 ## Scientific evidence
 
@@ -62,11 +76,10 @@ Render and inspect all final document pages/slides, and validate the PPTX agains
 its source template before packaging. A standalone bundle and exact SHA-256
 manifest support offline reproduction.
 
-Team name and sections intentionally remain blank. The user delegated the
-technical decisions and final review; no fabricated teammate signatures or
-mentor approval are needed. Synthetic Control, new video production, Drive
-sharing and Google Form submission are excluded by instruction. Existing video
-material is backed up, not re-rendered or presented as a new final video.
+The one-pager, PPT and video are outside this work and remain untouched. The
+team name supplied is Bullish Breakout; no course section was provided. Synthetic
+Control remains excluded by the final plan. Drive sharing and Google Form
+submission are team handoff items.
 
 The older builder scripts and `report_body.tex` remain historical build sources;
 the `build_final_research_*` scripts and template presentation builder supersede
