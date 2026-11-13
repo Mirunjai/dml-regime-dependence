@@ -76,11 +76,10 @@ Render and inspect all final document pages/slides, and validate the PPTX agains
 its source template before packaging. A standalone bundle and exact SHA-256
 manifest support offline reproduction.
 
-The one-pager builder now uses the supplied team name, **Bullish Breakout**; no
-course section was provided. The user delegated technical decisions and final
-review; no teammate signatures or mentor approval are fabricated. Synthetic
-Control and PPT editing are outside this final-file pass. The team is handling
-the video; Drive sharing and Google Form submission still require the team.
+The one-pager, PPT and video are outside this work and remain untouched. The
+team name supplied is Bullish Breakout; no course section was provided. Synthetic
+Control remains excluded by the final plan. Drive sharing and Google Form
+submission are team handoff items.
 
 The older builder scripts and `report_body.tex` remain historical build sources;
 the `build_final_research_*` scripts and template presentation builder supersede
